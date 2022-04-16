@@ -17,6 +17,7 @@
 
     <modules>
         <module>runnerlite-sec</module>
+        <module>runnerlite-mail</module>
     </modules>
 
     <packaging>pom</packaging>
