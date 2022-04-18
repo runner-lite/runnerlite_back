@@ -21,21 +21,9 @@ public class RefDistrict {
 	@Column(name = "NAME", nullable = false)
 	private String name;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "REF_REGIONS", nullable = false)
+	//lazy
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "REF_CITIES_ID", nullable = false)
 	@ToString.Exclude
-	private RefRegion refRegions;
-	
-	public Integer getId() {
-		return id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public RefRegion getRefRegions() {
-		return refRegions;
-	}
-	
+	private RefCity refCity;
 }

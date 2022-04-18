@@ -12,12 +12,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/teams")
-public class TeamAndDistrictsController {
+public class TeamController {
 	
 	@Autowired
 	ITeamService teamsService;
 	
-	@GetMapping("/getAll/{id}/id")
+	@GetMapping("/getByCityId/{id}/id")
 	public List<Team> getAllTeams(@PathVariable("id") Integer id) {
 		return teamsService.findAllByCityId(id);
 	}

@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.runnerlite.entities.Team;
 
+import java.util.List;
+
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Integer> {
 	
@@ -12,4 +14,5 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
 //		"left join ref_districts ds on ds.id = tl.ref_districts_id " +
 //		"where ds.ref_cities_id = :id")
 //	List<Team> findAllByCityId(Integer id);
+	List<Team> findAllByLocation_Id(Integer id);
 }

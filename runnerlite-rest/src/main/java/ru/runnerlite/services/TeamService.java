@@ -14,6 +14,7 @@ public class TeamService implements ITeamService {
 	TeamRepository teamRepository;
 	
 	public List<Team> findAllByCityId(Integer id) {
-		return teamRepository.findAll();
+		return teamRepository.findAllByLocation_Id(id);
+//		return teamRepository.findAll();
 	}
 }

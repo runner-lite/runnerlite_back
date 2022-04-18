@@ -2,12 +2,12 @@ package ru.runnerlite.repositories;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import ru.runnerlite.entities.RefCities;
+import ru.runnerlite.entities.RefCity;
 
 import java.util.List;
 
 @Repository
-public interface RefCityRepository extends CrudRepository<RefCities, Integer> {
+public interface RefCityRepository extends CrudRepository<RefCity, Integer> {
 	
-	List<RefCities> findAll();
+	List<RefCity> findAll();
 }

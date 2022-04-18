@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ref_cities")
-public class RefCities {
+public class RefCity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,13 +21,13 @@ public class RefCities {
 	@Column(name = "REF_REGIONS_ID")
 	private Integer region;
 	
-	public RefCities(Integer id, String name, Integer region) {
+	public RefCity(Integer id, String name, Integer region) {
 		this.id = id;
 		this.name = name;
 		this.region = region;
 	}
 	
-	public RefCities() {
+	public RefCity() {
 	}
 	
 	public Integer getId() {

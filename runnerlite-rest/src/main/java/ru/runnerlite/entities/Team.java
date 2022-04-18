@@ -1,12 +1,24 @@
 package ru.runnerlite.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "teams")
 public class Team {
@@ -14,6 +26,12 @@ public class Team {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID", nullable = false)
 	private Integer id;
+	
+	//fetch = FetchType.LAZY,
+	@MapsId
+	@OneToOne(optional = false)
+	@JoinColumn(name = "ID", nullable = false)
+	private Location location;
 	
 	@Column(name = "NAME", nullable = false)
 	private String name;
@@ -32,61 +50,5 @@ public class Team {
 	
 	@Column(name = "ACTIVE", nullable = false)
 	private Boolean active = false;
-	
-	public Integer getId() {
-		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public Double getGeoLat() {
-		return geoLat;
-	}
-	
-	public void setGeoLat(Double geoLat) {
-		this.geoLat = geoLat;
-	}
-	
-	public Double getGeoLng() {
-		return geoLng;
-	}
-	
-	public void setGeoLng(Double geoLng) {
-		this.geoLng = geoLng;
-	}
-	
-	public String getGeoDescription() {
-		return geoDescription;
-	}
-	
-	public void setGeoDescription(String geoDescription) {
-		this.geoDescription = geoDescription;
-	}
-	
-	public Boolean getActive() {
-		return active;
-	}
-	
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
 	
 }

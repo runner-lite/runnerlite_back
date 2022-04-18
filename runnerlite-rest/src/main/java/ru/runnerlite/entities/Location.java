@@ -11,18 +11,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "teams_locations")
-public class TeamsLocation {
+@Table(name = "locations")
+public class Location {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID", nullable = false)
 	private Integer id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "TEAMS_ID", nullable = false)
-	private Team teams;
-	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//	@JoinColumn(name = "TEAMS_ID", nullable = false)
+//	private Team teams;
+
+//	fetch = FetchType.LAZY,
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "REF_DISTRICTS_ID", nullable = false)
 	private RefDistrict refDistricts;
 	
@@ -43,13 +44,13 @@ public class TeamsLocation {
 		this.id = id;
 	}
 	
-	public Team getTeams() {
-		return teams;
-	}
+//	public Team getTeams() {
+//		return teams;
+//	}
 	
-	public void setTeams(Team teams) {
-		this.teams = teams;
-	}
+//	public void setTeams(Team teams) {
+//		this.teams = teams;
+//	}
 	
 	public RefDistrict getRefDistricts() {
 		return refDistricts;
