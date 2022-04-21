@@ -6,6 +6,7 @@ import ru.runnerlite.entities.Team;
 import ru.runnerlite.repositories.TeamRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TeamService implements ITeamService {
@@ -14,7 +15,10 @@ public class TeamService implements ITeamService {
 	TeamRepository teamRepository;
 	
 	public List<Team> findAllByCityId(Integer id) {
-		return teamRepository.findAllByLocation_Id(id);
-//		return teamRepository.findAll();
+		List<Team> allTeams = teamRepository.findAll();
+		
+		return allTeams.stream()
+			.filter(t -> id.equals(t.getLocation().getRefDistricts().getRefCity().getId()))
+			.collect(Collectors.toList());
 	}
 }
