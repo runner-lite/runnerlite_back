@@ -2,7 +2,6 @@ package ru.runnerlite.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,12 +16,12 @@ public class Location {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID", nullable = false)
 	private Integer id;
-	
+
 //	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 //	@JoinColumn(name = "TEAMS_ID", nullable = false)
 //	private Team teams;
-
-//	fetch = FetchType.LAZY,
+	
+	//	fetch = FetchType.LAZY,
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "REF_DISTRICTS_ID", nullable = false)
 	private RefDistrict refDistricts;
@@ -43,11 +42,11 @@ public class Location {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 //	public Team getTeams() {
 //		return teams;
 //	}
-	
+
 //	public void setTeams(Team teams) {
 //		this.teams = teams;
 //	}

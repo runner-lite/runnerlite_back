@@ -7,5 +7,5 @@ public interface IUserService {
 	
 	ResponseEntity<SecUserDto> register(SecUserDto user);
 	
-	ResponseEntity<SecUserDto> getById(Long id);
+	ResponseEntity<SecUserDto> getById(Integer id);
 }

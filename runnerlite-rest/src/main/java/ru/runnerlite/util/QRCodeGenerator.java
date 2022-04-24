@@ -19,9 +19,9 @@ public class QRCodeGenerator {
 	 * <i><p>Пример:</p></i><br>
 	 * <p><b>CodeGenerator.generate("AA00BB22", "qrs/QR.png", 300)</b></p>
 	 *
-	 * @param string - строка, которую требуется закодировать
+	 * @param string   - строка, которую требуется закодировать
 	 * @param filename - путь к директории и имя файла, в который сохранится QR-код
-	 * @param size - длина стороны QR-кода в пикселях
+	 * @param size     - длина стороны QR-кода в пикселях
 	 */
 	public static void generate(String string, String filename, int size) {
 		try {

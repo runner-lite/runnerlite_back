@@ -1,32 +1,29 @@
 package ru.runnerlite.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.Instant;
+import java.util.Objects;
 
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
 @Getter
 @Setter
 @ToString
-@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "sec_users")
-public class SecUser {
+public class SecUserSimple {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID", nullable = false)
@@ -50,15 +47,25 @@ public class SecUser {
 	@Column(name = "USE_NICK", nullable = false)
 	private Boolean useNick = false;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "TEAMS_ID", nullable = false)
-	@ToString.Exclude
-	private Team team;
+	@Column(name = "TEAMS_ID")
+	private Integer teamId;
 	
 	@Column(name = "BIRTHDAY", nullable = false)
-	private Instant birthday;
+	private String birthday;
 	
 	@Column(name = "SEX", nullable = false)
 	private String sex;
 	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+		SecUserSimple that = (SecUserSimple) o;
+		return id != null && Objects.equals(id, that.id);
+	}
+	
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }

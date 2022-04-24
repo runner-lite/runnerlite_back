@@ -1,16 +1,20 @@
 package ru.runnerlite.entities.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TeamDto implements Serializable {
-	private final Integer id;
-	private final String name;
-	private final String description;
-	private final Double geoLat;
-	private final Double geoLng;
-	private final String geoDescription;
-	private final Boolean active;
+	private Integer id;
+	private String name;
+	private String description;
+	private Double geoLat;
+	private Double geoLng;
+	private String geoDescription;
+	private Boolean active;
 }

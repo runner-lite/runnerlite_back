@@ -6,19 +6,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.runnerlite.entities.dto.SecUserDto;
-import ru.runnerlite.services.IUserService;
+import ru.runnerlite.entities.dto.Account;
+import ru.runnerlite.services.IAccountService;
 
 @RestController
-@RequestMapping("/users")
-public class UsersController {
+@RequestMapping("/account")
+public class AccountController {
 	
 	@Autowired
-	IUserService registrationService;
+	IAccountService accountService;
 	
-	@GetMapping("/find")
-	public ResponseEntity<SecUserDto> findUser(@RequestParam(name = "id") Integer id) {
-		
-		return registrationService.getById(id);
+	@GetMapping
+	public ResponseEntity<Account> get(@RequestParam("id") Integer id) {
+		return accountService.get(id);
 	}
 }

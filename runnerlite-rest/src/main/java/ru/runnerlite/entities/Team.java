@@ -51,4 +51,7 @@ public class Team {
 	@Column(name = "ACTIVE", nullable = false)
 	private Boolean active = false;
 	
+	public Team(Integer id) {
+		this.id = id;
+	}
 }
