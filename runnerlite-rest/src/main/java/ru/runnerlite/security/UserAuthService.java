@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.runnerlite.repositories.SecUserRepository;
 
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,13 +25,12 @@ public class UserAuthService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return secUserRepository.findByUsername(username)
                 .map(secUser -> new User(secUser.getEmail(),
-                                          secUser.getPassword(),
-                                            Collections.singleton(new SimpleGrantedAuthority("ADMIN"))
-//                                          secUser.getSecUsergroupsMember().stream()
-//                                                  .map(secUsergroupsMember -> new SimpleGrantedAuthority("ADMIN"))
-//                                                  .collect(Collectors.toList())
-                        )
-                )
+                                secUser.getPassword(),
+                                secUser.getSecGroup()
+                                        .stream()
+                                        .map(secGroup ->new SimpleGrantedAuthority(secGroup.getName()))
+                                        .collect(Collectors.toList())
+                ))
                 .orElseThrow(()->new UsernameNotFoundException("User not found"));
     }
 }

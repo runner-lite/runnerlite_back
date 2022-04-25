@@ -18,6 +18,7 @@ public interface SecUserRepository extends JpaRepository<SecUser, Long>  {
 
 	@Query("select distinct su " +
 			"from SecUser su " +
+			"join fetch su.secGroup " +
 			"where su.email = :username ")
 	Optional<SecUser> findByUsername(@Param("username") String username);
 

@@ -10,6 +10,7 @@ import ru.runnerlite.entities.dto.SecUserDto;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -47,6 +48,20 @@ public class SecUser {
 	@JoinColumn(name = "TEAMS_ID", nullable = false)
 	@ToString.Exclude
 	private Team team;
+
+	@ManyToMany
+	@JoinTable(
+			name = "sec_usergroups_member",
+			joinColumns = @JoinColumn(
+					name = "SEC_USERS_ID",
+					referencedColumnName = "ID"
+			),
+			inverseJoinColumns = @JoinColumn(
+					name = "SEC_GROUPS_ID",
+					referencedColumnName = "ID"
+			)
+	)
+	private Set<SecGroup> secGroup;
 
 	
 	@Column(name = "BIRTHDAY", nullable = false)
