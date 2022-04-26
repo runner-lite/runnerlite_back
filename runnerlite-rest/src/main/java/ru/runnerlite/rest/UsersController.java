@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.runnerlite.entities.dto.SecUserDto;
-import ru.runnerlite.services.IUserService;
+import ru.runnerlite.services.interfaces.ISecUserService;
 
 @RestController
 @RequestMapping("/users")
 public class UsersController {
 	
 	@Autowired
-	IUserService registrationService;
+	ISecUserService registrationService;
 	
 	@GetMapping("/find")
 	public ResponseEntity<SecUserDto> findUser(@RequestParam(name = "id") Integer id) {

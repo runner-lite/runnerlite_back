@@ -8,16 +8,17 @@ import ru.runnerlite.entities.dto.Account;
 import ru.runnerlite.entities.dto.SecUserDto;
 import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.repositories.TeamRepository;
+import ru.runnerlite.services.interfaces.IAccountService;
 
 @Service
 public class AccountService implements IAccountService {
 	
-	private final UserService userService;
+	private final SecSecUserService secUserService;
 	private final SecUserRepository userRepository;
 	private final TeamRepository teamRepository;
 	
-	public AccountService(UserService userService, SecUserRepository userRepository, TeamRepository teamRepository) {
-		this.userService = userService;
+	public AccountService(SecSecUserService secUserService, SecUserRepository userRepository, TeamRepository teamRepository) {
+		this.secUserService = secUserService;
 		this.userRepository = userRepository;
 		this.teamRepository = teamRepository;
 	}

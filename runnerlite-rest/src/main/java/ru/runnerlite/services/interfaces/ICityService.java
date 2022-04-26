@@ -1,4 +1,4 @@
-package ru.runnerlite.services;
+package ru.runnerlite.services.interfaces;
 
 import ru.runnerlite.entities.dto.RefCitiesDto;
 

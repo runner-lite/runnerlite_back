@@ -7,15 +7,16 @@ import ru.runnerlite.entities.SecUser;
 import ru.runnerlite.entities.Team;
 import ru.runnerlite.entities.dto.SecUserDto;
 import ru.runnerlite.repositories.SecUserRepository;
+import ru.runnerlite.services.interfaces.ISecUserService;
 
 @Service
 @Getter
-public class UserService implements IUserService {
+public class SecSecUserService implements ISecUserService {
 	
 	
 	private final SecUserRepository usersRepository;
 	
-	public UserService(SecUserRepository usersRepository) {
+	public SecSecUserService(SecUserRepository usersRepository) {
 		this.usersRepository = usersRepository;
 	}
 	
@@ -29,7 +30,7 @@ public class UserService implements IUserService {
 	
 	@Override
 	public ResponseEntity<SecUserDto> getById(Integer id) {
-		SecUserDto user = new SecUserDto();
+		SecUserDto user = convert(usersRepository.findById(id));
 		return ResponseEntity.ok(user);
 	}
 	

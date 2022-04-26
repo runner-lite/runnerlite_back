@@ -5,6 +5,7 @@ import ru.runnerlite.entities.Team;
 import ru.runnerlite.entities.dto.TeamDto;
 import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.repositories.TeamRepository;
+import ru.runnerlite.services.interfaces.ITeamService;
 
 import java.util.List;
 import java.util.stream.Collectors;

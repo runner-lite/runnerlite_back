@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.runnerlite.entities.dto.TeamDto;
-import ru.runnerlite.services.ITeamService;
+import ru.runnerlite.services.interfaces.ITeamService;
 
 import javax.websocket.server.PathParam;
 import java.util.List;

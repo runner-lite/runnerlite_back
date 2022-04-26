@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.runnerlite.entities.RefCity;
 import ru.runnerlite.entities.dto.RefCitiesDto;
 import ru.runnerlite.repositories.RefCityRepository;
+import ru.runnerlite.services.interfaces.ICityService;
 
 import java.util.List;
 import java.util.stream.Collectors;

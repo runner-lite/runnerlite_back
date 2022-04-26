@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.runnerlite.entities.dto.SecUserDto;
-import ru.runnerlite.services.IUserService;
+import ru.runnerlite.services.interfaces.ISecUserService;
 
 @RestController
 @RequestMapping("/register")
 public class RegistrationController {
 	
 	@Autowired
-	IUserService registrationService;
+	ISecUserService registrationService;
 	
 	@PostMapping
 	public ResponseEntity<SecUserDto> registerNewUser(@RequestBody SecUserDto user) {
