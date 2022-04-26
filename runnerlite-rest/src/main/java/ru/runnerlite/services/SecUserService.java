@@ -11,12 +11,12 @@ import ru.runnerlite.services.interfaces.ISecUserService;
 
 @Service
 @Getter
-public class SecSecUserService implements ISecUserService {
+public class SecUserService implements ISecUserService {
 	
 	
 	private final SecUserRepository usersRepository;
 	
-	public SecSecUserService(SecUserRepository usersRepository) {
+	public SecUserService(SecUserRepository usersRepository) {
 		this.usersRepository = usersRepository;
 	}
 	

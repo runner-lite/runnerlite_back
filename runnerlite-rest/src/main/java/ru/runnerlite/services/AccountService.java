@@ -13,11 +13,11 @@ import ru.runnerlite.services.interfaces.IAccountService;
 @Service
 public class AccountService implements IAccountService {
 	
-	private final SecSecUserService secUserService;
+	private final SecUserService secUserService;
 	private final SecUserRepository userRepository;
 	private final TeamRepository teamRepository;
 	
-	public AccountService(SecSecUserService secUserService, SecUserRepository userRepository, TeamRepository teamRepository) {
+	public AccountService(SecUserService secUserService, SecUserRepository userRepository, TeamRepository teamRepository) {
 		this.secUserService = secUserService;
 		this.userRepository = userRepository;
 		this.teamRepository = teamRepository;
