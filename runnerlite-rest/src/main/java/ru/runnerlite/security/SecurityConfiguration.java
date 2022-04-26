@@ -1,4 +1,4 @@
-package ru.runnerlite;
+package ru.runnerlite.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class SecurityConfiguration {
                            PasswordEncoder passwordEncoder,
                            UserAuthService userAuthService) throws Exception {
 
-        //для тестирования
+//        для тестирования
         auth.inMemoryAuthentication()
                 .withUser("test_admin")
                 .password(passwordEncoder.encode("qwerty123")) //шифрование пароля в оперативной памяти
@@ -48,12 +48,11 @@ public class SecurityConfiguration {
         }
 
         @Configuration
-        @Order(1)
+        @Order(2)
         public static class ApiWebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
             @Override
             protected void configure(HttpSecurity http) throws Exception {
                 http
-                        .antMatcher("/api/**")
                         .authorizeRequests()
                         .anyRequest().authenticated()
                         .and()
@@ -73,12 +72,13 @@ public class SecurityConfiguration {
         }
 
         @Configuration
-        @Order(2)
+        @Order(1)
         public static class UiWebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
 
             @Override
             protected void configure(HttpSecurity http) throws Exception {
                 http
+                        .antMatcher("/login")
                         .authorizeRequests()
                         .antMatchers("/**/*.css", "/**/*.js").permitAll()
                         //TODO .antMatchers("/product/**").permitAll()
