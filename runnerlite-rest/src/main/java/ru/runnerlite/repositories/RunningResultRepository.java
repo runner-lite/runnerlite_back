@@ -6,4 +6,5 @@ import ru.runnerlite.entities.RunningResult;
 
 @Repository
 public interface RunningResultRepository extends JpaRepository<RunningResult, Integer> {
+	RunningResult findFirstBySecUser_IdOrderByIdDesc(Integer userId);
 }

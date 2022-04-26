@@ -39,8 +39,9 @@ public class SecUserService implements ISecUserService {
 		userDto.setId(user.getId());
 		userDto.setEmail(user.getEmail());
 		userDto.setFullName(user.getFullName());
-//		userDto.setPassword(null);
+		userDto.setPassword(null);
 		userDto.setNickName(user.getNickName());
+		userDto.setIsActive(user.getIsActive());
 		userDto.setUseNick(user.getUseNick());
 		userDto.setTeamId(user.getTeam().getId());
 		userDto.setBirthday(user.getBirthday());
@@ -53,8 +54,9 @@ public class SecUserService implements ISecUserService {
 		user.setId(userDto.getId());
 		user.setEmail(userDto.getEmail());
 		user.setFullName(userDto.getFullName());
-//		user.setPassword(null);
+		user.setPassword(userDto.getPassword() == null ? null : userDto.getPassword());
 		user.setNickName(userDto.getNickName());
+		user.setIsActive(userDto.getIsActive());
 		user.setUseNick(userDto.getUseNick());
 		user.setTeam(new Team(userDto.getTeamId()));
 		user.setBirthday(userDto.getBirthday());

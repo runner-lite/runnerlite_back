@@ -34,7 +34,7 @@ public class RunnerCount {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "SEC_USERS_ID", nullable = false)
 	@ToString.Exclude
-	private SecUser secUsers;
+	private SecUser secUser;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "TEAMS_RUNNING_COUNT_ID", nullable = false)
@@ -45,8 +45,8 @@ public class RunnerCount {
 		return id;
 	}
 	
-	public SecUser getSecUsers() {
-		return secUsers;
+	public SecUser getSecUser() {
+		return secUser;
 	}
 	
 	public TeamsRunningCount getTeamsRunningCount() {

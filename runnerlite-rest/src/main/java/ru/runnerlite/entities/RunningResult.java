@@ -35,7 +35,7 @@ public class RunningResult {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "SEC_USERS_ID", nullable = false)
 	@ToString.Exclude
-	private SecUser secUsers;
+	private SecUser secUser;
 	
 	@Column(name = "RESULT", nullable = false)
 	private Instant result;
@@ -47,25 +47,5 @@ public class RunningResult {
 	
 	@Column(name = "FINISH_PLACE", nullable = false)
 	private Integer finishPlace;
-	
-	public Integer getId() {
-		return id;
-	}
-	
-	public SecUser getSecUsers() {
-		return secUsers;
-	}
-	
-	public Instant getResult() {
-		return result;
-	}
-	
-	public TeamsRunningCount getTeamsRunningCount() {
-		return teamsRunningCount;
-	}
-	
-	public Integer getFinishPlace() {
-		return finishPlace;
-	}
 	
 }

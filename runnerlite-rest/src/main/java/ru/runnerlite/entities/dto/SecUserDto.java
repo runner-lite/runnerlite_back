@@ -16,7 +16,7 @@ public class SecUserDto implements Serializable {
 	private String fullName;
 	private String password;
 	private String nickName;
-	private Boolean active;
+	private Boolean isActive;
 	private Boolean useNick;
 	private Integer teamId;
 	private Instant birthday;
