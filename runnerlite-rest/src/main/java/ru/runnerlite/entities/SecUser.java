@@ -8,16 +8,9 @@ import lombok.Setter;
 import lombok.ToString;
 import ru.runnerlite.entities.dto.SecUserDto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -55,12 +48,29 @@ public class SecUser {
 	@JoinColumn(name = "TEAMS_ID", nullable = false)
 	@ToString.Exclude
 	private Team team;
+
+	@ManyToMany
+	@JoinTable(
+			name = "sec_usergroups_member",
+			joinColumns = @JoinColumn(
+					name = "SEC_USERS_ID",
+					referencedColumnName = "ID"
+			),
+			inverseJoinColumns = @JoinColumn(
+					name = "SEC_GROUPS_ID",
+					referencedColumnName = "ID"
+			)
+	)
+	private Set<SecGroup> secGroup;
+
 	
 	@Column(name = "BIRTHDAY", nullable = false)
 	private Instant birthday;
 	
 	@Column(name = "SEX", nullable = false)
 	private String sex;
+
+
 	
 	public SecUser (SecUserDto secUserDto) {
 		id = secUserDto.getId();
