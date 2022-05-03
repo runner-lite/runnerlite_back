@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
@@ -30,7 +30,7 @@ public class SecurityConfiguration {
                 .password(passwordEncoder.encode("qwerty123")) //шифрование пароля в оперативной памяти
                 .roles("ADMIN")
                 .and()
-                .withUser("test_user")
+                .withUser("test@user.ru")
                 .password(passwordEncoder.encode("123qwerty"))
                 .roles("USER");
         auth.userDetailsService(userAuthService);
@@ -38,6 +38,7 @@ public class SecurityConfiguration {
 
 
     @Configuration
+    @Order(1)
     public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
         private CookieCsrfTokenRepository cookieCsrfTokenRepository() {
@@ -47,53 +48,33 @@ public class SecurityConfiguration {
             return csrfTokenRepository;
         }
 
-        @Configuration
-        @Order(2)
-        public static class ApiWebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
-            @Override
-            protected void configure(HttpSecurity http) throws Exception {
-                http
-                        .authorizeRequests()
-                        .anyRequest().authenticated()
-                        .and()
-                        .httpBasic()// включаем базовую авторизацию ниже выдаем джесон при не удачной авторизации
-                        .authenticationEntryPoint((reg,resp,exception) ->{
-                            resp.setContentType("aplication/json");
-                            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            resp.setCharacterEncoding("UTF-8");
-                            resp.getWriter().println("{\"error\":\""+exception.getMessage()+"\"}");
-                        })
-                        .and()
-                        .csrf().disable() //выключаем стандартное поддержание авторизации в сессии
-                        .sessionManagement() //добавляем кастомный механизм поддержания сессии
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // каждый вызов будет требовать авторизации
-                ;
-            }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .authorizeRequests()
+                    .anyRequest().permitAll()
+                    .and()
+                    .logout(logout -> logout
+                            .logoutUrl("/logout")
+                            .permitAll()
+                            .logoutSuccessHandler(((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK)))
+                    )
+                    .httpBasic()// включаем базовую авторизацию ниже выдаем джесон при не удачной авторизации
+                    .authenticationEntryPoint((reg,resp,exception) ->{
+                        resp.setContentType("aplication/json");
+                        resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        resp.setCharacterEncoding("UTF-8");
+                        resp.getWriter().println("{\"error\":\""+exception.getMessage()+"\"}");
+                    })
+                    .and()
+                    .csrf() //.disable() выключаем стандартное поддержание авторизации в сессии
+                    .csrfTokenRepository(cookieCsrfTokenRepository());
+
+            //.sessionManagement() //добавляем кастомный механизм поддержания сессии
+            //.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // каждый вызов будет требовать авторизации
+
         }
 
-        @Configuration
-        @Order(1)
-        public static class UiWebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
-
-            @Override
-            protected void configure(HttpSecurity http) throws Exception {
-                http
-                        .antMatcher("/login")
-                        .authorizeRequests()
-                        .antMatchers("/**/*.css", "/**/*.js").permitAll()
-                        //TODO .antMatchers("/product/**").permitAll()
-                        //TODO .antMatchers("/user/new").permitAll()
-                        //TODO .antMatchers("/user/**").hasAnyRole("ADMIN","SUPER_ADMIN")
-                        //TODO .antMatchers("/access_denied").authenticated()
-                        .and()
-                        .formLogin()
-                        //TODO .loginPage("/login")
-                        //TODO .loginProcessingUrl("/login_processing")
-                        //TODO .defaultSuccessUrl("/product")
-                        .and()
-                        .exceptionHandling()
-                        .accessDeniedPage("/access_denied");
-            }
-        }
     }
 }
