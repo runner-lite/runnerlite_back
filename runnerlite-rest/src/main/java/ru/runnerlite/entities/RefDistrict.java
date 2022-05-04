@@ -7,23 +7,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "ref_districts")
+
 public class RefDistrict {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +25,12 @@ public class RefDistrict {
 	
 	@Column(name = "NAME", nullable = false)
 	private String name;
-	
-	//lazy
-	@ManyToOne(optional = false)
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "REF_CITIES_ID", nullable = false)
 	@ToString.Exclude
 	private RefCity refCity;
+
+	@OneToMany(mappedBy = "refDistricts", fetch = FetchType.LAZY)
+	private List<Location> locations;
 }

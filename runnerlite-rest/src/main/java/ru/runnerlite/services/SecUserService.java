@@ -1,36 +1,78 @@
 package ru.runnerlite.services;
 
-import lombok.Getter;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.runnerlite.entities.SecUser;
-import ru.runnerlite.entities.Team;
+import ru.runnerlite.entities.*;
 import ru.runnerlite.entities.dto.SecUserDto;
-import ru.runnerlite.repositories.SecUserRepository;
+import ru.runnerlite.repositories.*;
 import ru.runnerlite.services.interfaces.ISecUserService;
 
+import javax.transaction.Transactional;
+
 @Service
-@Getter
 public class SecUserService implements ISecUserService {
 	
-	
 	private final SecUserRepository usersRepository;
-	
-	public SecUserService(SecUserRepository usersRepository) {
+
+	private final PasswordEncoder passwordEncoder;
+
+	private final TeamRepository teamRepository;
+
+	private final SecUsergroupsMemberRepository secUsergroupsMemberRepository;
+
+	private final SecGroupRepository secGroupRepository;
+
+	private final PhoneNumberRepository phoneNumberRepository;
+
+	@Autowired
+	public SecUserService(SecUserRepository usersRepository, PasswordEncoder passwordEncoder, TeamRepository teamRepository, SecUsergroupsMemberRepository secUsergroupsMemberRepository, SecGroupRepository secGroupRepository, PhoneNumberRepository phoneNumberRepository) {
 		this.usersRepository = usersRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.teamRepository = teamRepository;
+		this.secUsergroupsMemberRepository = secUsergroupsMemberRepository;
+		this.secGroupRepository = secGroupRepository;
+		this.phoneNumberRepository = phoneNumberRepository;
 	}
 	
 	@Override
-	public ResponseEntity<SecUserDto> register(SecUserDto userDto) {
-		//TODO проверка на уникальность полей
-		SecUser user = usersRepository.save(convert(userDto));
-		SecUserDto savedUser = convert(user);
-		return ResponseEntity.ok(savedUser);
+	@Transactional
+	public ResponseEntity<Integer> register(SecUserDto userDto) {
+		Team homeTeam = teamRepository.getById(userDto.getTeamId());
+		SecGroup defaultGroup = secGroupRepository.getById(3);
+		SecUser user = usersRepository.save(new SecUser(
+				null,
+				userDto.getEmail(),
+				userDto.getFullName(),
+				passwordEncoder.encode(userDto.getPassword()),
+				userDto.getNickName(),
+				true,
+				false,
+				homeTeam,
+				null,
+				userDto.getBirthday(),
+				userDto.getSex()
+		));
+		secUsergroupsMemberRepository.save(new SecUsergroupsMember(
+				null,
+				user,
+				defaultGroup,
+				homeTeam
+		));
+		phoneNumberRepository.save(new PhoneNumber(
+			null,
+			user,
+			userDto.getPhone(),
+			PhoneTypes.MOBILE.getTitle()
+		));
+		return ResponseEntity.ok(user.getId());
 	}
 	
 	@Override
 	public ResponseEntity<SecUserDto> getById(Integer id) {
-		SecUserDto user = convert(usersRepository.findById(id));
+		SecUserDto user = convert(usersRepository.getById(id.longValue()));
 		return ResponseEntity.ok(user);
 	}
 	

@@ -3,6 +3,7 @@ package ru.runnerlite.services;
 import org.springframework.stereotype.Service;
 import ru.runnerlite.entities.Team;
 import ru.runnerlite.entities.dto.TeamDto;
+import ru.runnerlite.entities.dto.TeamWithDistrictDto;
 import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.repositories.TeamRepository;
 import ru.runnerlite.services.interfaces.ITeamService;
@@ -52,5 +53,9 @@ public class TeamService implements ITeamService {
 		team.setGeoDescription(teamDto.getGeoDescription());
 		team.setActive(teamDto.getActive());
 		return team;
+	}
+
+	public List<TeamWithDistrictDto> findByCid(Integer id) {
+		return teamRepository.findTeamsByCityId(id);
 	}
 }
