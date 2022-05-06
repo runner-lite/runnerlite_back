@@ -23,12 +23,13 @@ public class UserAuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         return secUserRepository.findByUsername(username)
                 .map(secUser -> new User(secUser.getEmail(),
                                 secUser.getPassword(),
                                 secUser.getSecGroup()
                                         .stream()
-                                        .map(secGroup ->new SimpleGrantedAuthority(secGroup.getName()))
+                                        .map(secGroup ->new SimpleGrantedAuthority("ROLE_" + secGroup.getName()))
                                         .collect(Collectors.toList())
                 ))
                 .orElseThrow(()->new UsernameNotFoundException("User not found"));

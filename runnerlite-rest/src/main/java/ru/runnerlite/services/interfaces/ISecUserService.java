@@ -5,7 +5,7 @@ import ru.runnerlite.entities.dto.SecUserDto;
 
 public interface ISecUserService {
 	
-	ResponseEntity<SecUserDto> register(SecUserDto user);
+	ResponseEntity<Integer> register(SecUserDto user);
 	
 	ResponseEntity<SecUserDto> getById(Integer id);
 }

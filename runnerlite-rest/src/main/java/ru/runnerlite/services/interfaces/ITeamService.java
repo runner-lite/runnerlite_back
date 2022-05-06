@@ -1,9 +1,10 @@
 package ru.runnerlite.services.interfaces;
 
-import ru.runnerlite.entities.dto.TeamDto;
+import ru.runnerlite.entities.dto.TeamWithDistrictDto;
 
 import java.util.List;
 
 public interface ITeamService {
-	List<TeamDto> findAllByCityId(Integer id);
+
+	List<TeamWithDistrictDto> findByCid(Integer id);
 }

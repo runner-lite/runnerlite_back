@@ -23,4 +23,6 @@ public class RefCitiesService implements ICityService {
 			.map(c -> new RefCitiesDto(c.getId(), c.getName())).collect(Collectors.toList());
 		return cityDtos;
 	}
+
+
 }

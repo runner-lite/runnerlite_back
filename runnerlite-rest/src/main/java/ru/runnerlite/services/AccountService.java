@@ -30,7 +30,7 @@ public class AccountService implements IAccountService {
 	
 	@Override
 	public ResponseEntity<Account> get(Integer id) {
-		SecUser secUser = userRepository.findById(id);
+		SecUser secUser = userRepository.getById(id.longValue());
 		SecUserSimple user = new SecUserSimple(
 			secUser.getId(),
 			secUser.getEmail(),

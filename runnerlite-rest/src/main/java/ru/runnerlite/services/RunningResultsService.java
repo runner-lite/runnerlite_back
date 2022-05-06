@@ -8,6 +8,7 @@ import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.dto.RunningResultDto;
 import ru.runnerlite.entities.dto.TeamsRunningCountDto;
 import ru.runnerlite.repositories.RunningResultRepository;
+import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.repositories.TeamsRunningCountRepository;
 import ru.runnerlite.services.interfaces.IRunningResultsService;
 
@@ -17,15 +18,25 @@ import java.util.stream.Collectors;
 @Service
 public class RunningResultsService implements IRunningResultsService {
 
-    @Autowired
-    RunningResultRepository runningResultRepository;
+
+    private final RunningResultRepository runningResultRepository;
     
-    @Autowired
-    SecUserService userService;
+
+    private final SecUserService userService;
+
+
+    private final TeamsRunningCountRepository runningRepository;
+
+    private final SecUserRepository secUserRepository;
 
     @Autowired
-    TeamsRunningCountRepository runningRepository;
-    
+    public RunningResultsService(RunningResultRepository runningResultRepository, SecUserService userService, TeamsRunningCountRepository runningRepository, SecUserRepository secUserRepository) {
+        this.runningResultRepository = runningResultRepository;
+        this.userService = userService;
+        this.runningRepository = runningRepository;
+        this.secUserRepository = secUserRepository;
+    }
+
     @Override
     public List<RunningResultDto> findAll() {
         List<RunningResult> runningResult = runningResultRepository.findAll();
@@ -54,7 +65,7 @@ public class RunningResultsService implements IRunningResultsService {
     }
     
     public RunningResult convert(RunningResultDto result) {
-        SecUser user = userService.getUsersRepository().findById(result.getUserId());
+        SecUser user = secUserRepository.getById(result.getUserId().longValue());
         TeamsRunningCount running = runningRepository.getById(result.getRunningId());
         return new RunningResult(result.getId(),
             user,
