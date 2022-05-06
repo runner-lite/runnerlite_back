@@ -8,8 +8,8 @@ import java.time.Instant;
 @Data
 public class RunningResultDto implements Serializable {
 	private final Integer id;
-	private final SecUserDto secUsers;
-	private final Instant result;
-	private final TeamsRunningCountDto teamsRunningCount;
+	private final Integer runningId;
+	private final Integer userId;
 	private final Integer finishPlace;
+	private final Instant result;
 }

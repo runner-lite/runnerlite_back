@@ -12,9 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface SecUserRepository extends JpaRepository<SecUser, Long>  {
-	@Override
-	@NotNull
-	SecUser getById(@NotNull Long id);
+
 
 	@Query("select distinct su " +
 			"from SecUser su " +

@@ -1,8 +1,21 @@
 package ru.runnerlite.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Builder
 @AllArgsConstructor
@@ -21,7 +34,7 @@ public class RunnerCount {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "SEC_USERS_ID", nullable = false)
 	@ToString.Exclude
-	private SecUser secUsers;
+	private SecUser secUser;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "TEAMS_RUNNING_COUNT_ID", nullable = false)
@@ -32,8 +45,8 @@ public class RunnerCount {
 		return id;
 	}
 	
-	public SecUser getSecUsers() {
-		return secUsers;
+	public SecUser getSecUser() {
+		return secUser;
 	}
 	
 	public TeamsRunningCount getTeamsRunningCount() {

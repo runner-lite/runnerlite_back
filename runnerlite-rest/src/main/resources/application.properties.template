@@ -1,0 +1,17 @@
+# https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html
+
+server.port=8080
+
+spring.application.name=runnerlite_back
+
+server.servlet.context-path=/api/v1
+
+spring.datasource.type=org.springframework.jdbc.datasource.SimpleDriverDataSource
+spring.datasource.driver-class-name=<driver>
+spring.datasource.url=<url>
+spring.datasource.username=<username>
+spring.datasource.password=<password>
+
+spring.jpa.show-sql=true
+
+spring.jackson.serialization.fail-on-empty-beans=false

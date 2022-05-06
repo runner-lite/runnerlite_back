@@ -1,8 +1,21 @@
 package ru.runnerlite.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.Instant;
 
 @Builder
@@ -22,7 +35,7 @@ public class RunningResult {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "SEC_USERS_ID", nullable = false)
 	@ToString.Exclude
-	private SecUser secUsers;
+	private SecUser secUser;
 	
 	@Column(name = "RESULT", nullable = false)
 	private Instant result;
@@ -34,25 +47,5 @@ public class RunningResult {
 	
 	@Column(name = "FINISH_PLACE", nullable = false)
 	private Integer finishPlace;
-	
-	public Integer getId() {
-		return id;
-	}
-	
-	public SecUser getSecUsers() {
-		return secUsers;
-	}
-	
-	public Instant getResult() {
-		return result;
-	}
-	
-	public TeamsRunningCount getTeamsRunningCount() {
-		return teamsRunningCount;
-	}
-	
-	public Integer getFinishPlace() {
-		return finishPlace;
-	}
 	
 }
