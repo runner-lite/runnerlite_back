@@ -48,25 +48,4 @@ public class Volunteer {
 	@JoinColumn(name = "TEAMS_RUNNING_COUNT_ID", nullable = false)
 	@ToString.Exclude
 	private TeamsRunningCount teamsRunningCount;
-	
-	public Integer getId() {
-		return id;
-	}
-	
-	public SecUser getSecUsers() {
-		return secUsers;
-	}
-	
-	public Boolean getStatus() {
-		return status;
-	}
-	
-	public RefVolunteersPosition getRefVolunteersPosition() {
-		return refVolunteersPosition;
-	}
-	
-	public TeamsRunningCount getTeamsRunningCount() {
-		return teamsRunningCount;
-	}
-	
 }

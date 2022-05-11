@@ -6,7 +6,6 @@ import ru.runnerlite.entities.RunningResult;
 import ru.runnerlite.entities.SecUser;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.dto.RunningResultDto;
-import ru.runnerlite.entities.dto.TeamsRunningCountDto;
 import ru.runnerlite.repositories.RunningResultRepository;
 import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.repositories.TeamsRunningCountRepository;
@@ -60,8 +59,14 @@ public class RunningResultsService implements IRunningResultsService {
             result.getTeamsRunningCount().getId(),
             result.getSecUser().getId(),
             result.getFinishPlace(),
-            result.getResult()
-        );
+            result.getResult(),
+            result.getTeamsRunningCount().getRunningDate(),
+            result.getTeamsRunningCount().getNumber(),
+            result.getTeamsRunningCount().getTeams().getName(),
+            result.getTeamsRunningCount().getTeams().getDescription(),
+            result.getTeamsRunningCount().getTeams().getGeoDescription(),
+            result.getTeamsRunningCount().getTeams().getId()
+                );
     }
     
     public RunningResult convert(RunningResultDto result) {
