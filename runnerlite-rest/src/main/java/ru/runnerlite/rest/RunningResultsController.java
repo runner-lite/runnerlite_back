@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.runnerlite.entities.dto.RunningResultDto;
 import ru.runnerlite.services.interfaces.IRunningResultsService;
 
-import javax.websocket.server.PathParam;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -19,12 +19,13 @@ public class RunningResultsController {
 
     @GetMapping("/getAll")
     public List<RunningResultDto> getAllResults() {
-        return runningResultsService.findAll();
+        return runningResultsService.findAllResult();
     }
     
     @GetMapping("/last")
-    public RunningResultDto getLastRunningResult(@PathParam("userId") Integer userId) {
-        return runningResultsService.getLastRunningResult(userId);
+    public RunningResultDto getLastRunningResult(Principal principal) {
+        String currentUserName = principal.getName();
+        return runningResultsService.getLastRunningResult(currentUserName);
     }
     
 }
