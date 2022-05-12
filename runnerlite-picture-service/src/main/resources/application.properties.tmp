@@ -1,0 +1,5 @@
+server.port=8081
+
+spring.application.name=runnerlite_picture
+
+server.servlet.context-path=/api/v1
