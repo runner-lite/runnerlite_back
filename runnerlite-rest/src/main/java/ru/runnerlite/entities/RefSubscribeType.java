@@ -49,29 +49,4 @@ public class RefSubscribeType {
 	@JoinColumn(name = "TEAMS_ID", nullable = false)
 	@ToString.Exclude
 	private Team teams;
-	
-	public Integer getId() {
-		return id;
-	}
-	
-	public String getCode() {
-		return code;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-	
-	public Boolean getActive() {
-		return active;
-	}
-	
-	public SecGroup getSecGroups() {
-		return secGroups;
-	}
-	
-	public Team getTeams() {
-		return teams;
-	}
-	
 }

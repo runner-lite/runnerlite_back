@@ -5,6 +5,6 @@ import ru.runnerlite.entities.dto.RunningResultDto;
 import java.util.List;
 
 public interface IRunningResultsService {
-        List<RunningResultDto> findAll();
-        RunningResultDto getLastRunningResult(Integer userId);
+        List<RunningResultDto> findAllResult();
+        RunningResultDto getLastRunningResult(String currentUserName);
     }
