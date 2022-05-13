@@ -6,7 +6,6 @@ import ru.runnerlite.entities.RunningResult;
 import ru.runnerlite.entities.SecUser;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.dto.RunningResultDto;
-import ru.runnerlite.entities.dto.TeamsRunningCountDto;
 import ru.runnerlite.repositories.RunningResultRepository;
 import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.repositories.TeamsRunningCountRepository;
@@ -38,40 +37,17 @@ public class RunningResultsService implements IRunningResultsService {
     }
 
     @Override
-    public List<RunningResultDto> findAll() {
-        List<RunningResult> runningResult = runningResultRepository.findAll();
-        return runningResult.stream()
-            .map(this::convert)
-            .collect(Collectors.toList());
+    public List<RunningResultDto> findAllResult() {
+        List<RunningResultDto> runningResult = runningResultRepository.findAllResult();
+        return runningResult;
     }
     
     @Override
-    public RunningResultDto getLastRunningResult(Integer userId) {
-        RunningResult runningResult = runningResultRepository.findFirstBySecUser_IdOrderByIdDesc(userId);
+    public RunningResultDto getLastRunningResult(String currentUserName) {
+        RunningResultDto runningResult = runningResultRepository.findLastResult(currentUserName);
         if (runningResult == null) {
-            throw new IllegalArgumentException("Пользователь с id = " + userId + " не найден.");
+            throw new IllegalArgumentException("Пользователь с id = " + currentUserName + " не найден.");
         }
-        return convert(runningResult);
-    }
-    
-    public RunningResultDto convert(RunningResult result) {
-        return new RunningResultDto(
-            result.getId(),
-            result.getTeamsRunningCount().getId(),
-            result.getSecUser().getId(),
-            result.getFinishPlace(),
-            result.getResult()
-        );
-    }
-    
-    public RunningResult convert(RunningResultDto result) {
-        SecUser user = secUserRepository.getById(result.getUserId().longValue());
-        TeamsRunningCount running = runningRepository.getById(result.getRunningId());
-        return new RunningResult(result.getId(),
-            user,
-            result.getResult(),
-            running,
-            result.getFinishPlace()
-        );
+        return runningResult;
     }
 }
