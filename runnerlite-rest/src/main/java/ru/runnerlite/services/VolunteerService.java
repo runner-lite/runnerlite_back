@@ -20,7 +20,7 @@ public class VolunteerService<list> implements IVolunteerService {
     @Override
     public VolunteerDto getLastHistoryVolunteering(String currentUserName) {
 
-        VolunteerDto volunteerDto = volunteerRepository.findVolunteerByUserId(currentUserName);
+        VolunteerDto volunteerDto = volunteerRepository.findVolunteerByUserName(currentUserName);
         List<String> list = volunteerRepository.historicalistVolunteerism(currentUserName);
         if (volunteerDto == null) {
             throw new IllegalArgumentException("Пользователь с id = " + currentUserName + " не найден.");

@@ -17,7 +17,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "v.teamsRunningCount.teams.name, v.teamsRunningCount.teams.id, count (v.secUsers)) " +
            "from Volunteer v " +
            "where v.secUsers.email=:currentUserName")
-   VolunteerDto findVolunteerByUserId(@Param("currentUserName") String currentUserName);
+   VolunteerDto findVolunteerByUserName(@Param("currentUserName") String currentUserName);
 
    @Query("select v.refVolunteersPosition.name from Volunteer v where v.secUsers.email=:currentUserName")
    List<String> historicalistVolunteerism (@Param("currentUserName") String currentUserName);
