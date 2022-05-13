@@ -18,23 +18,23 @@ import java.util.Optional;
 
 
 @Service
-public class PictureAvatarService implements PictureServiceInterface {
+public class PictureServiceImpl implements PictureServiceInterface {
 
-    private static final Logger logger = LoggerFactory.getLogger(PictureAvatarService.class);
+    private static final Logger logger = LoggerFactory.getLogger(PictureServiceImpl.class);
 
-    private static final String STORAGE_PATH_AVATAR="picture/avatar/" ;
+    private static final String STORAGE_PATH ="picture/avatar/" ;
 
     @Autowired
-    public PictureAvatarService() {
+    public PictureServiceImpl() {
     }
 
 
     @Override
-    public Optional<byte[]> getAvatarDataById(Long id){
-        Optional<String> findFileName =findFile(id);
+    public Optional<byte[]> getAvatarDataById(Long id,String path){
+        Optional<String> findFileName =findFile(id,path);
         if(findFileName.isPresent()){
             try {
-                return Optional.of(Files.readAllBytes(Path.of(STORAGE_PATH_AVATAR+findFileName.get())));
+                return Optional.of(Files.readAllBytes(Path.of(STORAGE_PATH+path+"/"+findFileName.get())));
             }
             catch (IOException ex){
                 logger.error("Can't read file for avatar for user id " + id, ex);
@@ -48,12 +48,12 @@ public class PictureAvatarService implements PictureServiceInterface {
     }
 
     @Override
-    public String createAvatar(byte[] file, Long id) throws IOException {
-        deleteAvatar(id); //удаляем файл если для пользователя он уже есть .
+    public String createAvatar(byte[] file, Long id,String path) throws IOException {
+        deleteAvatar(id,path); //удаляем файл если для пользователя он уже есть .
         InputStream is = new ByteArrayInputStream(file);
         String mimeType = URLConnection.guessContentTypeFromStream(is); // получаем тип файла
-        String fileName = "userid-"+id+"."+mimeType.split("/")[1]; //формируем название для файла
-        try (OutputStream os = Files.newOutputStream(Paths.get(STORAGE_PATH_AVATAR, fileName))) {
+        String fileName = path+"-"+id+"."+mimeType.split("/")[1]; //формируем название для файла
+        try (OutputStream os = Files.newOutputStream(Paths.get(STORAGE_PATH+path+"/", fileName))) {
             os.write(file); //пишем байты
 
         } catch (IOException ex) {
@@ -64,11 +64,11 @@ public class PictureAvatarService implements PictureServiceInterface {
     }
 
     @Override
-    public boolean deleteAvatar(Long id){
-        Optional<String> findFileName =findFile(id);
+    public boolean deleteAvatar(Long id,String path){
+        Optional<String> findFileName =findFile(id,path);
         if(findFileName.isPresent()) {
             try {
-                Files.delete(Path.of(STORAGE_PATH_AVATAR + findFileName.get()));
+                Files.delete(Path.of(STORAGE_PATH +path+"/"+ findFileName.get()));
                 return true;
             } catch (IOException ex) {
                 logger.error("File not find in picture folder ", ex);
@@ -80,10 +80,10 @@ public class PictureAvatarService implements PictureServiceInterface {
         }
     }
 
-    private Optional<String> findFile(Long id){
-        File file = new File(STORAGE_PATH_AVATAR);
+    private Optional<String> findFile(Long id,String path){
+        File file = new File(STORAGE_PATH+path+"/");
         return Arrays.stream(file.list())
-                .filter(name -> name.contains("userid-"+id.toString()+"."))
+                .filter(name -> name.contains(path+"-"+id.toString()+"."))
                 .findFirst();
     }
 }

@@ -10,19 +10,19 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/avatar")
-public class PictureAvatarController {
+@RequestMapping("/team")
+public class PictureTeamAvatarController {
 
     private final PictureServiceInterface pictureServiceInterface;
 
     @Autowired
-    public PictureAvatarController(PictureServiceInterface pictureServiceInterface) {
+    public PictureTeamAvatarController(PictureServiceInterface pictureServiceInterface) {
         this.pictureServiceInterface = pictureServiceInterface;
     }
 
-    @GetMapping("/{userId}")
-    private void downloadAvatarForUser(@PathVariable("userId") Long userId, HttpServletResponse response) throws IOException {
-        Optional<byte[]> out = pictureServiceInterface.getAvatarDataById(userId);
+    @GetMapping("/{teamId}")
+    private void downloadAvatarForUser(@PathVariable("teamId") Long userId, HttpServletResponse response) throws IOException {
+        Optional<byte[]> out = pictureServiceInterface.getAvatarDataById(userId,"team");
         if(out.isPresent()){
             response.setContentType("image");
             response.getOutputStream().write(out.get());
@@ -32,16 +32,16 @@ public class PictureAvatarController {
         }
     }
 
-    @DeleteMapping("/{userId}")
-    private void deleteUserAvatar(@PathVariable("userId") Long userId,HttpServletResponse response) throws IOException {
-        if(pictureServiceInterface.deleteAvatar(userId)) {
+    @DeleteMapping("/{teamId}")
+    private void deleteUserAvatar(@PathVariable("teamId") Long userId,HttpServletResponse response) throws IOException {
+        if(pictureServiceInterface.deleteAvatar(userId,"team")) {
             response.setStatus(HttpServletResponse.SC_OK);
         }else {response.setStatus(HttpServletResponse.SC_BAD_REQUEST);}
     }
 
-    @PostMapping("/{userId}")
-    private void addAvatarToUser(@PathVariable("userId") Long userId, HttpServletResponse response, byte[] picture) throws IOException {
-        pictureServiceInterface.createAvatar(picture,userId);
+    @PostMapping("/{teamId}")
+    private void addAvatarToUser(@PathVariable("teamId") Long userId, HttpServletResponse response, byte[] picture) throws IOException {
+        pictureServiceInterface.createAvatar(picture,userId,"team");
     }
 
 }

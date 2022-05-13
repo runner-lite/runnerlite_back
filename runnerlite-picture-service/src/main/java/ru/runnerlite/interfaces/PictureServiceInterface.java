@@ -5,10 +5,10 @@ import java.util.Optional;
 
 public interface PictureServiceInterface {
 
-    Optional<byte[]> getAvatarDataById(Long id);
+    Optional<byte[]> getAvatarDataById(Long id,String path);
 
-    String createAvatar(byte[] file, Long id) throws IOException;
+    String createAvatar(byte[] file, Long id,String path) throws IOException;
 
-    boolean deleteAvatar(Long id) throws IOException;
+    boolean deleteAvatar(Long id,String path) throws IOException;
 
 }
