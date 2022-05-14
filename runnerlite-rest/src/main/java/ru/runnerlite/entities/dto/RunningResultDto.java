@@ -11,7 +11,7 @@ public class RunningResultDto implements Serializable {
 	private final Integer runningId;
 	private final Integer userId;
 	private final Integer finishPlace;
-	private final Instant result;
+	private final Integer result;
 	private final Instant runningDate; //дата забега
 	private final Integer runningNumber; //номер забега
 	private final String teamsName; //имя команды

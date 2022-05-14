@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.Instant;
 
 @Builder
 @AllArgsConstructor
@@ -38,7 +37,7 @@ public class RunningResult {
 	private SecUser secUser;
 	
 	@Column(name = "RESULT", nullable = false)
-	private Instant result;
+	private Integer result;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "TEAMS_RUNNING_COUNT_ID", nullable = false)
