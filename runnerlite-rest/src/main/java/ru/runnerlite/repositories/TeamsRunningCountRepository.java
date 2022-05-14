@@ -7,16 +7,18 @@ import org.springframework.stereotype.Repository;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.dto.PlanRunDto;
 
+import java.time.Instant;
 import java.util.List;
 
 @Repository
 public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningCount, Integer> {
 
-    @Query(value = "select distinct new ru.runnerlite.entities.dto.PlanRunDto(r.secUser.id, t.status, " +
-            "r.teamsRunningCount.runningDate, t.teams.name, t.teams.description," +
-            " r.teamsRunningCount.number) " +
+    @Query(value = "select new ru.runnerlite.entities.dto.PlanRunDto(r.secUser.id, t.status, " +
+            "t.runningDate, t.teams.name, t.teams.description, t.number) " +
             "from TeamsRunningCount t " +
-            "join RunnerCount r on r.teamsRunningCount.id = t.id " +
-            "where (r.secUser.email=:currentUserName or r.secUser.id is null) and t.status not like 'Выполнен'")
+            "left join RunnerCount r on r.teamsRunningCount.id = t.id " +
+            "left join MailingList m on t.teams.id = m.teams.id " +
+            "where m.secUsers.email=:currentUserName and t.status not like 'Выполнен'")
     List<PlanRunDto> findPlanRunByUserName(@Param("currentUserName") String currentUserName);
+
 }

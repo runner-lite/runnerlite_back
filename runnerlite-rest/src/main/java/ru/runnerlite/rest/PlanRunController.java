@@ -10,6 +10,7 @@ import ru.runnerlite.services.interfaces.IMyAchievementsService;
 import ru.runnerlite.services.interfaces.IPlanRunService;
 
 import java.security.Principal;
+import java.time.Instant;
 import java.util.List;
 
 @RestController
@@ -22,6 +23,7 @@ public class PlanRunController {
     @GetMapping("/get")
     public List<PlanRunDto> getPlanRunDto(Principal principal) {
         String currentUserName = principal.getName();
-        return planRunService.findPlanRunUser(currentUserName);
+        return planRunService.findUniqPlanRunUser(currentUserName);
     }
+
 }
