@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/user-picture")
 public class PictureUserAvatarController {
 
     private final PictureServiceInterface pictureServiceInterface;
