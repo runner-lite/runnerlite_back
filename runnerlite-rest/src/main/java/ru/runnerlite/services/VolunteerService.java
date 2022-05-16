@@ -1,7 +1,7 @@
 package ru.runnerlite.services;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.runnerlite.entities.Volunteer;
 import ru.runnerlite.entities.dto.VolunteerDto;
 import ru.runnerlite.repositories.VolunteerRepository;
 import ru.runnerlite.services.interfaces.IVolunteerService;
@@ -19,8 +19,7 @@ public class VolunteerService<list> implements IVolunteerService {
 
     @Override
     public VolunteerDto getLastHistoryVolunteering(String currentUserName) {
-
-        List<VolunteerDto> volunteerDto = volunteerRepository.findVolunteerByUserName(currentUserName);
+        List<VolunteerDto> volunteerDto = volunteerRepository.findVolunteerByUserName(currentUserName, PageRequest.of(0,1));
         List<String> list = volunteerRepository.historicalListVolunteerism(currentUserName);
         Long countHistoricalVolunteerism = volunteerRepository.historicalVolunteerismCount(currentUserName);
         if (volunteerDto == null) {

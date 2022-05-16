@@ -1,5 +1,6 @@
 package ru.runnerlite.repositories;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +19,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "from Volunteer v " +
            "left join TeamsRunningCount t on t.id = v.teamsRunningCount.id " +
            "where v.secUsers.email=:currentUserName and t.status like 'Выполнен' order by t.runningDate desc")
-   List<VolunteerDto> findVolunteerByUserName(@Param("currentUserName") String currentUserName);
+   List<VolunteerDto> findVolunteerByUserName(@Param("currentUserName") String currentUserName, Pageable pageable);
 
    @Query("select v.refVolunteersPosition.name from Volunteer v " +
            "left join TeamsRunningCount t on t.id = v.teamsRunningCount.id " +

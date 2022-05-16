@@ -1,5 +1,6 @@
 package ru.runnerlite.repositories;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -23,5 +24,5 @@ public interface RunningResultRepository extends JpaRepository<RunningResult, In
 			"from RunningResult r " +
 			"left join TeamsRunningCount t on t.id = r.teamsRunningCount.id " +
 			"where r.secUser.email=:currentUserName ORDER BY t.runningDate desc")
-	List<RunningResultDto> findLastResult(String currentUserName);
+	List<RunningResultDto> findLastResult(String currentUserName, Pageable pageable);
 }

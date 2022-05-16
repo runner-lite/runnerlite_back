@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping("/subscription")
 public class MySubscriptionController {
 
-    @Autowired
     IMySubscriptionService mySubscriptionService;
+
+    @Autowired
+    public MySubscriptionController(IMySubscriptionService mySubscriptionService) {
+        this.mySubscriptionService = mySubscriptionService;
+    }
 
     @GetMapping("/get")
     public List<MySubscriptionsDto> getMySubscriptions(Principal principal) {

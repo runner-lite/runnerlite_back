@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping("/achievements")
 public class MyAchievementsController {
 
-    @Autowired
     IMyAchievementsService myAchievementsService;
+
+    @Autowired
+    public MyAchievementsController(IMyAchievementsService myAchievementsService) {
+        this.myAchievementsService = myAchievementsService;
+    }
 
     @GetMapping("/get")
     public List<MyAchievementsDto> getMyAchievements(Principal principal) {
