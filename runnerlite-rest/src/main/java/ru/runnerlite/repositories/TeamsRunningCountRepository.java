@@ -1,6 +1,7 @@
 package ru.runnerlite.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -13,12 +14,21 @@ import java.util.List;
 @Repository
 public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningCount, Integer> {
 
-    @Query(value = "select new ru.runnerlite.entities.dto.PlanRunDto(r.secUser.id, t.status, " +
+    @Query(value = "select new ru.runnerlite.entities.dto.PlanRunDto(t.id, r.secUser.id, t.status, " +
             "t.runningDate, t.teams.name, t.teams.description, t.number) " +
             "from TeamsRunningCount t " +
             "left join RunnerCount r on r.teamsRunningCount.id = t.id " +
             "left join MailingList m on t.teams.id = m.teams.id " +
             "where m.secUsers.email=:currentUserName and t.status not like 'Выполнен'")
     List<PlanRunDto> findPlanRunByUserName(@Param("currentUserName") String currentUserName);
+
+    //отменить участие в забеге
+//    @Query(value = "delete from RunnerCount r where r.id = :runningCountId")
+//    void cancelTheRun (@Param("teamsRunningCountId") Integer runningCountId);
+
+    //участвовать в забеге
+//    @Modifying
+//    @Query(value = "insert into RunnerCount r (r.secUser.id, r.teamsRunningCount.id) values (:userId, :teamsRunningCountId), nativeQuery = false")
+//    int signUpForTheRun (@Param("currentUserName") String currentUserName, @Param("userId") Integer userId, @Param("teamsRunningCountId") Integer teamsRunningCountId);
 
 }

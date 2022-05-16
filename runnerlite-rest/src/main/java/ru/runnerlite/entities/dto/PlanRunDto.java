@@ -13,6 +13,7 @@ import java.time.Instant;
 @Getter
 @AllArgsConstructor
 public class PlanRunDto implements Serializable {
+    private Integer teamsRunningCountId; // id строки из таблицы TeamsRunningCount
     private Integer participationStatus; // статус участия в забеге
     private String runningStatus; //статус забега
     private Instant runningDate; //дата забега

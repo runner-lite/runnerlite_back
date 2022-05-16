@@ -44,10 +44,10 @@ public class RunningResultsService implements IRunningResultsService {
     
     @Override
     public RunningResultDto getLastRunningResult(String currentUserName) {
-        RunningResultDto runningResult = runningResultRepository.findLastResult(currentUserName);
+        List<RunningResultDto> runningResult = runningResultRepository.findLastResult(currentUserName);
         if (runningResult == null) {
             throw new IllegalArgumentException("Пользователь с id = " + currentUserName + " не найден.");
         }
-        return runningResult;
+        return runningResult.get(0);
     }
 }

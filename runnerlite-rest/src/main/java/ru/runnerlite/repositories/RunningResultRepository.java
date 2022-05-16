@@ -21,6 +21,7 @@ public interface RunningResultRepository extends JpaRepository<RunningResult, In
 			"r.finishPlace, r.result, r.teamsRunningCount.runningDate, r.teamsRunningCount.number, r.teamsRunningCount.teams.name, " +
 			"r.teamsRunningCount.teams.description, r.teamsRunningCount.teams.geoDescription, r.teamsRunningCount.teams.id) " +
 			"from RunningResult r " +
-			"where r.secUser.email=:currentUserName")
-	RunningResultDto findLastResult(String currentUserName);
+			"left join TeamsRunningCount t on t.id = r.teamsRunningCount.id " +
+			"where r.secUser.email=:currentUserName ORDER BY t.runningDate desc")
+	List<RunningResultDto> findLastResult(String currentUserName);
 }

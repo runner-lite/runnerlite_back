@@ -20,15 +20,16 @@ public class VolunteerService<list> implements IVolunteerService {
     @Override
     public VolunteerDto getLastHistoryVolunteering(String currentUserName) {
 
-        VolunteerDto volunteerDto = volunteerRepository.findVolunteerByUserName(currentUserName);
-        List<String> list = volunteerRepository.historicalistVolunteerism(currentUserName);
+        List<VolunteerDto> volunteerDto = volunteerRepository.findVolunteerByUserName(currentUserName);
+        List<String> list = volunteerRepository.historicalListVolunteerism(currentUserName);
+        Long countHistoricalVolunteerism = volunteerRepository.historicalVolunteerismCount(currentUserName);
         if (volunteerDto == null) {
             throw new IllegalArgumentException("Пользователь с id = " + currentUserName + " не найден.");
         }
-        return convert(volunteerDto, list);
+        return convert(volunteerDto.get(0), list, countHistoricalVolunteerism);
     }
 
-    public VolunteerDto convert(VolunteerDto volunteer, List<String> list) {
+    public VolunteerDto convert(VolunteerDto volunteer, List<String> list, Long countHistoricalVolunteerism) {
         return new VolunteerDto(
                 volunteer.getId(),
                 volunteer.getUserId(),
@@ -38,7 +39,7 @@ public class VolunteerService<list> implements IVolunteerService {
                 volunteer.getPositionDescription(),
                 volunteer.getTeamsName(),
                 volunteer.getTeamsId(),
-                volunteer.getRunningNumberСount(),
+                countHistoricalVolunteerism,
                 list
         );
     }

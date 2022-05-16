@@ -13,12 +13,20 @@ import java.util.List;
 public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
 
    @Query(value = "select new ru.runnerlite.entities.dto.VolunteerDto(v.id, v.secUsers.id, v.teamsRunningCount.runningDate, " +
-           "v.teamsRunningCount.number, v.refVolunteersPosition.name, v.refVolunteersPosition.description, " +
-           "v.teamsRunningCount.teams.name, v.teamsRunningCount.teams.id, count (v.secUsers)) " +
+           "t.number, v.refVolunteersPosition.name, v.refVolunteersPosition.description, " +
+           "t.teams.name, t.teams.id) " +
            "from Volunteer v " +
-           "where v.secUsers.email=:currentUserName")
-   VolunteerDto findVolunteerByUserName(@Param("currentUserName") String currentUserName);
+           "left join TeamsRunningCount t on t.id = v.teamsRunningCount.id " +
+           "where v.secUsers.email=:currentUserName and t.status like 'Выполнен' order by t.runningDate desc")
+   List<VolunteerDto> findVolunteerByUserName(@Param("currentUserName") String currentUserName);
 
-   @Query("select v.refVolunteersPosition.name from Volunteer v where v.secUsers.email=:currentUserName")
-   List<String> historicalistVolunteerism (@Param("currentUserName") String currentUserName);
+   @Query("select v.refVolunteersPosition.name from Volunteer v " +
+           "left join TeamsRunningCount t on t.id = v.teamsRunningCount.id " +
+           "where v.secUsers.email=:currentUserName and t.status like 'Выполнен' ")
+   List<String> historicalListVolunteerism (@Param("currentUserName") String currentUserName);
+
+   @Query("select count (v.secUsers) from Volunteer v " +
+           "left join TeamsRunningCount t on t.id = v.teamsRunningCount.id " +
+           "where v.secUsers.email=:currentUserName and t.status like 'Выполнен' ")
+   Long historicalVolunteerismCount (@Param("currentUserName") String currentUserName);
 }
