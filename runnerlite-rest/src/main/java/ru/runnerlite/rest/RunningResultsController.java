@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping("/results")
 public class RunningResultsController {
 
+    private IRunningResultsService runningResultsService;
+
     @Autowired
-    IRunningResultsService runningResultsService;
+    public RunningResultsController(IRunningResultsService runningResultsService) {
+        this.runningResultsService = runningResultsService;
+    }
 
     @GetMapping("/getAll")
     public List<RunningResultDto> getAllResults() {

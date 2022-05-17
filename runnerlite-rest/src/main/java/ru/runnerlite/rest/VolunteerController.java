@@ -13,8 +13,13 @@ import java.security.Principal;
 @RequestMapping("/volunteer")
 public class VolunteerController {
 
+
+    private IVolunteerService volunteerService;
+
     @Autowired
-    IVolunteerService volunteerService;
+    public VolunteerController(IVolunteerService volunteerService) {
+        this.volunteerService = volunteerService;
+    }
 
     @GetMapping("/lastHistory")
     public VolunteerDto getLastHistoryVolunteering(Principal principal) {
