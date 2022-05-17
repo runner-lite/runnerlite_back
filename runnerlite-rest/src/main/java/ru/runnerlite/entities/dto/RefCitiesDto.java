@@ -1,13 +1,13 @@
 package ru.runnerlite.entities.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class RefCitiesDto implements Serializable {
-	private final Integer id;
-	private final String name;
+	private Integer id;
+	private String name;
 }

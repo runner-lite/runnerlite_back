@@ -9,6 +9,7 @@ import ru.runnerlite.entities.dto.TeamWithDistrictDto;
 import ru.runnerlite.services.interfaces.ITeamService;
 
 import javax.websocket.server.PathParam;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,12 @@ public class TeamController {
 	@GetMapping("/filter")
 	public List<TeamWithDistrictDto> getTeamsByCityId(@PathParam("city") Integer city) {
 		return teamsService.findByCid(city);
+	}
+
+	@GetMapping("/my")
+	public TeamDto getMyTeam(Principal principal) {
+		String currentUserName = principal.getName();
+		return teamsService.getMyTeam(currentUserName);
 	}
 	/*
 	public List<TeamDto> getTeamsByCityId(@PathParam("city") Integer city) {

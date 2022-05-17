@@ -58,4 +58,9 @@ public class TeamService implements ITeamService {
 	public List<TeamWithDistrictDto> findByCid(Integer id) {
 		return teamRepository.findTeamsByCityId(id);
 	}
+
+	@Override
+	public TeamDto getMyTeam(String currentUserName) {
+		return teamRepository.findMyTeam(currentUserName);
+	}
 }
