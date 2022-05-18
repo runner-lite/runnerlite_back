@@ -1,8 +1,6 @@
 package ru.runnerlite.entities.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.runnerlite.entities.SecUserSimple;
 
 import java.io.Serializable;

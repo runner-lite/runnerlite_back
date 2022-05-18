@@ -1,15 +1,17 @@
 package ru.runnerlite.entities.dto;
 
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmergencyContactDto implements Serializable {
-	private final Integer id;
-	private final String name;
-	private final String phoneNumber;
-	private final String relativeType;
-	private final SecUserDto secUsers;
-	private final Boolean mainContact;
+	private Integer id;
+	private String name;
+	private String phoneNumber;
+	private String relativeType;
+	private SecUserDto secUsers;
+	private Boolean mainContact;
 }

@@ -32,6 +32,8 @@ public class VolunteerService<list> implements IVolunteerService {
         return new VolunteerDto(
                 volunteer.getId(),
                 volunteer.getUserId(),
+                volunteer.getFullName(),
+                volunteer.getStatus(),
                 volunteer.getRunningDate(),
                 volunteer.getRunningNumber(),
                 volunteer.getPositionName(),

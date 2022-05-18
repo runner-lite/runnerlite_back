@@ -10,11 +10,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TeamDto implements Serializable {
-	private Integer id;
-	private String name;
-	private String description;
-	private Double geoLat;
-	private Double geoLng;
-	private String geoDescription;
-	private Boolean active;
+	private Integer id; // id поля команды (для логотипа)
+	private String name; // наименование беговой команды
+	private String description; // описание беговой команды
+	private Double geoLat; // координата «широта» геолокации места сбора
+	private Double geoLng; // координата «долгота» геолокации места сбора
+	private String geoDescription; // описание геолокации места сбора
+	private Boolean active; // флаг доступности команды
 }

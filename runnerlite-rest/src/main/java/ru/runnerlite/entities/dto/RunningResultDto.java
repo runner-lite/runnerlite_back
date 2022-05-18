@@ -1,21 +1,23 @@
 package ru.runnerlite.entities.dto;
 
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RunningResultDto implements Serializable {
-	private final Integer id;
-	private final Integer runningId;
-	private final Integer userId;
-	private final Integer finishPlace;
-	private final Integer result;
-	private final Instant runningDate; //дата забега
-	private final Integer runningNumber; //номер забега
-	private final String teamsName; //имя команды
-	private final String description; //описание команды
-	private final String geoDescription; //описание места забега
-	private final Integer teamsId; //для логотипа
+	private Integer id; // id строки в таблице RunningResult
+	private Integer runningId; // id строки в таблице TeamsRunningCount
+	private Integer userId; // id бегуна
+	private Integer finishPlace; // номер карточки места на финише
+	private Integer result; // результат забега в секундах
+	private Instant runningDate; //дата забега
+	private Integer runningNumber; //номер забега
+	private String teamsName; //имя команды
+	private String description; //описание команды
+	private String geoDescription; //описание места забега
+	private Integer teamsId; //для логотипа
 }
