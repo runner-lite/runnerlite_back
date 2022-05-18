@@ -53,12 +53,15 @@ public class PlanRunService implements IPlanRunService {
                 stream().collect(Collectors.toCollection(ArrayList::new)).stream().
                 sorted(Comparator.comparing(PlanRunDto::getRunningDate).reversed()).collect(Collectors.toList());
         List<PlanRunDto> list = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            listUniqScheduled.get(i).setParticipationStatus(listUniqScheduled.get(i).getParticipationStatus() == null ? 0 : 1);
-            listUniqScheduled.get(i).setRunnersCount(runnerCountRepository.countRunners(listUniqScheduled.get(i).getTeamsRunningCountId()));
-            listUniqScheduled.get(i).setVolunteersCount(volunteerRepository.countVolunteers(listUniqScheduled.get(i).getTeamsRunningCountId()));
-            listUniqScheduled.get(i).setRunnerCountId(runnerCountRepository.findIdRunnerCount(currentUserName, listUniqScheduled.get(i).getTeamsRunningCountId()));
-            list.add(listUniqScheduled.get(i));
+        for (int i = 0; i < uniqMapScheduled.size(); i++) {
+            if (!(i == 3)) {
+                listUniqScheduled.get(i).setParticipationStatus(listUniqScheduled.get(i).getParticipationStatus() == null ? 0 : 1);
+                listUniqScheduled.get(i).setRunnersCount(runnerCountRepository.countRunners(listUniqScheduled.get(i).getTeamsRunningCountId()));
+                listUniqScheduled.get(i).setVolunteersCount(volunteerRepository.countVolunteers(listUniqScheduled.get(i).getTeamsRunningCountId()));
+                listUniqScheduled.get(i).setRunnerCountId(runnerCountRepository.findIdRunnerCount(currentUserName, listUniqScheduled.get(i).getTeamsRunningCountId()));
+                list.add(listUniqScheduled.get(i));
+            }
+            else break;
         }
         return list;
     }
