@@ -37,7 +37,7 @@ public class Volunteer {
 	private SecUser secUsers;
 	
 	@Column(name = "STATUS", nullable = false)
-	private Boolean status = false;
+	private Integer status;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "REF_VOLUNTEERS_POSITION_ID", nullable = false)

@@ -59,6 +59,7 @@ public class PlanRunService implements IPlanRunService {
                 listUniqScheduled.get(i).setRunnersCount(runnerCountRepository.countRunners(listUniqScheduled.get(i).getTeamsRunningCountId()));
                 listUniqScheduled.get(i).setVolunteersCount(volunteerRepository.countVolunteers(listUniqScheduled.get(i).getTeamsRunningCountId()));
                 listUniqScheduled.get(i).setRunnerCountId(runnerCountRepository.findIdRunnerCount(currentUserName, listUniqScheduled.get(i).getTeamsRunningCountId()));
+                listUniqScheduled.get(i).setStatusVolunteer(volunteerRepository.findStatusVolunteer(currentUserName, listUniqScheduled.get(i).getTeamsRunningCountId()));
                 list.add(listUniqScheduled.get(i));
             }
             else break;

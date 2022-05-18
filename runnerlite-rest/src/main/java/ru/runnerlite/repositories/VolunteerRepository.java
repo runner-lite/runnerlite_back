@@ -21,7 +21,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "where v.secUsers.email=:currentUserName and t.status like 'Выполнен' order by t.runningDate desc")
    List<VolunteerDto> findVolunteerByUserName(@Param("currentUserName") String currentUserName, Pageable pageable);
 
-   @Query("select v.refVolunteersPosition.name from Volunteer v " +
+   @Query("select distinct v.refVolunteersPosition.name from Volunteer v " +
            "left join TeamsRunningCount t on t.id = v.teamsRunningCount.id " +
            "where v.secUsers.email=:currentUserName and t.status like 'Выполнен' ")
    List<String> historicalListVolunteerism (@Param("currentUserName") String currentUserName); //список позиций в которых участвовал волонтером
@@ -29,7 +29,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
    @Query("select count (v.secUsers) from Volunteer v " +
            "left join TeamsRunningCount t on t.id = v.teamsRunningCount.id " +
            "where v.secUsers.email=:currentUserName and t.status like 'Выполнен' ")
-   Long historicalVolunteerismCount (@Param("currentUserName") String currentUserName); // колличество участий в роли волонтера
+   Integer historicalVolunteerismCount (@Param("currentUserName") String currentUserName); // колличество участий в роли волонтера
 
    @Query("select count (v.secUsers) from Volunteer v " +
            "left join TeamsRunningCount t on t.id = v.teamsRunningCount.id " +
@@ -42,4 +42,15 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "left join SecUser u on u.id = v.secUsers.id " +
            "where v.teamsRunningCount.id=:teamsRunningCountId")
    List<VolunteerDto> findVolunteerByTeamsRunningCountId(@Param("teamsRunningCountId") Integer teamsRunningCountId); //поиск волонтеров по номеру забега
+
+   @Query(value = "select (v.secUsers.fullName) " +
+           "from Volunteer v " +
+           "where v.teamsRunningCount.id=:teamsRunningCountId and v.refVolunteersPosition.id=:refVolunteersPositionId ")
+   List<String> findVolunteerByTeamsRunningCountIdAndAndRefVolunteersPosition(@Param("teamsRunningCountId") Integer teamsRunningCountId, @Param("refVolunteersPositionId") Integer refVolunteersPositionId); //поиск волонтеров по номеру забега и его позиции
+
+   @Query(value = "select (v.status) " +
+           "from Volunteer v " +
+           "where v.secUsers.email=:currentUserName and v.teamsRunningCount.id=:teamsRunningCountId")
+   Integer findStatusVolunteer(@Param("currentUserName") String currentUserName, @Param("teamsRunningCountId") Integer teamsRunningCountId); //проверка участия бегуна в качестве волонтера true - участвует, false - не участвует
+
 }

@@ -20,4 +20,9 @@ public interface SecUserRepository extends JpaRepository<SecUser, Long>  {
 			"where su.email = :username ")
 	Optional<SecUser> findByUsername(@Param("username") String username);
 
+	@Query("select su.id " +
+			"from SecUser su " +
+			"where su.email = :username ")
+	Integer findById(@Param("username") String username);
+
 }
