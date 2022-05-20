@@ -32,14 +32,14 @@ public class VolunteerController {
     }
 
     //Получение шаблона команды для волонтерсва
+    @PreAuthorize("@A.mayUserChangeThisTeam(principal,#teamId)")
     @GetMapping("/template")
     public List<TeamRunVolunteerQtyDto> getNeedTeamRunVolunteerQty(@RequestParam("teamId") Integer teamId){
         return volunteerService.getNeedTeamRunVolunteerQty(teamId);
     }
 
     //Добавление новое записи в шаблон волонтерства
-    //@Secured("ROLE_ADMIN")
-    //@PreAuthorize("teamId==authentication.")
+    @PreAuthorize("hasAuthority('ROLE_Admin')&&@A.mayUserChangeThisTeam(principal,#teamId)") // проверка на роль && проверка на включение в ту же команду
     @PutMapping("/template")
     public List<TeamRunVolunteerQtyDto> putNeedTeamRunVolunteerQty(@RequestParam("teamId") Integer teamId,
     @Valid @RequestBody TeamRunVolunteerQtyDto teamRunVolunteerQtyDto){

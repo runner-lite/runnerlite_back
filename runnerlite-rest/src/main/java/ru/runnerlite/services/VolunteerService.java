@@ -60,9 +60,19 @@ public class VolunteerService<list> implements IVolunteerService {
     @Override
     @Transactional
     public List<TeamRunVolunteerQtyDto> putNeedTeamRunVolunteerQty(TeamRunVolunteerQtyDto teamRunVolunteerQtyDto) {
-        RefVolunteersPosition refVolunteersPosition = refVolunteersPositionRepository.getById(teamRunVolunteerQtyDto.getPositionId());
-        Team team=teamRepository.getById(teamRunVolunteerQtyDto.getTeamId());
-        TeamsVolunteerTemplate teamsVolunteerTemplate = new TeamsVolunteerTemplate(null,team,refVolunteersPosition, teamRunVolunteerQtyDto.getQty());
+        //ищем уже имеющиеся записи что бы не делать дубли
+        TeamsVolunteerTemplate teamsVolunteerTemplate = teamsVolunteerTemplateRepository.
+                findTemplateInTeamByPosition(teamRunVolunteerQtyDto.getTeamId(),teamRunVolunteerQtyDto.getPositionId());
+        //если не нашли делаем новую запись
+        if(teamsVolunteerTemplate == null){
+            RefVolunteersPosition refVolunteersPosition = refVolunteersPositionRepository.getById(teamRunVolunteerQtyDto.getPositionId());
+            Team team=teamRepository.getById(teamRunVolunteerQtyDto.getTeamId());
+            teamsVolunteerTemplate = new TeamsVolunteerTemplate(null,team,refVolunteersPosition, teamRunVolunteerQtyDto.getQty());
+        }
+        //если нашли меняем количество у уже имеющейся
+        else{
+            teamsVolunteerTemplate.setQty(teamRunVolunteerQtyDto.getQty());
+        }
         teamsVolunteerTemplateRepository.save(teamsVolunteerTemplate);
         return getNeedTeamRunVolunteerQty(teamRunVolunteerQtyDto.getTeamId());
     }

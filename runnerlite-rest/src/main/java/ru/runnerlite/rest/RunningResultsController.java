@@ -2,6 +2,7 @@ package ru.runnerlite.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,8 +38,9 @@ public class RunningResultsController {
     }
 
     //Получение истории забегов по команде
+    @PreAuthorize("@A.mayUserChangeThisTeam(principal,#teamId)") //проверка на то что пользователь из той же команды
     @GetMapping("/history")
-    public List<TeamsRunningCountDto> getTeamRunningCountHistory(@RequestParam("teamId") Integer teamId,HttpRequest request){
+    public List<TeamsRunningCountDto> getTeamRunningCountHistory(@RequestParam("teamId") Integer teamId){
         return runningResultsService.getTeamRunningResults(teamId);
     }
     
