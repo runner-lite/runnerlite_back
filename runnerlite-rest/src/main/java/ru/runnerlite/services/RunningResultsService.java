@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.runnerlite.entities.dto.RunningResultDto;
+import ru.runnerlite.entities.dto.TeamsRunningCountDto;
 import ru.runnerlite.repositories.RunningResultRepository;
 import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.repositories.TeamsRunningCountRepository;
@@ -41,4 +42,15 @@ public class RunningResultsService implements IRunningResultsService {
         }
         return runningResult.get(0);
     }
+
+    @Override
+    public List<TeamsRunningCountDto> getTeamRunningResults(Integer teamId) {
+        List<TeamsRunningCountDto> outList = runningRepository.getTeamRunningResults(teamId);
+        if(outList.isEmpty()){
+            throw new IllegalArgumentException("История забегов команды с id = " + teamId + " не найдена.");
+        }
+        return outList;
+    }
+
+
 }

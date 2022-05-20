@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.dto.PlanRunDto;
+import ru.runnerlite.entities.dto.TeamsRunningCountDto;
 
 import java.util.List;
 
@@ -19,4 +20,11 @@ public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningC
             "left join MailingList m on t.teams.id = m.teams.id " +
             "where m.secUsers.email=:currentUserName and t.status not like 'Выполнен'")
     List<PlanRunDto> findPlanRunByUserName(@Param("currentUserName") String currentUserName);
+
+
+    @Query(value = "select new ru.runnerlite.entities.dto.TeamsRunningCountDto(t) " +
+            "from TeamsRunningCount t " +
+            "where t.teams.id =:teamId " +
+            "ORDER BY  t.runningDate desc")
+    List<TeamsRunningCountDto> getTeamRunningResults(@Param("teamId") Integer teamId);
 }
