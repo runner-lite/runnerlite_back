@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.runnerlite.entities.Volunteer;
+import ru.runnerlite.entities.dto.TeamRunVolunteerQtyDto;
 import ru.runnerlite.entities.dto.VolunteerDto;
 
 import java.util.List;
@@ -42,4 +43,15 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "left join SecUser u on u.id = v.secUsers.id " +
            "where v.teamsRunningCount.id=:teamsRunningCountId")
    List<VolunteerDto> findVolunteerByTeamsRunningCountId(@Param("teamsRunningCountId") Integer teamsRunningCountId); //поиск волонтеров по номеру забега
+
+   @Query(value = "select new ru.runnerlite.entities.dto.TeamRunVolunteerQtyDto(" +
+           "t.team.id," +
+           "rvp.id," +
+           "rvp.name," +
+           "t.qty) " +
+           "from TeamsVolunteerTemplate t " +
+           "left join RefVolunteersPosition rvp on rvp.id = t.refVolunteersPosition.id " +
+           "where t.team.id=:teamId")
+   List<TeamRunVolunteerQtyDto> getNeedTeamRunVolunteerQty(@Param("teamId") Integer teamId); //поиск шаблона волонтерства по ид команды
+
 }
