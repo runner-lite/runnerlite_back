@@ -44,14 +44,5 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "where v.teamsRunningCount.id=:teamsRunningCountId")
    List<VolunteerDto> findVolunteerByTeamsRunningCountId(@Param("teamsRunningCountId") Integer teamsRunningCountId); //поиск волонтеров по номеру забега
 
-   @Query(value = "select new ru.runnerlite.entities.dto.TeamRunVolunteerQtyDto(" +
-           "t.team.id," +
-           "rvp.id," +
-           "rvp.name," +
-           "t.qty) " +
-           "from TeamsVolunteerTemplate t " +
-           "left join RefVolunteersPosition rvp on rvp.id = t.refVolunteersPosition.id " +
-           "where t.team.id=:teamId")
-           List<TeamRunVolunteerQtyDto> getNeedTeamRunVolunteerQty(@Param("teamId") Integer teamId); //поиск шаблона волонтерства по ид команды
 
 }
