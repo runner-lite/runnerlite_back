@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
 
-   @Query(value = "select new ru.runnerlite.entities.dto.VolunteerDto(v.id, v.secUsers.id, v.teamsRunningCount.runningDate, " +
+   @Query(value = "select new ru.runnerlite.entities.dto.VolunteerDto(v.id, v.secUsers.id, v.secUsers.fullName, v.status, v.teamsRunningCount.runningDate, " +
            "t.number, v.refVolunteersPosition.name, v.refVolunteersPosition.description, " +
            "t.teams.name, t.teams.id) " +
            "from Volunteer v " +
@@ -52,6 +52,6 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "from TeamsVolunteerTemplate t " +
            "left join RefVolunteersPosition rvp on rvp.id = t.refVolunteersPosition.id " +
            "where t.team.id=:teamId")
-   List<TeamRunVolunteerQtyDto> getNeedTeamRunVolunteerQty(@Param("teamId") Integer teamId); //поиск шаблона волонтерства по ид команды
+           List<TeamRunVolunteerQtyDto> getNeedTeamRunVolunteerQty(@Param("teamId") Integer teamId); //поиск шаблона волонтерства по ид команды
 
 }
