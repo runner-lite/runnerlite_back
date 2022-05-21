@@ -26,15 +26,31 @@ public class RunningResultsController {
         this.runningResultsService = runningResultsService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/getAll")
     public List<RunningResultDto> getAllResults() {
         return runningResultsService.findAllResult();
     }
-    
+
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/last")
     public RunningResultDto getLastRunningResult(Principal principal) {
         String currentUserName = principal.getName();
         return runningResultsService.getLastRunningResult(currentUserName);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/volunteerismCount")
+    public Integer historicalVolunteerismCount (Principal principal) {
+        String currentUserName = principal.getName();
+        return runningResultsService.historicalVolunteerismCount(currentUserName);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/runnerCount")
+    public Integer historicalRunnerCount (Principal principal) {
+        String currentUserName = principal.getName();
+        return runningResultsService.historicalRunnerCount(currentUserName);
     }
 
     //Получение истории забегов по команде
@@ -43,5 +59,5 @@ public class RunningResultsController {
     public List<TeamsRunningCountDto> getTeamRunningCountHistory(@RequestParam("teamId") Integer teamId){
         return runningResultsService.getTeamRunningResults(teamId);
     }
-    
+
 }

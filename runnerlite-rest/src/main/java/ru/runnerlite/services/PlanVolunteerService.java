@@ -23,29 +23,31 @@ public class PlanVolunteerService implements IPlanVolunteerService {
     private SecUserRepository secUserRepository;
     private TeamsRunningCountRepository teamsRunningCountRepository;
     private RefVolunteersPositionRepository refVolunteersPositionRepository;
+    private RunnerCountRepository runnerCountRepository;
 
     @Autowired
-    public PlanVolunteerService(TeamsVolunteerRepository teamsVolunteerRepository, VolunteerRepository volunteerRepository, SecUserRepository secUserRepository, TeamsRunningCountRepository teamsRunningCountRepository, RefVolunteersPositionRepository refVolunteersPositionRepository) {
+    public PlanVolunteerService(TeamsVolunteerRepository teamsVolunteerRepository, VolunteerRepository volunteerRepository, SecUserRepository secUserRepository, TeamsRunningCountRepository teamsRunningCountRepository, RefVolunteersPositionRepository refVolunteersPositionRepository, RunnerCountRepository runnerCountRepository) {
         this.teamsVolunteerRepository = teamsVolunteerRepository;
         this.volunteerRepository = volunteerRepository;
         this.secUserRepository = secUserRepository;
         this.teamsRunningCountRepository = teamsRunningCountRepository;
         this.refVolunteersPositionRepository = refVolunteersPositionRepository;
+        this.runnerCountRepository = runnerCountRepository;
     }
 
-    //получения таблицы с информацией о потребности в волонтерах
+    //получение таблицы с информацией о потребности в волонтерах
     @Override
-    public List<PlanVolunteerDto> findPlanVolunteer(Integer teamsRunningCountId) {
+    public List<PlanVolunteerDto> findPlanVolunteer(String currentUserName, Integer teamsRunningCountId) {
         List<VolunteerDto> volunteers = volunteerRepository.findVolunteerByTeamsRunningCountId(teamsRunningCountId);
         List<PlanVolunteerDto> planVolunteers = teamsVolunteerRepository.findPlanVolunteer(teamsRunningCountId);
         List<PlanVolunteerDto> list= new ArrayList<>();
         for (PlanVolunteerDto planVolunteer: planVolunteers) {
             for (VolunteerDto volunteer : volunteers) {
-                if (planVolunteer.getPositionName().equals(volunteer.getPositionName())){
+                if (planVolunteer.getPositionName().equals(volunteer.getPositionName())) {
                     planVolunteer.setId(volunteer.getId());
-                    planVolunteer.setUserId(volunteer.getUserId());
-                    planVolunteer.setFullNameVolunteer(volunteer.getFullName());
+                    planVolunteer.setFullNameVolunteer(volunteerRepository.findVolunteerByTeamsRunningCountIdAndAndRefVolunteersPosition(planVolunteer.getTeamsRunningCountId(), planVolunteer.getVolunteersPositionId()));
                     planVolunteer.setParticipationStatus(volunteer.getStatus());
+                    planVolunteer.setStatusRunner(!(null == (runnerCountRepository.findStatusRunner(currentUserName, teamsRunningCountId))));
                 }
             }
             list.add(planVolunteer);
@@ -65,7 +67,7 @@ public class PlanVolunteerService implements IPlanVolunteerService {
         Optional<SecUser> userId = secUserRepository.findByUsername(currentUserName);
         TeamsRunningCount teamsRunningCount = teamsRunningCountRepository.getById(teamsRunningCountId);
         RefVolunteersPosition refVolunteersPosition = refVolunteersPositionRepository.getById(volunteersPosition);
-        Volunteer volunteer = new Volunteer(null, userId.get(),false, refVolunteersPosition, teamsRunningCount);
+        Volunteer volunteer = new Volunteer(null, userId.get(),0, refVolunteersPosition, teamsRunningCount);
         volunteerRepository.save(volunteer);
     }
 }
