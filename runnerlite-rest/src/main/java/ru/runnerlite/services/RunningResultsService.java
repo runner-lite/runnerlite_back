@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.runnerlite.entities.dto.RunningResultDto;
+import ru.runnerlite.entities.dto.TeamsRunningCountDto;
 import ru.runnerlite.repositories.*;
 import ru.runnerlite.services.interfaces.IRunningResultsService;
 
@@ -13,12 +14,18 @@ import java.util.List;
 public class RunningResultsService implements IRunningResultsService {
 
     private final RunningResultRepository runningResultRepository;
+    private final SecUserService userService;
+    private final TeamsRunningCountRepository runningRepository;
+    private final SecUserRepository secUserRepository;
     private final RunnerCountRepository runnerCountRepository;
     private final VolunteerRepository volunteerRepository;
 
     @Autowired
-    public RunningResultsService(RunningResultRepository runningResultRepository, RunnerCountRepository runnerCountRepository, VolunteerRepository volunteerRepository) {
+    public RunningResultsService(RunningResultRepository runningResultRepository, SecUserService userService, TeamsRunningCountRepository runningRepository, SecUserRepository secUserRepository, RunnerCountRepository runnerCountRepository, VolunteerRepository volunteerRepository) {
         this.runningResultRepository = runningResultRepository;
+        this.userService = userService;
+        this.runningRepository = runningRepository;
+        this.secUserRepository = secUserRepository;
         this.runnerCountRepository = runnerCountRepository;
         this.volunteerRepository = volunteerRepository;
     }
@@ -46,5 +53,14 @@ public class RunningResultsService implements IRunningResultsService {
     @Override
     public Integer historicalRunnerCount(String currentUserName) {
         return runnerCountRepository.historicalRunnerCount(currentUserName);
+    }
+
+    @Override
+    public List<TeamsRunningCountDto> getTeamRunningResults(Integer teamId) {
+        List<TeamsRunningCountDto> outList = runningRepository.getTeamRunningResults(teamId);
+        if(outList.isEmpty()){
+            throw new IllegalArgumentException("История забегов команды с id = " + teamId + " не найдена.");
+        }
+        return outList;
     }
 }
