@@ -19,12 +19,12 @@ public class VolunteerController {
 
     private IVolunteerService volunteerService;
 
-
     @Autowired
     public VolunteerController(IVolunteerService volunteerService) {
         this.volunteerService = volunteerService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/lastHistory")
     public VolunteerDto getLastHistoryVolunteering(Principal principal) {
         String currentUserName = principal.getName();
