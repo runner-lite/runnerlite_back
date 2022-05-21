@@ -24,7 +24,7 @@ public class PictureTeamAvatarController {
     private void downloadAvatarForUser(@PathVariable("teamId") Long userId, HttpServletResponse response) throws IOException {
         Optional<byte[]> out = pictureServiceInterface.getAvatarDataById(userId,"team");
         if(out.isPresent()){
-            response.setContentType("image");
+            response.setContentType(pictureServiceInterface.getMimeType(userId,"team"));
             response.getOutputStream().write(out.get());
         }
         else {

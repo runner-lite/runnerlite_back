@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.runnerlite.entities.dto.PlanRunDto;
 import ru.runnerlite.services.interfaces.IPlanRunService;
 
+import javax.websocket.server.PathParam;
 import java.security.Principal;
 import java.util.List;
 
@@ -26,14 +27,15 @@ public class PlanRunController {
         return planRunService.findUniqPlanRunUser(currentUserName);
     }
 
-    @GetMapping("/{runningCountId}/deleteRunnerFromRun")
+    @DeleteMapping("/{runningCountId}/deleteRunnerFromRun")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRunnerFromRun(@PathVariable("runningCountId") Integer runningCountId){
         planRunService.deleteRunnerFromRun(runningCountId);
     }
 
-    @GetMapping("/insertRunnerFromRun")
-    public void insertRunnerFromRun(Principal principal, Integer teamsRunningCountId){
+    @PostMapping("/{teamsRunningCountId}/insertRunnerFromRun")
+    @ResponseStatus(HttpStatus.OK)
+    public void insertRunnerFromRun(Principal principal, @PathVariable("teamsRunningCountId") Integer teamsRunningCountId){
         String currentUserName = principal.getName();
         planRunService.insertRunnerFromRun(currentUserName, teamsRunningCountId);
     }
