@@ -33,8 +33,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
    Integer historicalVolunteerismCount (@Param("currentUserName") String currentUserName); // колличество участий в роли волонтера
 
    @Query("select count (v.secUsers) from Volunteer v " +
-           "left join TeamsRunningCount t on t.id = v.teamsRunningCount.id " +
-           "where v.teamsRunningCount.id=:teamsRunningCountId")
+           "where v.teamsRunningCount.id=:teamsRunningCountId and v.status not like 0")
    Integer countVolunteers(Integer teamsRunningCountId); //количество волонтеров участвующих в забеге
 
    @Query(value = "select new ru.runnerlite.entities.dto.VolunteerDto(v.id, v.secUsers.id, v.secUsers.fullName, v.status, " +
@@ -63,5 +62,20 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "left join RefVolunteersPosition rvp on rvp.id = t.refVolunteersPosition.id " +
            "where t.team.id=:teamId")
    List<TeamRunVolunteerQtyDto> getNeedTeamRunVolunteerQty(@Param("teamId") Integer teamId); //поиск шаблона волонтерства по ид команды
+
+   @Query(value = "select (v.id) " +
+           "from Volunteer v " +
+           "where v.secUsers.email=:currentUserName and v.teamsRunningCount.id=:teamsRunningCountId")
+   Integer findVolunteersId(@Param("currentUserName") String currentUserName, @Param("teamsRunningCountId") Integer teamsRunningCountId); //id таблицы volonteer
+
+   @Query(value = "select (v.refVolunteersPosition.id) " +
+           "from Volunteer v " +
+           "where v.secUsers.email=:currentUserName and v.teamsRunningCount.id=:teamsRunningCountId")
+   Integer findVolunteersPositionId(@Param("currentUserName") String currentUserName, @Param("teamsRunningCountId") Integer teamsRunningCountId); //id таблицы refVolunteersPosition
+
+   @Query(value = "select (v.refVolunteersPosition.name) " +
+           "from Volunteer v " +
+           "where v.secUsers.email=:currentUserName and v.teamsRunningCount.id=:teamsRunningCountId")
+   String findPositionNameFromRefVolunteersPosition(@Param("currentUserName") String currentUserName, @Param("teamsRunningCountId") Integer teamsRunningCountId); // название позиции name в таблице refVolunteersPosition
 
 }
