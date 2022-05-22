@@ -20,6 +20,9 @@ public class PlanRunDto implements Serializable {
     private Integer volunteersCount; //количество волонтеров участвующих в забеге
     private Integer runnerCountId; // id строки из таблицы RunnerCount (нужна для отмены участия в забеге)
     private Integer statusVolunteer; // проверка участия бегуна в качестве волонтера 0 - запрос, 1 - принято, 2 - отказано
+    private Integer volunteersId; //id строки в таблице волонтеров Volunteer соответствующая user занявшего позицию волонтера (нужна отмены участия в забеге)
+    private Integer volunteersPositionId; //id строки из таблицы RefVolunteersPosition (нужна для участия в забеге волонтером)
+    private String positionName; //позиция волонтера (название)
 
     public PlanRunDto(Integer teamsRunningCountId, Integer participationStatus, String runningStatus, Instant runningDate, String teamsName, String descriptionTeams, Integer runningNumber) {
         this.teamsRunningCountId = teamsRunningCountId;
