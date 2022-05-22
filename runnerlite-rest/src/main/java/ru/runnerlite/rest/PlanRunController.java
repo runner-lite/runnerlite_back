@@ -28,7 +28,7 @@ public class PlanRunController {
     }
 
     @DeleteMapping("/{runningCountId}/deleteRunnerFromRun")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     public void deleteRunnerFromRun(@PathVariable("runningCountId") Integer runningCountId){
         planRunService.deleteRunnerFromRun(runningCountId);
     }
