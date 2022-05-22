@@ -21,19 +21,19 @@ public class PlanRunController {
         this.planRunService = planRunService;
     }
 
-    @GetMapping("/get")
+    @GetMapping()
     public List<PlanRunDto> getPlanRunDto(Principal principal) {
         String currentUserName = principal.getName();
         return planRunService.findUniqPlanRunUser(currentUserName);
     }
 
-    @DeleteMapping("/{runningCountId}/deleteRunnerFromRun")
+    @DeleteMapping("/{runningCountId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteRunnerFromRun(@PathVariable("runningCountId") Integer runningCountId){
         planRunService.deleteRunnerFromRun(runningCountId);
     }
 
-    @PostMapping("/{teamsRunningCountId}/insertRunnerFromRun")
+    @PostMapping("/{teamsRunningCountId}")
     @ResponseStatus(HttpStatus.OK)
     public void insertRunnerFromRun(Principal principal, @PathVariable("teamsRunningCountId") Integer teamsRunningCountId){
         String currentUserName = principal.getName();
