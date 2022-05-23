@@ -51,7 +51,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
    @Query(value = "select (v.status) " +
            "from Volunteer v " +
            "where v.secUsers.email=:currentUserName and v.teamsRunningCount.id=:teamsRunningCountId")
-   Integer findStatusVolunteer(@Param("currentUserName") String currentUserName, @Param("teamsRunningCountId") Integer teamsRunningCountId); //проверка участия бегуна в качестве волонтера true - участвует, false - не участвует
+   Integer findStatusVolunteer(@Param("currentUserName") String currentUserName, @Param("teamsRunningCountId") Integer teamsRunningCountId); //проверка участия бегуна в качестве волонтера 0 - запрос, 1 - принято, 2 - отказано, null - не заявлялся
 
    @Query(value = "select new ru.runnerlite.entities.dto.TeamRunVolunteerQtyDto(" +
            "t.team.id," +
@@ -77,5 +77,10 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "from Volunteer v " +
            "where v.secUsers.email=:currentUserName and v.teamsRunningCount.id=:teamsRunningCountId")
    String findPositionNameFromRefVolunteersPosition(@Param("currentUserName") String currentUserName, @Param("teamsRunningCountId") Integer teamsRunningCountId); // название позиции name в таблице refVolunteersPosition
+
+   @Query(value = "select (v.status) " +
+           "from Volunteer v " +
+           "where v.secUsers.email=:currentUserName and v.teamsRunningCount.id=:teamsRunningCountId and v.refVolunteersPosition.id=:volunteersPositionId")
+   Integer findStatusVolunteerFromRefVolunteersPosition(@Param("currentUserName") String currentUserName, @Param("teamsRunningCountId") Integer teamsRunningCountId, @Param("volunteersPositionId") Integer volunteersPositionId); //проверка участия бегуна в качестве волонтера 0 - запрос, 1 - принято, 2 - отказано, null - не заявлялся
 
 }

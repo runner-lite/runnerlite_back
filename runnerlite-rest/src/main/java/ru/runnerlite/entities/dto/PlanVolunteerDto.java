@@ -22,7 +22,7 @@ public class PlanVolunteerDto implements Serializable {
     private Integer positionRequired; // необходимое колличество волонтеров на указанную позицию
     private Integer id; //id строки в таблице волонтеров Volunteer соответствующая user занявшего позицию волонтера (нужна отмены участия в забеге)
     private List<String> fullNameVolunteer; // полное имя user'a занявшего позицию волонтера
-    private Integer participationStatus; // статус позиции пользователя для участия в забеге (пусто если заявился или заявиться)
+    private Integer participationStatus; // проверка участия бегуна в качестве волонтера 0 - запрос, 1 - принято, 2 - отказано, null - не заявлялся
     private Boolean statusRunner; // проверка участия текущего пользователя в качестве бегуна true - участвует, false - не участвует
 
 
