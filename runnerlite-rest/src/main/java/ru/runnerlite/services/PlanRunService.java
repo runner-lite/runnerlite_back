@@ -32,38 +32,20 @@ public class PlanRunService implements IPlanRunService {
     }
 
     @Override
-    public List<PlanRunDto> findPlanRunUser(String currentUserName) {
-        List<PlanRunDto> planRunDto = teamsRunningCountRepository.findPlanRunByUserName(currentUserName);
-        if (planRunDto == null) {
-            throw new IllegalArgumentException("Пользователь с id = " + currentUserName + " не найден.");
-        }
-        return planRunDto;
-    }
-
-    //выбираем забеги по полю "номер", сортируем по дате (свежие) и возвращаем 3 забега
-    @Override
     public List<PlanRunDto> findUniqPlanRunUser(String currentUserName) {
-        List<PlanRunDto> planRunDto = findPlanRunUser(currentUserName);
-        Map<Integer,PlanRunDto> uniqMapScheduled  = new HashMap<>();
-        for (PlanRunDto planRun: planRunDto) {
-            if ("Запланирован".equals(planRun.getRunningStatus()))
-                uniqMapScheduled.put(planRun.getRunningNumber(), planRun);
-        }
-        ArrayList<PlanRunDto> listUniqScheduled = (ArrayList<PlanRunDto>) uniqMapScheduled.values().
-                stream().collect(Collectors.toCollection(ArrayList::new)).stream().
-                sorted(Comparator.comparing(PlanRunDto::getRunningDate).reversed()).collect(Collectors.toList());
+        List<PlanRunDto> planRunDto = teamsRunningCountRepository.findPlanRunByUserName(currentUserName);
         List<PlanRunDto> list = new ArrayList<>();
-        for (int i = 0; i < uniqMapScheduled.size(); i++) {
+        for (int i = 0; i < planRunDto.size(); i++) {
             if (!(i == 3)) {
-                listUniqScheduled.get(i).setParticipationStatus(listUniqScheduled.get(i).getParticipationStatus() == null ? 0 : 1);
-                listUniqScheduled.get(i).setRunnersCount(runnerCountRepository.countRunners(listUniqScheduled.get(i).getTeamsRunningCountId()));
-                listUniqScheduled.get(i).setVolunteersCount(volunteerRepository.countVolunteers(listUniqScheduled.get(i).getTeamsRunningCountId()));
-                listUniqScheduled.get(i).setRunnerCountId(runnerCountRepository.findIdRunnerCount(currentUserName, listUniqScheduled.get(i).getTeamsRunningCountId()));
-                listUniqScheduled.get(i).setStatusVolunteer(volunteerRepository.findStatusVolunteer(currentUserName, listUniqScheduled.get(i).getTeamsRunningCountId()));
-                listUniqScheduled.get(i).setVolunteersId(volunteerRepository.findVolunteersId(currentUserName, listUniqScheduled.get(i).getTeamsRunningCountId()));
-                listUniqScheduled.get(i).setVolunteersPositionId(volunteerRepository.findVolunteersPositionId(currentUserName, listUniqScheduled.get(i).getTeamsRunningCountId()));
-                listUniqScheduled.get(i).setPositionName(volunteerRepository.findPositionNameFromRefVolunteersPosition(currentUserName, listUniqScheduled.get(i).getTeamsRunningCountId()));
-                list.add(listUniqScheduled.get(i));
+                planRunDto.get(i).setParticipationStatus(runnerCountRepository.findStatusRunner(currentUserName, planRunDto.get(i).getTeamsRunningCountId()) == null ? 0 : 1);
+                planRunDto.get(i).setRunnersCount(runnerCountRepository.countRunners(planRunDto.get(i).getTeamsRunningCountId()));
+                planRunDto.get(i).setVolunteersCount(volunteerRepository.countVolunteers(planRunDto.get(i).getTeamsRunningCountId()));
+                planRunDto.get(i).setRunnerCountId(runnerCountRepository.findIdRunnerCount(currentUserName, planRunDto.get(i).getTeamsRunningCountId()));
+                planRunDto.get(i).setStatusVolunteer(volunteerRepository.findStatusVolunteer(currentUserName, planRunDto.get(i).getTeamsRunningCountId()));
+                planRunDto.get(i).setVolunteersId(volunteerRepository.findVolunteersId(currentUserName, planRunDto.get(i).getTeamsRunningCountId()));
+                planRunDto.get(i).setVolunteersPositionId(volunteerRepository.findVolunteersPositionId(currentUserName, planRunDto.get(i).getTeamsRunningCountId()));
+                planRunDto.get(i).setPositionName(volunteerRepository.findPositionNameFromRefVolunteersPosition(currentUserName, planRunDto.get(i).getTeamsRunningCountId()));
+                list.add(planRunDto.get(i));
             }
             else break;
         }

@@ -17,7 +17,7 @@ public interface TeamsVolunteerRepository extends JpaRepository<TeamsVolunteer, 
             "from TeamsVolunteer tv " +
             "left join TeamsRunningCount t on t.id = tv.teamsRunningCount.id " +
             "left join RefVolunteersPosition rvp on rvp.id = tv.refVolunteersPosition.id " +
-            "where t.id=:teamsRunningCountId and t.status not like 'Выполнен'")
+            "where t.id=:teamsRunningCountId and t.status not like 'Выполнен' order by rvp.name asc")
     List<PlanVolunteerDto> findPlanVolunteer(@Param("teamsRunningCountId") Integer teamsRunningCountId);
 
 

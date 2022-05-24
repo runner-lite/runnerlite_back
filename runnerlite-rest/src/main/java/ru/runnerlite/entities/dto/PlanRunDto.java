@@ -24,9 +24,8 @@ public class PlanRunDto implements Serializable {
     private Integer volunteersPositionId; //id строки из таблицы RefVolunteersPosition (нужна для участия в забеге волонтером)
     private String positionName; //позиция волонтера (название)
 
-    public PlanRunDto(Integer teamsRunningCountId, Integer participationStatus, String runningStatus, Instant runningDate, String teamsName, String descriptionTeams, Integer runningNumber) {
+    public PlanRunDto(Integer teamsRunningCountId, String runningStatus, Instant runningDate, String teamsName, String descriptionTeams, Integer runningNumber) {
         this.teamsRunningCountId = teamsRunningCountId;
-        this.participationStatus = participationStatus;
         this.runningStatus = runningStatus;
         this.runningDate = runningDate;
         this.teamsName = teamsName;
