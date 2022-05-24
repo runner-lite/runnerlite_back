@@ -46,10 +46,10 @@ public class PlanVolunteerService implements IPlanVolunteerService {
                 if (planVolunteer.getPositionName().equals(volunteer.getPositionName())) {
                     planVolunteer.setId(volunteer.getId());
                     planVolunteer.setFullNameVolunteer(volunteerRepository.findVolunteerByTeamsRunningCountIdAndAndRefVolunteersPosition(planVolunteer.getTeamsRunningCountId(), planVolunteer.getVolunteersPositionId()));
-                    planVolunteer.setParticipationStatus(volunteer.getStatus());
-                    planVolunteer.setStatusRunner(!(null == (runnerCountRepository.findStatusRunner(currentUserName, teamsRunningCountId))));
+                    planVolunteer.setParticipationStatus(volunteerRepository.findStatusVolunteerFromRefVolunteersPosition(currentUserName, teamsRunningCountId, planVolunteer.getVolunteersPositionId()));
                 }
             }
+            planVolunteer.setStatusRunner(!(null == (runnerCountRepository.findStatusRunner(currentUserName, teamsRunningCountId))));
             list.add(planVolunteer);
         }
         return list;
