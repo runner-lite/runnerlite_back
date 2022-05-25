@@ -3,6 +3,8 @@ package ru.runnerlite.repositories;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.runnerlite.entities.Volunteer;
@@ -88,4 +90,10 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "from Volunteer v " +
            "where v.teamsRunningCount.id=:teamsRunningCountId and v.refVolunteersPosition.id=:refVolunteersPositionId")
    List<VolunteerPlanningDto> findVolunteerForTeamsVolunteerDto(@Param("teamsRunningCountId") Integer teamsRunningCountId, @Param("refVolunteersPositionId") Integer refVolunteersPositionId); //поиск волонтеров по номеру забега и его позиции для реста кабинета руководителя забегов
+
+   @Transactional
+   @Modifying
+   @Query(value = "update Volunteer v set v.status =:status where v.id=:volunteersId")
+   void changeVolunteerStatus(@Param("volunteersId") Integer volunteersId, @Param("status") Integer status); //изменение руководителем забегов статуса волонтера /0 - запрос /1 - принято/ 2 - отказано
+
 }

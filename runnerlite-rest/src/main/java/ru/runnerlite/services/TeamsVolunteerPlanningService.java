@@ -1,17 +1,17 @@
 package ru.runnerlite.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import ru.runnerlite.entities.dto.*;
 import ru.runnerlite.repositories.TeamsManagementRepository;
 import ru.runnerlite.repositories.TeamsVolunteerRepository;
 import ru.runnerlite.repositories.VolunteerRepository;
+import ru.runnerlite.services.interfaces.ITeamsVolunteerPlanningService;
 
 import java.util.List;
 
 @Service
-public class TeamsVolunteerPlanningService {
+public class TeamsVolunteerPlanningService implements ITeamsVolunteerPlanningService {
 
     private TeamsManagementRepository teamsManagementRepository;
     private VolunteerRepository volunteerRepository;
@@ -24,7 +24,8 @@ public class TeamsVolunteerPlanningService {
         this.teamsVolunteerRepository = teamsVolunteerRepository;
     }
 
-    public List<TeamsVolunteerPlanningDto> findTeamsVolunteerPlanningDto(@Param("currentUserName") String currentUserName){
+    @Override
+    public List<TeamsVolunteerPlanningDto> findTeamsVolunteerPlanningDto(String currentUserName){
         List<TeamsVolunteerPlanningDto> teamsVolunteerPlanningDto = teamsManagementRepository.findTeamsVolunteerPlanningDto(currentUserName);
         //прохожу по каждому TeamsVolunteerPlanningDto
         for (int i = 0; i < teamsVolunteerPlanningDto.size(); i++) {
@@ -41,5 +42,10 @@ public class TeamsVolunteerPlanningService {
             else break;
         }
         return teamsVolunteerPlanningDto;
+    }
+
+    @Override
+    public void changeVolunteerStatus(Integer volunteersId, Integer status) {
+        volunteerRepository.changeVolunteerStatus(volunteersId,status);
     }
 }
