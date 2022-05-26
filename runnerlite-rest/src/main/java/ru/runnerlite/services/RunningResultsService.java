@@ -1,14 +1,18 @@
 package ru.runnerlite.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.runnerlite.entities.TeamsRunningCount;
+import ru.runnerlite.entities.dto.RunningPlaningDto;
 import ru.runnerlite.entities.dto.RunningResultDto;
 import ru.runnerlite.entities.dto.TeamsRunningCountDto;
 import ru.runnerlite.repositories.*;
 import ru.runnerlite.services.interfaces.IRunningResultsService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RunningResultsService implements IRunningResultsService {
@@ -63,4 +67,28 @@ public class RunningResultsService implements IRunningResultsService {
         }
         return outList;
     }
+
+    @Override
+    public List<RunningPlaningDto> getTeamRunningStatisticWithLimit(Integer teamId, Integer counter) {
+        List<TeamsRunningCountDto> teamsRunningCountDtoList = runningRepository.getTeamRunningResults(teamId,PageRequest.of(0,counter));
+        if(teamsRunningCountDtoList.isEmpty()){
+            throw new IllegalArgumentException("История забегов команды с id = " + teamId + " не найдена.");
+        }
+        return teamsRunningCountDtoList.stream().map(teamsRunningCountDto -> new RunningPlaningDto(teamsRunningCountDto,
+                runnerCountRepository.countRunners(teamsRunningCountDto.getId()),
+                volunteerRepository.countVolunteers(teamsRunningCountDto.getId()))).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RunningPlaningDto> getTeamRunningStatistic(Integer teamId) {
+        return getTeamRunningStatisticWithLimit(teamId,5); // поставил что по умолчанию будет возвращать 5 записей
+    }
+
+    @Override
+    public void changeStatusTeamRunningStatistic(Integer teamId, Integer runningId, String newStatus) {
+        TeamsRunningCount runningCount= runningRepository.findTeamsRunningCountByIdAndTeamId(teamId,runningId);
+        runningCount.setStatus(newStatus);
+        runningRepository.save(runningCount);
+    }
+
 }

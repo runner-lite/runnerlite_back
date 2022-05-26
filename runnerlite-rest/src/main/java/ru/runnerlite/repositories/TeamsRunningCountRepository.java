@@ -1,5 +1,6 @@
 package ru.runnerlite.repositories;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +28,13 @@ public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningC
             "where t.teams.id =:teamId " +
             "ORDER BY  t.runningDate desc")
     List<TeamsRunningCountDto> getTeamRunningResults(@Param("teamId") Integer teamId);
+
+    @Query(value = "select new ru.runnerlite.entities.dto.TeamsRunningCountDto(t) " +
+            "from TeamsRunningCount t " +
+            "where t.teams.id =:teamId " +
+            "ORDER BY  t.runningDate desc ")
+    List<TeamsRunningCountDto> getTeamRunningResults(@Param("teamId") Integer teamId, Pageable pageable);
+
+    @Query(value = "select t from TeamsRunningCount t where t.teams.id =:teamId and t.number =:runningId")
+    TeamsRunningCount findTeamsRunningCountByIdAndTeamId(@Param("teamId") Integer teamId,@Param("runningId") Integer runningId);
 }
