@@ -13,12 +13,11 @@ import java.util.List;
 @Repository
 public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningCount, Integer> {
 
-    @Query(value = "select new ru.runnerlite.entities.dto.PlanRunDto(t.id, r.secUser.id, t.status, " +
+    @Query(value = "select new ru.runnerlite.entities.dto.PlanRunDto(t.id, t.status, " +
             "t.runningDate, t.teams.name, t.teams.description, t.number) " +
             "from TeamsRunningCount t " +
-            "left join RunnerCount r on r.teamsRunningCount.id = t.id " +
-            "left join MailingList m on t.teams.id = m.teams.id " +
-            "where m.secUsers.email=:currentUserName and t.status not like 'Выполнен'")
+            "left join SecUser su on su.team.id = t.teams.id " +
+            "where su.email=:currentUserName and t.status not like 'Выполнен' Order by t.runningDate asc")
     List<PlanRunDto> findPlanRunByUserName(@Param("currentUserName") String currentUserName);
 
 
