@@ -31,4 +31,9 @@ public interface RunnerCountRepository extends JpaRepository<RunnerCount, Intege
             "left join TeamsRunningCount t on t.id = r.teamsRunningCount.id " +
             "where r.secUser.email=:currentUserName and t.status like 'Выполнен' ")
     Integer historicalRunnerCount (@Param("currentUserName") String currentUserName); // колличество участий в роли бегуна
+
+    @Query("select count (r.secUser) from RunnerCount r " +
+            "left join TeamsRunningCount t on t.id = r.teamsRunningCount.id " +
+            "where r.teamsRunningCount.number=:teamRunning")
+    Integer countRunnersByTeamsRunningCountNumber(Integer teamRunning); //количество бегунов участвующих в забеге
 }
