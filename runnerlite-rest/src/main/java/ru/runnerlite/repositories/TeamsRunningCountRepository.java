@@ -8,6 +8,7 @@ import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.dto.PlanRunDto;
 import ru.runnerlite.entities.dto.TeamsRunningCountDto;
 
+import java.time.Instant;
 import java.util.List;
 
 @Repository
@@ -20,10 +21,14 @@ public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningC
             "where su.email=:currentUserName and t.status not like 'Выполнен' Order by t.runningDate asc")
     List<PlanRunDto> findPlanRunByUserName(@Param("currentUserName") String currentUserName);
 
-
     @Query(value = "select new ru.runnerlite.entities.dto.TeamsRunningCountDto(t) " +
             "from TeamsRunningCount t " +
             "where t.teams.id =:teamId " +
             "ORDER BY  t.runningDate desc")
     List<TeamsRunningCountDto> getTeamRunningResults(@Param("teamId") Integer teamId);
+
+    @Query("select trc.runningDate " +
+            "from TeamsRunningCount trc " +
+            "where trc.number=:teamRunning")
+    Instant getRunningDate(@Param("teamRunning") Integer teamRunning);
 }
