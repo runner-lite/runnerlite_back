@@ -3,11 +3,14 @@ package ru.runnerlite.repositories;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.runnerlite.entities.Volunteer;
 import ru.runnerlite.entities.dto.TeamRunVolunteerQtyDto;
 import ru.runnerlite.entities.dto.VolunteerDto;
+import ru.runnerlite.entities.dto.VolunteerPlanningDto;
 
 import java.util.List;
 
@@ -82,5 +85,15 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "from Volunteer v " +
            "where v.secUsers.email=:currentUserName and v.teamsRunningCount.id=:teamsRunningCountId and v.refVolunteersPosition.id=:volunteersPositionId")
    Integer findStatusVolunteerFromRefVolunteersPosition(@Param("currentUserName") String currentUserName, @Param("teamsRunningCountId") Integer teamsRunningCountId, @Param("volunteersPositionId") Integer volunteersPositionId); //проверка участия бегуна в качестве волонтера 0 - запрос, 1 - принято, 2 - отказано, null - не заявлялся
+
+   @Query(value = "select new ru.runnerlite.entities.dto.VolunteerPlanningDto(v.id, v.secUsers.id, v.secUsers.fullName, v.status) " +
+           "from Volunteer v " +
+           "where v.teamsRunningCount.id=:teamsRunningCountId and v.refVolunteersPosition.id=:refVolunteersPositionId")
+   List<VolunteerPlanningDto> findVolunteerForTeamsVolunteerDto(@Param("teamsRunningCountId") Integer teamsRunningCountId, @Param("refVolunteersPositionId") Integer refVolunteersPositionId); //поиск волонтеров по номеру забега и его позиции для реста кабинета руководителя забегов
+
+   @Transactional
+   @Modifying
+   @Query(value = "update Volunteer v set v.status =:status where v.id=:volunteersId")
+   void changeVolunteerStatus(@Param("volunteersId") Integer volunteersId, @Param("status") Integer status); //изменение руководителем забегов статуса волонтера /0 - запрос /1 - принято/ 2 - отказано
 
 }
