@@ -30,4 +30,10 @@ public interface SecUserRepository extends JpaRepository<SecUser, Long>  {
 			"where su.email = :username ")
 	Optional<Integer> findTeamByUsername(@Param("username") String username);
 
+	//
+	@Query("select su.fullName " +
+			"from SecUser su " +
+			"where su.id=userId")
+	Optional<String> findNameById(@Param("userId")Integer userId);
+
 }
