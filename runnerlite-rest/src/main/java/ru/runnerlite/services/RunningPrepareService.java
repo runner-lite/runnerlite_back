@@ -45,9 +45,6 @@ public class RunningPrepareService {
 		for (TeamsRunningCount running : runnings) {
 			RunningPrepareStatus rps = new RunningPrepareStatus();
 			rps.setRunning(new TeamsRunningCountDto(running));
-
-//			Integer needVolunteers = teamsVolunteerRepository.getNeedVolunteersCount(running.getId());
-//			Integer volunteersCount = volunteerRepository.getVolunteersCount(running.getId());
 			
 			List<TeamsVolunteer> tv = teamsVolunteerRepository.findByTeamsRunningCountId(running.getId());
 			List<TeamsVolunteerDto> tvd = tv.stream()
@@ -60,8 +57,14 @@ public class RunningPrepareService {
 				.map(VolunteerSimpleDto::new)
 				.collect(Collectors.toList());
 			rps.setVolunteers(v);
-//			Integer percentage = volunteersCount / needVolunteers * 100;
-//			RunningPrepareStatus rps = new RunningPrepareStatus(new TeamsRunningCountDto(running), percentage);
+			
+			int needVolunteers = rps.getNeedVolunteers()
+				.stream()
+				.mapToInt(TeamsVolunteerDto::getNeedVolunteerQty)
+				.sum();
+			int volunteersCount = rps.getVolunteers().size();
+			int percentage = needVolunteers == 0 ? 0 : volunteersCount * 100 / needVolunteers;
+			rps.setRecruitmentPercentage(percentage);
 			result.add(rps);
 		}
 	
