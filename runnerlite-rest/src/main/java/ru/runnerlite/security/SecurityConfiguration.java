@@ -4,12 +4,12 @@ package ru.runnerlite.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
@@ -60,9 +60,9 @@ public class SecurityConfiguration {
                             .permitAll()
                             .logoutSuccessHandler(((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK)))
                     )
-                    .httpBasic()// включаем базовую авторизацию ниже выдаем джесон при не удачной авторизации
-                    .authenticationEntryPoint((reg,resp,exception) ->{
-                        resp.setContentType("aplication/json");
+                    .httpBasic()// включаем базовую авторизацию ниже выдаем джейсон при неудачной авторизации
+                    .authenticationEntryPoint((reg, resp, exception) -> {
+                        resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
                         resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                         resp.setCharacterEncoding("UTF-8");
                         resp.getWriter().println("{\"error\":\""+exception.getMessage()+"\"}");

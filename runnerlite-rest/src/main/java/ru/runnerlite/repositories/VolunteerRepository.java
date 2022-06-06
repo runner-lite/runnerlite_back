@@ -21,4 +21,9 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
 
    @Query("select v.refVolunteersPosition.name from Volunteer v where v.secUsers.email=:currentUserName")
    List<String> historicalistVolunteerism (@Param("currentUserName") String currentUserName);
+   
+//   @Query("select count() from volunteers v having v.TEAMS_RUNNING_COUNT_ID =: runningId")
+//   Integer getVolunteersCount(Integer runningId);
+   
+   List<Volunteer> findAllByTeamsRunningCountIdOrderByIdAsc(Integer runningId);
 }

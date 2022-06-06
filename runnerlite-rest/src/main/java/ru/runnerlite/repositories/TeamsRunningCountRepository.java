@@ -19,4 +19,14 @@ public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningC
             "join RunnerCount r on r.teamsRunningCount.id = t.id " +
             "where (r.secUser.email=:currentUserName or r.secUser.id is null) and t.status not like 'Выполнен'")
     List<PlanRunDto> findPlanRunByUserName(@Param("currentUserName") String currentUserName);
+    
+    List<TeamsRunningCount> findByTeamsIdOrderByIdAsc(Integer teamId);
+    
+//    @Query(value = "select new ru.runnerlite.entities.dto.PlanRunDto(r.secUser.id, t.status, " +
+//        "r.teamsRunningCount.runningDate, t.teams.name, t.teams.description," +
+//        " r.teamsRunningCount.number) " +
+//        "from TeamsRunningCount t " +
+//        "join RunnerCount r on r.teamsRunningCount.id = t.id " +
+//        "where (r.secUser.email=:currentUserName or r.secUser.id is null) and t.status not like 'Выполнен'")
+//    List<RunningPrepareStatusDto> findRunningPrepareStatuses(Long teamId, Integer count);
 }
