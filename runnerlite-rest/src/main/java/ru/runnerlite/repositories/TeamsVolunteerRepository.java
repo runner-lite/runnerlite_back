@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.runnerlite.entities.TeamsVolunteer;
 import ru.runnerlite.entities.dto.PlanVolunteerDto;
+import ru.runnerlite.entities.dto.TeamsVolunteerDto;
 
 import java.util.List;
 

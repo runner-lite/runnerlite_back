@@ -2,6 +2,7 @@ package ru.runnerlite.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.runnerlite.entities.dto.TeamsVolunteerDto;
 import ru.runnerlite.entities.dto.TeamsVolunteerPlanningDto;
 import ru.runnerlite.entities.dto.VolunteerPlanningDto;
 import ru.runnerlite.repositories.TeamsManagementRepository;
@@ -14,9 +15,9 @@ import java.util.List;
 @Service
 public class TeamsVolunteerPlanningService implements ITeamsVolunteerPlanningService {
 
-    private TeamsManagementRepository teamsManagementRepository;
-    private VolunteerRepository volunteerRepository;
-    private TeamsVolunteerRepository teamsVolunteerRepository;
+    private final TeamsManagementRepository teamsManagementRepository;
+    private final VolunteerRepository volunteerRepository;
+    private final TeamsVolunteerRepository teamsVolunteerRepository;
 
     @Autowired
     public TeamsVolunteerPlanningService(TeamsManagementRepository teamsManagementRepository, VolunteerRepository volunteerRepository, TeamsVolunteerRepository teamsVolunteerRepository) {

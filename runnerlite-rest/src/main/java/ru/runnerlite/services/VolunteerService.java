@@ -90,7 +90,6 @@ public class VolunteerService<list> implements IVolunteerService {
                 volunteer.getTeamsName(),
                 volunteer.getTeamsId(),
                 countHistoricalVolunteerism,
-                volunteer.getRunningNumberCount(),
                 list
         );
     }
