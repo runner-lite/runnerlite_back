@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.runnerlite.entities.*;
 import ru.runnerlite.entities.dto.SecUserDto;
+import ru.runnerlite.entities.dto.UserNameDto;
 import ru.runnerlite.repositories.*;
 import ru.runnerlite.services.interfaces.ISecUserService;
 
@@ -75,7 +76,16 @@ public class SecUserService implements ISecUserService {
 		SecUserDto user = convert(usersRepository.getById(id.longValue()));
 		return ResponseEntity.ok(user);
 	}
-	
+
+	@Override
+	public UserNameDto findByEmail(String email){
+		SecUserDto secUserDto = usersRepository.findByEmail(email);
+		UserNameDto user = new UserNameDto();
+		user.setUserId(secUserDto.getId());
+		user.setName(secUserDto.getUseNick() ? secUserDto.getNickName() : secUserDto.getFullName());
+		return user;
+	}
+
 	SecUserDto convert(SecUser user) {
 		SecUserDto userDto = new SecUserDto();
 		userDto.setId(user.getId());
