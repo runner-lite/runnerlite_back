@@ -6,12 +6,15 @@ import ru.runnerlite.EmailSender;
 import ru.runnerlite.entities.SecUser;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.Volunteer;
+import ru.runnerlite.entities.dto.RunningResultForEmailSendDto;
 import ru.runnerlite.model.Letter;
+import ru.runnerlite.repositories.RunningResultRepository;
 import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.repositories.TeamsManagementRepository;
 import ru.runnerlite.repositories.VolunteerRepository;
 import ru.runnerlite.services.interfaces.ILetterService;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Optional;
@@ -25,13 +28,17 @@ public class LetterService implements ILetterService {
 
     private VolunteerRepository volunteerRepository;
 
+    private RunningResultRepository runningResultRepository;
+
     @Autowired
     public LetterService(SecUserRepository secUserRepository,
                          TeamsManagementRepository teamsManagementRepository,
-                         VolunteerRepository volunteerRepository) {
+                         VolunteerRepository volunteerRepository,
+                         RunningResultRepository runningResultRepository) {
         this.secUserRepository = secUserRepository;
         this.teamsManagementRepository = teamsManagementRepository;
         this.volunteerRepository=volunteerRepository;
+        this.runningResultRepository=runningResultRepository;
     }
 
     @Override
@@ -64,4 +71,27 @@ public class LetterService implements ILetterService {
             emailSender.sendEmail(new Letter(user.getEmail(), topic,sb.toString()));
         }
     }
+
+    @Override
+    public void sendRunningResultsToRunner(Integer runningNumber, Integer teamId) {
+        EmailSender emailSender = new EmailSender();
+        List<RunningResultForEmailSendDto> runningResultList =  runningResultRepository.findAllResultByTeamRunningId(runningNumber,teamId);
+        if(!runningResultList.isEmpty()){
+            String topic = "Результаты забега "+runningResultList.get(0).getRunningNumber()+". Команда "+ runningResultList.get(0).getTeamName()+".";
+            Integer runnerCount = runningResultList.size();
+            for (RunningResultForEmailSendDto runningResultForEmailSendDto : runningResultList) {
+                StringBuilder sb=new StringBuilder();
+                sb.append("Здравствуйте "+runningResultForEmailSendDto.getRunnerName()+" !\n");
+                sb.append("Вы участвовали в забеге "+ runningResultForEmailSendDto.getRunningNumber() +" команды "+runningResultForEmailSendDto.getTeamName()+" .\n");
+                sb.append("Дата проведения забега - "+ runningResultForEmailSendDto.getRunningDate().toString()+" .\n");
+                sb.append("Количество участников забега - "+runnerCount+" .\n");
+                sb.append("Ваш результат - " + runningResultForEmailSendDto.getResultTime()+" сек. .\n");
+                sb.append("Ваше место в турнирной таблице забега - "+ runningResultForEmailSendDto.getPosition()+" .\n");
+                sb.append("Отличный результат! Ждем Вас на новых зебегах!");
+                emailSender.sendEmail(new Letter(runningResultForEmailSendDto.getEmail(),topic,sb.toString()));
+            }
+        }
+    }
+
+
 }
