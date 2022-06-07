@@ -42,4 +42,12 @@ public class SecUserDto implements Serializable {
 
 	@NotBlank
 	private String sex;
+
+	public SecUserDto(Integer id, String email, String fullName, String nickName, Boolean useNick) {
+		this.id = id;
+		this.email = email;
+		this.fullName = fullName;
+		this.nickName = nickName;
+		this.useNick = useNick;
+	}
 }
