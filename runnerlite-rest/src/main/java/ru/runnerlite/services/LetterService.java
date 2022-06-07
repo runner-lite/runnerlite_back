@@ -9,9 +9,12 @@ import ru.runnerlite.entities.Volunteer;
 import ru.runnerlite.model.Letter;
 import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.repositories.TeamsManagementRepository;
+import ru.runnerlite.repositories.VolunteerRepository;
 import ru.runnerlite.services.interfaces.ILetterService;
 
+import java.time.temporal.ChronoField;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LetterService implements ILetterService {
@@ -20,10 +23,15 @@ public class LetterService implements ILetterService {
 
     private TeamsManagementRepository teamsManagementRepository;
 
+    private VolunteerRepository volunteerRepository;
+
     @Autowired
-    public LetterService(SecUserRepository secUserRepository, TeamsManagementRepository teamsManagementRepository) {
+    public LetterService(SecUserRepository secUserRepository,
+                         TeamsManagementRepository teamsManagementRepository,
+                         VolunteerRepository volunteerRepository) {
         this.secUserRepository = secUserRepository;
         this.teamsManagementRepository = teamsManagementRepository;
+        this.volunteerRepository=volunteerRepository;
     }
 
     @Override
@@ -41,7 +49,19 @@ public class LetterService implements ILetterService {
     }
 
     @Override
-    public void sendVolunteerAcceptLetter() {
-
+    public void sendVolunteerAcceptLetter(Integer volunteerId,String status) {
+        EmailSender emailSender = new EmailSender();
+        Optional<Volunteer> volunteer = volunteerRepository.findVolunteerVolunteersId(volunteerId);
+        StringBuilder sb = new StringBuilder();
+        if(volunteer.isPresent()){
+            String position = volunteer.get().getRefVolunteersPosition().getName();
+            Integer runNumber = volunteer.get().getTeamsRunningCount().getNumber();
+            SecUser user = volunteer.get().getSecUsers();
+            String topic = "Результат рассмотрения заявки на волонтерство. Номер забега "+runNumber+".";
+            sb.append(user.getFullName()+" Ваша заявка на позицию "+position+" рассмотрена. Результат рассмотрения - Заявка "+status+".\n");
+            sb.append("Дата забега "+volunteer.get().getTeamsRunningCount().getRunningDate().toString()+".\n");
+            sb.append("Спасибо что Вы с нами!");
+            emailSender.sendEmail(new Letter(user.getEmail(), topic,sb.toString()));
+        }
     }
 }

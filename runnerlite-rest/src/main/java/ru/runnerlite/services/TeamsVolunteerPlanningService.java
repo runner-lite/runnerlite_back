@@ -17,11 +17,17 @@ public class TeamsVolunteerPlanningService implements ITeamsVolunteerPlanningSer
     private VolunteerRepository volunteerRepository;
     private TeamsVolunteerRepository teamsVolunteerRepository;
 
+    private LetterService letterService;
+
     @Autowired
-    public TeamsVolunteerPlanningService(TeamsManagementRepository teamsManagementRepository, VolunteerRepository volunteerRepository, TeamsVolunteerRepository teamsVolunteerRepository) {
+    public TeamsVolunteerPlanningService(TeamsManagementRepository teamsManagementRepository,
+                                         VolunteerRepository volunteerRepository,
+                                         TeamsVolunteerRepository teamsVolunteerRepository,
+                                         LetterService letterService) {
         this.teamsManagementRepository = teamsManagementRepository;
         this.volunteerRepository = volunteerRepository;
         this.teamsVolunteerRepository = teamsVolunteerRepository;
+        this.letterService=letterService;
     }
 
     @Override
@@ -47,5 +53,12 @@ public class TeamsVolunteerPlanningService implements ITeamsVolunteerPlanningSer
     @Override
     public void changeVolunteerStatus(Integer volunteersId, Integer status) {
         volunteerRepository.changeVolunteerStatus(volunteersId,status);
+        //отправка письма автору заявки с результатом рассмотрения
+        if(status.equals(1)){
+            letterService.sendVolunteerAcceptLetter(volunteersId,"принята");
+        }
+        else if(status.equals(2)){
+            letterService.sendVolunteerAcceptLetter(volunteersId,"отклонена");
+        }
     }
 }

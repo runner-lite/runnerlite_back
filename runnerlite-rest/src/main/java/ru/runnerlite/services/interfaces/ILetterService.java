@@ -5,5 +5,5 @@ import ru.runnerlite.entities.Volunteer;
 
 public interface ILetterService {
     void sendVolunteerRequestLetter(Volunteer volunteer, TeamsRunningCount teamsRunningCount);
-    void sendVolunteerAcceptLetter();
+    void sendVolunteerAcceptLetter(Integer volunteerId,String status);
 }
