@@ -5,5 +5,7 @@ import ru.runnerlite.entities.dto.PlanRunDto;
 import java.util.List;
 
 public interface IPlanRunService {
-    List<PlanRunDto> findPlanRunUser(String currentUserName);
+    List<PlanRunDto> findUniqPlanRunUser(String currentUserName);
+    void deleteRunnerFromRun(Integer runningCountId);
+    void insertRunnerFromRun(String currentUserName, Integer teamsRunningCountId);
 }

@@ -6,7 +6,7 @@ import ru.runnerlite.entities.TeamsVolunteer;
 
 @Getter
 @Setter
-public class TeamsVolunteerDto {
+public class TeamsVolunteerDtoSimple {
 	
 	private Integer id;
 	private Integer runningId;
@@ -14,10 +14,10 @@ public class TeamsVolunteerDto {
 	private Integer needVolunteerQty;
 	private Integer minVolunteerQty;
 	
-	public TeamsVolunteerDto() {
+	public TeamsVolunteerDtoSimple() {
 	}
 	
-	public TeamsVolunteerDto(Integer id, Integer runningId, String volunteerPosition, Integer needVolunteerQty, Integer minVolunteerQty) {
+	public TeamsVolunteerDtoSimple(Integer id, Integer runningId, String volunteerPosition, Integer needVolunteerQty, Integer minVolunteerQty) {
 		this.id = id;
 		this.runningId = runningId;
 		this.volunteerPosition = volunteerPosition;
@@ -25,7 +25,7 @@ public class TeamsVolunteerDto {
 		this.minVolunteerQty = minVolunteerQty;
 	}
 	
-	public TeamsVolunteerDto(TeamsVolunteer tv) {
+	public TeamsVolunteerDtoSimple(TeamsVolunteer tv) {
 		this.id = tv.getId();
 		this.runningId = tv.getTeamsRunningCount().getId();
 		this.volunteerPosition = tv.getRefVolunteersPosition().getName();

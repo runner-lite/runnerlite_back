@@ -1,13 +1,17 @@
 package ru.runnerlite.entities.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SecGroupDto implements Serializable {
-	private final Integer id;
-	private final String name;
-	private final Boolean active;
-	private final String description;
+	private Integer id;
+	private String name;
+	private Boolean active;
+	private String description;
 }

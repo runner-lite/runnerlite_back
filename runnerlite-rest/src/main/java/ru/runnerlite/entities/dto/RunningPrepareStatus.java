@@ -8,7 +8,7 @@ import java.util.List;
 public class RunningPrepareStatus {
 	
 	private TeamsRunningCountDto running;
-	private List<TeamsVolunteerDto> needVolunteers;
+	private List<TeamsVolunteerDtoSimple> needVolunteers;
 	private List<VolunteerSimpleDto> volunteers;
 	private Integer recruitmentPercentage;
 	
@@ -23,11 +23,11 @@ public class RunningPrepareStatus {
 		this.running = running;
 	}
 	
-	public List<TeamsVolunteerDto> getNeedVolunteers() {
+	public List<TeamsVolunteerDtoSimple> getNeedVolunteers() {
 		return needVolunteers;
 	}
 	
-	public void setNeedVolunteers(List<TeamsVolunteerDto> needVolunteers) {
+	public void setNeedVolunteers(List<TeamsVolunteerDtoSimple> needVolunteers) {
 		this.needVolunteers = needVolunteers;
 	}
 	

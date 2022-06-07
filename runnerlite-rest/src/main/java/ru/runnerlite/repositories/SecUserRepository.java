@@ -1,8 +1,6 @@
 package ru.runnerlite.repositories;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -19,5 +17,15 @@ public interface SecUserRepository extends JpaRepository<SecUser, Long>  {
 			"join fetch su.secGroup " +
 			"where su.email = :username ")
 	Optional<SecUser> findByUsername(@Param("username") String username);
+
+	@Query("select su.id " +
+			"from SecUser su " +
+			"where su.email = :username ")
+	Integer findById(@Param("username") String username);
+
+	@Query("select su.team.id " +
+			"from SecUser su " +
+			"where su.email = :username ")
+	Optional<Integer> findTeamByUsername(@Param("username") String username);
 
 }

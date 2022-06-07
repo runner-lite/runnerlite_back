@@ -8,7 +8,7 @@ import ru.runnerlite.entities.TeamsVolunteer;
 import ru.runnerlite.entities.Volunteer;
 import ru.runnerlite.entities.dto.RunningPrepareStatus;
 import ru.runnerlite.entities.dto.TeamsRunningCountDto;
-import ru.runnerlite.entities.dto.TeamsVolunteerDto;
+import ru.runnerlite.entities.dto.TeamsVolunteerDtoSimple;
 import ru.runnerlite.entities.dto.VolunteerSimpleDto;
 import ru.runnerlite.repositories.TeamsRunningCountRepository;
 import ru.runnerlite.repositories.TeamsVolunteerRepository;
@@ -52,8 +52,8 @@ public class RunningPrepareService {
 			rps.setRunning(new TeamsRunningCountDto(running));
 			
 			List<TeamsVolunteer> tv = teamsVolunteerRepository.findByTeamsRunningCountId(running.getId());
-			List<TeamsVolunteerDto> tvd = tv.stream()
-				.map(TeamsVolunteerDto::new)
+			List<TeamsVolunteerDtoSimple> tvd = tv.stream()
+				.map(TeamsVolunteerDtoSimple::new)
 				.collect(Collectors.toList());
 			rps.setNeedVolunteers(tvd);
 			
@@ -65,7 +65,7 @@ public class RunningPrepareService {
 			
 			int needVolunteers = rps.getNeedVolunteers()
 				.stream()
-				.mapToInt(TeamsVolunteerDto::getNeedVolunteerQty)
+				.mapToInt(TeamsVolunteerDtoSimple::getNeedVolunteerQty)
 				.sum();
 			int volunteersCount = rps.getVolunteers().size();
 			int percentage = needVolunteers == 0 ? 0 : volunteersCount * 100 / needVolunteers;

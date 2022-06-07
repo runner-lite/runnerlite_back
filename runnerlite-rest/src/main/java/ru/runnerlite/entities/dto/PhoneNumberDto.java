@@ -1,13 +1,17 @@
 package ru.runnerlite.entities.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PhoneNumberDto implements Serializable {
-	private final Integer id;
-	private final SecUserDto secUsers;
-	private final String phoneNumber;
-	private final String type;
+	private Integer id;
+	private SecUserDto secUsers;
+	private String phoneNumber;
+	private String type;
 }
