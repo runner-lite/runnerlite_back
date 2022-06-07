@@ -2,6 +2,7 @@ package ru.runnerlite.rest;
 
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,8 @@ public class RunningPrepareController {
 	@GetMapping
 	@RequestMapping("/status")
 	public List<RunningPrepareStatus> getStatus(@RequestParam("teamId") Integer teamId,
-	                                            @RequestParam("count") Integer count) {
-		return runningPrepareService.getStatus(teamId, count);
+	                                            @RequestParam("count") Integer count,
+	                                            @Nullable @RequestParam("dateFrom") String dateFrom) {
+		return runningPrepareService.getStatus(teamId, count, dateFrom);
 	}
 }

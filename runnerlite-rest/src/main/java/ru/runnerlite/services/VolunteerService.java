@@ -1,7 +1,6 @@
 package ru.runnerlite.services;
 
 import org.springframework.stereotype.Service;
-import ru.runnerlite.entities.Volunteer;
 import ru.runnerlite.entities.dto.VolunteerDto;
 import ru.runnerlite.repositories.VolunteerRepository;
 import ru.runnerlite.services.interfaces.IVolunteerService;
@@ -38,7 +37,7 @@ public class VolunteerService<list> implements IVolunteerService {
                 volunteer.getPositionDescription(),
                 volunteer.getTeamsName(),
                 volunteer.getTeamsId(),
-                volunteer.getRunningNumberСount(),
+                volunteer.getRunningNumberCount(),
                 list
         );
     }
