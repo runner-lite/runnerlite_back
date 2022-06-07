@@ -3,7 +3,6 @@ package ru.runnerlite.entities.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.runnerlite.entities.SecUser;
 import ru.runnerlite.entities.TeamsRunningCount;
 
 import java.io.Serializable;

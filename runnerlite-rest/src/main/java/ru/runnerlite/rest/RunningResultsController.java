@@ -1,7 +1,6 @@
 package ru.runnerlite.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +10,6 @@ import ru.runnerlite.entities.dto.RunningResultDto;
 import ru.runnerlite.entities.dto.TeamsRunningCountDto;
 import ru.runnerlite.services.interfaces.IRunningResultsService;
 
-import java.net.http.HttpResponse;
 import java.security.Principal;
 import java.util.List;
 

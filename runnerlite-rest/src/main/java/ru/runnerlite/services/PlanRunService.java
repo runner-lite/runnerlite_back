@@ -12,8 +12,9 @@ import ru.runnerlite.repositories.TeamsRunningCountRepository;
 import ru.runnerlite.repositories.VolunteerRepository;
 import ru.runnerlite.services.interfaces.IPlanRunService;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlanRunService implements IPlanRunService {

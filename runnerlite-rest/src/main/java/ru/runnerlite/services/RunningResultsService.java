@@ -1,14 +1,17 @@
 package ru.runnerlite.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.dto.RunningPlaningDto;
 import ru.runnerlite.entities.dto.RunningResultDto;
 import ru.runnerlite.entities.dto.TeamsRunningCountDto;
-import ru.runnerlite.repositories.*;
+import ru.runnerlite.repositories.RunnerCountRepository;
+import ru.runnerlite.repositories.RunningResultRepository;
+import ru.runnerlite.repositories.SecUserRepository;
+import ru.runnerlite.repositories.TeamsRunningCountRepository;
+import ru.runnerlite.repositories.VolunteerRepository;
 import ru.runnerlite.services.interfaces.IRunningResultsService;
 
 import java.util.List;

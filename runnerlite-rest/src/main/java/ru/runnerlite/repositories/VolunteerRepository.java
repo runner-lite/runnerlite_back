@@ -2,11 +2,11 @@ package ru.runnerlite.repositories;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.runnerlite.entities.Volunteer;
 import ru.runnerlite.entities.dto.TeamRunVolunteerQtyDto;
 import ru.runnerlite.entities.dto.VolunteerDto;
@@ -91,6 +91,10 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
            "where v.teamsRunningCount.id=:teamsRunningCountId and v.refVolunteersPosition.id=:refVolunteersPositionId")
    List<VolunteerPlanningDto> findVolunteerForTeamsVolunteerDto(@Param("teamsRunningCountId") Integer teamsRunningCountId, @Param("refVolunteersPositionId") Integer refVolunteersPositionId); //поиск волонтеров по номеру забега и его позиции для реста кабинета руководителя забегов
 
+   @Query("select v.refVolunteersPosition.name from Volunteer v where v.secUsers.email=:currentUserName")
+   List<String> historicalistVolunteerism (@Param("currentUserName") String currentUserName);
+   
+   List<Volunteer> findAllByTeamsRunningCountIdOrderByIdAsc(Integer runningId);
    @Transactional
    @Modifying
    @Query(value = "update Volunteer v set v.status =:status where v.id=:volunteersId")

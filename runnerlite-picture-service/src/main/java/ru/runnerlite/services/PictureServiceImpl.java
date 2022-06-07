@@ -2,26 +2,28 @@ package ru.runnerlite.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.runnerlite.interfaces.PictureServiceInterface;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Optional;
-import java.util.Properties;
 
 
 @Service
 public class PictureServiceImpl implements PictureServiceInterface {
 
-    @Value("${file_storage}")
+    @Value("#{systemProperties['file_storage']}")
     private  String storagePath;
 
     private static final Logger logger = LoggerFactory.getLogger(PictureServiceImpl.class);
@@ -88,9 +90,4 @@ public class PictureServiceImpl implements PictureServiceInterface {
                 .filter(name -> name.contains(path+"-"+id.toString()+"."))
                 .findFirst();
     }
-
-
-
-
-
 }

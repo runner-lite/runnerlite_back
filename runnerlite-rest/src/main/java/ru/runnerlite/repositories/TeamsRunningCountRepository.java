@@ -21,6 +21,9 @@ public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningC
             "left join SecUser su on su.team.id = t.teams.id " +
             "where su.email=:currentUserName and t.status not like 'Выполнен' Order by t.runningDate asc")
     List<PlanRunDto> findPlanRunByUserName(@Param("currentUserName") String currentUserName);
+    
+    List<TeamsRunningCount> findByTeamsIdOrderByIdAsc(Integer teamId);
+    List<TeamsRunningCount> findByTeamsIdAndRunningDateAfterOrderByIdAsc(Integer teamId, Instant dateFrom);
 
     @Query(value = "select new ru.runnerlite.entities.dto.TeamsRunningCountDto(t) " +
             "from TeamsRunningCount t " +

@@ -27,4 +27,9 @@ public interface TeamsVolunteerRepository extends JpaRepository<TeamsVolunteer, 
     List<TeamsVolunteerDto> findTeamVolunteerDto(@Param("teamsRunningCountId") Integer teamsRunningCountId);
 
 
+	
+	List<TeamsVolunteer> findByTeamsRunningCountId(Integer runningId);
+	
+	@Query(value = "SELECT NEED_VOLUNTEER_QTY FROM teams_volunteers WHERE TEAMS_RUNNING_COUNT_ID = ?0", nativeQuery = true)
+	Integer getNeedVolunteersCount(Integer runningId);
 }
