@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.runnerlite.entities.RunningResult;
 import ru.runnerlite.entities.dto.RunningResultDto;
+import ru.runnerlite.entities.dto.RunningResultForEmailSendDto;
 import ru.runnerlite.entities.dto.TourneyTableDto;
 
 import java.util.List;
@@ -33,5 +34,15 @@ public interface RunningResultRepository extends JpaRepository<RunningResult, In
 			"from RunningResult r " +
 			"where r.teamsRunningCount.number=:teamRunning ORDER BY r.finishPlace asc")
     List<TourneyTableDto> findAllResultByTeamRunning(@Param("teamRunning") Integer teamRunning); // таблица результатов забега
+
+	@Query(value="select new ru.runnerlite.entities.dto.RunningResultForEmailSendDto(r.secUser.email, " +
+			"r.secUser.fullName, " +
+			"r.teamsRunningCount.number, " +
+			"r.teamsRunningCount.runningDate, " +
+			"r.teamsRunningCount.teams.name, " +
+			"r.finishPlace, " +
+			"r.result) " +
+			" from RunningResult r where r.teamsRunningCount.number=:teamRunning and r.teamsRunningCount.teams.id=:teamId")
+	List<RunningResultForEmailSendDto> findAllResultByTeamRunningId(@Param("teamRunning") Integer teamRunning, @Param("teamId") Integer teamId);
 
 }

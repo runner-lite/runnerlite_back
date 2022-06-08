@@ -13,6 +13,7 @@ import ru.runnerlite.entities.dto.VolunteerDto;
 import ru.runnerlite.entities.dto.VolunteerPlanningDto;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
@@ -99,5 +100,8 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
    @Modifying
    @Query(value = "update Volunteer v set v.status =:status where v.id=:volunteersId")
    void changeVolunteerStatus(@Param("volunteersId") Integer volunteersId, @Param("status") Integer status); //изменение руководителем забегов статуса волонтера /0 - запрос /1 - принято/ 2 - отказано
+
+   @Query(value = "select v from Volunteer v where v.id=:volunteersId")
+   Optional<Volunteer> findVolunteerVolunteersId(@Param("volunteersId") Integer volunteersId);
 
 }

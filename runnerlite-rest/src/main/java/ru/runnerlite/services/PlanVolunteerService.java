@@ -14,6 +14,7 @@ import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.repositories.TeamsRunningCountRepository;
 import ru.runnerlite.repositories.TeamsVolunteerRepository;
 import ru.runnerlite.repositories.VolunteerRepository;
+import ru.runnerlite.services.interfaces.ILetterService;
 import ru.runnerlite.services.interfaces.IPlanVolunteerService;
 
 import java.util.ArrayList;
@@ -30,14 +31,23 @@ public class PlanVolunteerService implements IPlanVolunteerService {
     private RefVolunteersPositionRepository refVolunteersPositionRepository;
     private RunnerCountRepository runnerCountRepository;
 
+    private ILetterService letterService;
+
     @Autowired
-    public PlanVolunteerService(TeamsVolunteerRepository teamsVolunteerRepository, VolunteerRepository volunteerRepository, SecUserRepository secUserRepository, TeamsRunningCountRepository teamsRunningCountRepository, RefVolunteersPositionRepository refVolunteersPositionRepository, RunnerCountRepository runnerCountRepository) {
+    public PlanVolunteerService(TeamsVolunteerRepository teamsVolunteerRepository,
+                                VolunteerRepository volunteerRepository,
+                                SecUserRepository secUserRepository,
+                                TeamsRunningCountRepository teamsRunningCountRepository,
+                                RefVolunteersPositionRepository refVolunteersPositionRepository,
+                                RunnerCountRepository runnerCountRepository,
+                                LetterService letterService) {
         this.teamsVolunteerRepository = teamsVolunteerRepository;
         this.volunteerRepository = volunteerRepository;
         this.secUserRepository = secUserRepository;
         this.teamsRunningCountRepository = teamsRunningCountRepository;
         this.refVolunteersPositionRepository = refVolunteersPositionRepository;
         this.runnerCountRepository = runnerCountRepository;
+        this.letterService=letterService;
     }
 
     //получение таблицы с информацией о потребности в волонтерах
@@ -74,5 +84,6 @@ public class PlanVolunteerService implements IPlanVolunteerService {
         RefVolunteersPosition refVolunteersPosition = refVolunteersPositionRepository.getById(volunteersPosition);
         Volunteer volunteer = new Volunteer(null, userId.get(),0, refVolunteersPosition, teamsRunningCount);
         volunteerRepository.save(volunteer);
+        letterService.sendVolunteerRequestLetter(volunteer,teamsRunningCount); // отправка email сообщения о новой заявке руководителям команды
     }
 }
