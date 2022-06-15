@@ -2,15 +2,18 @@ package ru.runnerlite.repositories;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.runnerlite.entities.RunningResult;
-import ru.runnerlite.entities.dto.RunningResultDto;
-import ru.runnerlite.entities.dto.RunningResultForEmailSendDto;
-import ru.runnerlite.entities.dto.TourneyTableDto;
+import ru.runnerlite.entities.SecUser;
+import ru.runnerlite.entities.TeamsRunningCount;
+import ru.runnerlite.entities.dto.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RunningResultRepository extends JpaRepository<RunningResult, Integer> {
@@ -45,4 +48,19 @@ public interface RunningResultRepository extends JpaRepository<RunningResult, In
 			" from RunningResult r where r.teamsRunningCount.number=:teamRunning and r.teamsRunningCount.teams.id=:teamId")
 	List<RunningResultForEmailSendDto> findAllResultByTeamRunningId(@Param("teamRunning") Integer teamRunning, @Param("teamId") Integer teamId);
 
+	//поиск результата забега для обновления данных
+	@Query(value = "select rr from RunningResult rr where rr.secUser.id =:userId and rr.teamsRunningCount.id =:teamsRunningCountId")
+	Optional<RunningResult> findRunningResult(@Param("userId") Integer userId, @Param("teamsRunningCountId") Integer teamsRunningCountId);
+
+	//изменение результата забега
+	@Transactional
+	@Modifying
+    @Query(value = "update RunningResult rr set rr.secUser = :user, rr.result =:result, rr.teamsRunningCount =:teamsRunningCount" +
+            " where rr.secUser.id=:userId and rr.teamsRunningCount.id =:teamsRunningCountId")
+    void changeRunningResult(@Param("userId") Integer userId, @Param("teamsRunningCountId") Integer teamsRunningCountId,@Param("user") SecUser user, @Param("result") Integer result, @Param("teamsRunningCount") TeamsRunningCount teamsRunningCount);
+
+	//список внесенных результатов забега
+	@Query(value = "select new ru.runnerlite.entities.dto.RunningResultForChangeTableDto(rr.id, rr.secUser.id, rr.secUser.fullName, rr.secUser.nickName, rr.result, rr.teamsRunningCount.id, rr.finishPlace, rr.secUser.useNick)" +
+			" from RunningResult rr where rr.teamsRunningCount.id =:teamsRunningCountId and rr.finishPlace = null")
+    List<RunningResultForChangeTableDto> findListRunningResult(@Param("teamsRunningCountId") Integer teamsRunningCountId);
 }

@@ -2,15 +2,19 @@ package ru.runnerlite.repositories;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.dto.PlanRunDto;
 import ru.runnerlite.entities.dto.TeamsRunningCountDto;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningCount, Integer> {
@@ -44,4 +48,15 @@ public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningC
             "from TeamsRunningCount trc " +
             "where trc.number=:teamRunning")
     Instant getRunningDate(@Param("teamRunning") Integer teamRunning);
+
+    //поиск забега для внесения изменений в таблицу результатов
+    @Query(value = "select trc from TeamsRunningCount trc where trc.teams.id =:teamId and trc.runningDate =:date and trc.status like 'Запланирован'")
+    Optional<TeamsRunningCountDto> findTeamsRunningCountByRunningDate(@Param("date") Instant date, @Param("teamId") Integer teamId);
+
+    //изменение руководителем забегов статуса забега с "запланирован" на "выполнен", (закрытие турнирной таблицы)
+//    @Transactional
+//    @Modifying
+//    @Query(value = "update TeamsRunningCount trc set trc.status = 'Выполнен'" +
+//            " where trc.number=:runningNumber and trc.teams.id =:teamId")
+//    void changeTeamsRunningCountStatus(@Param("teamId") Integer teamId, @Param("runningNumber") Integer runningNumber);
 }

@@ -40,6 +40,9 @@ public class RunnerCount {
 	@JoinColumn(name = "TEAMS_RUNNING_COUNT_ID", nullable = false)
 	@ToString.Exclude
 	private TeamsRunningCount teamsRunningCount;
+
+	@Column(name = "STATUS", nullable = false)
+	private Integer status;
 	
 	public Integer getId() {
 		return id;
@@ -52,5 +55,8 @@ public class RunnerCount {
 	public TeamsRunningCount getTeamsRunningCount() {
 		return teamsRunningCount;
 	}
-	
+
+	public Integer getStatus() {
+		return status;
+	}
 }

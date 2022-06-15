@@ -64,7 +64,7 @@ public class PlanRunService implements IPlanRunService {
     public void insertRunnerFromRun (String currentUserName, Integer teamsRunningCountId){
         Optional<SecUser> userId = secUserRepository.findByUsername(currentUserName);
         TeamsRunningCount teamsRunningCount = teamsRunningCountRepository.getById(teamsRunningCountId);
-        RunnerCount runnerCount = new RunnerCount(null, userId.get(), teamsRunningCount);
+        RunnerCount runnerCount = new RunnerCount(null, userId.get(), teamsRunningCount, null);
         runnerCountRepository.save(runnerCount);
     }
 }
