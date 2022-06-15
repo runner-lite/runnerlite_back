@@ -3,6 +3,7 @@ package ru.runnerlite.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.runnerlite.entities.RunningResult;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.dto.RunningPlaningDto;
 import ru.runnerlite.entities.dto.RunningResultDto;
@@ -14,6 +15,9 @@ import ru.runnerlite.repositories.TeamsRunningCountRepository;
 import ru.runnerlite.repositories.VolunteerRepository;
 import ru.runnerlite.services.interfaces.IRunningResultsService;
 
+import javax.transaction.Transactional;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,14 +31,23 @@ public class RunningResultsService implements IRunningResultsService {
     private final RunnerCountRepository runnerCountRepository;
     private final VolunteerRepository volunteerRepository;
 
+    private final LetterService letterService;
+
     @Autowired
-    public RunningResultsService(RunningResultRepository runningResultRepository, SecUserService userService, TeamsRunningCountRepository runningRepository, SecUserRepository secUserRepository, RunnerCountRepository runnerCountRepository, VolunteerRepository volunteerRepository) {
+    public RunningResultsService(RunningResultRepository runningResultRepository,
+                                 SecUserService userService,
+                                 TeamsRunningCountRepository runningRepository,
+                                 SecUserRepository secUserRepository,
+                                 RunnerCountRepository runnerCountRepository,
+                                 VolunteerRepository volunteerRepository,
+                                 LetterService letterService) {
         this.runningResultRepository = runningResultRepository;
         this.userService = userService;
         this.runningRepository = runningRepository;
         this.secUserRepository = secUserRepository;
         this.runnerCountRepository = runnerCountRepository;
         this.volunteerRepository = volunteerRepository;
+        this.letterService = letterService;
     }
 
     @Override
@@ -87,11 +100,29 @@ public class RunningResultsService implements IRunningResultsService {
         return getTeamRunningStatisticWithLimit(teamId,5); // поставил что по умолчанию будет возвращать 5 записей
     }
 
+    //Метод меняет статус забега.
     @Override
+    @Transactional
     public void changeStatusTeamRunningStatistic(Integer teamId, Integer runningId, String newStatus) {
         TeamsRunningCount runningCount= runningRepository.findTeamsRunningCountByIdAndTeamId(teamId,runningId);
+        if(newStatus.equals("Выполнен")){
+            calcRunningResultPlaces(runningCount.getId()); //расставляем места
+            runnerCountRepository.getRunnersByTeamRunningCountId(runningCount.getId()).forEach(runnerCount -> runnerCount.setStatus(1)); //Обновляем статус бегунов
+            letterService.sendRunningResultsToRunner(runningCount.getNumber(),runningCount.getTeams().getId()); //рассылам участникам забега письма с результатом
+        }
         runningCount.setStatus(newStatus);
         runningRepository.save(runningCount);
+    }
+
+    //Внутренний метод , расставляет места участникам забега
+    private void calcRunningResultPlaces(Integer teamsRunningCountId){
+        List<RunningResult> runningResultList = runningResultRepository.findRunningResultByTeamRunningCountId(teamsRunningCountId);
+        Collections.sort(runningResultList, Comparator.comparing(RunningResult::getResult));
+        Integer place=0;
+        for (RunningResult runningResult : runningResultList) {
+            place++;
+            runningResult.setFinishPlace(place);
+        }
     }
 
 }

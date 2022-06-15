@@ -51,4 +51,6 @@ public interface RunnerCountRepository extends JpaRepository<RunnerCount, Intege
             "where rc.secUser.id=:userId and rc.teamsRunningCount.id=:teamsRunningCountId")
     RunningResultForChangeTableDto findRunnerById(@Param("userId") Integer userId, @Param("teamsRunningCountId") Integer teamsRunningCountId); //список бегунов участвующих в забеге
 
+    @Query(value = "select r from RunnerCount r where r.teamsRunningCount.id=:teamsRunningCountId and r.status is null")
+    List<RunnerCount> getRunnersByTeamRunningCountId(@Param("teamsRunningCountId") Integer teamsRunningCountId);
 }
