@@ -27,7 +27,7 @@ public class RunningPrepareController {
 	@GetMapping
 	@RequestMapping("/status")
 	public List<RunningPrepareStatus> getStatus(@RequestParam("teamId") Integer teamId,
-	                                            @RequestParam("count") Integer count,
+	                                            @Nullable @RequestParam("count") Integer count,
 	                                            @Nullable @RequestParam("dateFrom") String dateFrom) {
 		return runningPrepareService.getStatus(teamId, count, dateFrom);
 	}
