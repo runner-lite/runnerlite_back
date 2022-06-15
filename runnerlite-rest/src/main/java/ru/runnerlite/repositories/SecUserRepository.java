@@ -40,4 +40,9 @@ public interface SecUserRepository extends JpaRepository<SecUser, Long>  {
 			"where su.id=userId")
 	Optional<String> findNameById(@Param("userId")Integer userId);
 
+	@Query("select su " +
+			"from SecUser su " +
+			"where su.id=:userId")
+	Optional<SecUser> findSecUserById(@Param("userId")Integer userId); //поиск юзера по ID
+
 }

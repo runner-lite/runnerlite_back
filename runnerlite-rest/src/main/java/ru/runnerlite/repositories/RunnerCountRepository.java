@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.runnerlite.entities.RunnerCount;
+import ru.runnerlite.entities.dto.RunningResultForChangeTableDto;
+
+import java.util.List;
 
 @Repository
 public interface RunnerCountRepository extends JpaRepository<RunnerCount, Integer> {
@@ -36,4 +39,16 @@ public interface RunnerCountRepository extends JpaRepository<RunnerCount, Intege
             "left join TeamsRunningCount t on t.id = r.teamsRunningCount.id " +
             "where r.teamsRunningCount.number=:teamRunning")
     Integer countRunnersByTeamsRunningCountNumber(Integer teamRunning); //количество бегунов участвующих в забеге
+
+    @Query(value = "select (rc.secUser.id) " +
+            "from RunnerCount rc " +
+            "where rc.teamsRunningCount.id=:teamsRunningCountId and rc.status = null")
+    List<Integer> findAllRunnerId(@Param("teamsRunningCountId") Integer teamsRunningCountId); //список бегунов участвующих в забеге
+
+    //данные бугуна по которому еще не внесены результаты забега
+    @Query(value = "select new ru.runnerlite.entities.dto.RunningResultForChangeTableDto(rc.secUser.id, rc.secUser.fullName, rc.secUser.nickName, rc.teamsRunningCount.id, rc.secUser.useNick) " +
+            "from RunnerCount rc " +
+            "where rc.secUser.id=:userId and rc.teamsRunningCount.id=:teamsRunningCountId")
+    RunningResultForChangeTableDto findRunnerById(@Param("userId") Integer userId, @Param("teamsRunningCountId") Integer teamsRunningCountId); //список бегунов участвующих в забеге
+
 }
