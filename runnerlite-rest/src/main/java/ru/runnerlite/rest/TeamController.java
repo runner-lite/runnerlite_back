@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.runnerlite.entities.dto.TeamDto;
 import ru.runnerlite.entities.dto.TeamWithDistrictDto;
@@ -27,9 +28,9 @@ public class TeamController {
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/my")
-	public TeamDto getMyTeam(Principal principal) {
+	public TeamDto getMyTeam(Principal principal, @RequestParam(name="teamId", required=false) Integer teamId) {
 		String currentUserName = principal.getName();
-		return teamsService.getMyTeam(currentUserName);
+		return teamsService.getMyTeam(currentUserName, teamId);
 	}
 	/*
 	public List<TeamDto> getTeamsByCityId(@PathParam("city") Integer city) {

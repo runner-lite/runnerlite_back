@@ -8,5 +8,5 @@ import java.util.List;
 public interface ITeamService {
 
 	List<TeamWithDistrictDto> findByCid(Integer id);
-	TeamDto getMyTeam (String currentUserName);
+	TeamDto getMyTeam (String currentUserName,Integer teamId);
 }

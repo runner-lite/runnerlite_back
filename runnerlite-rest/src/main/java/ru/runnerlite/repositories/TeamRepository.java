@@ -26,4 +26,9 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
             "inner join SecUser s on s.team.id = t.id " +
             "where s.email=:currentUserName")
     TeamDto findMyTeam(@Param("currentUserName") String currentUserName);
+
+    @Query(value = "select new ru.runnerlite.entities.dto.TeamDto(t.id, t.name, t.description, t.geoLat, t.geoLng, t.geoDescription, t.active) " +
+            "FROM Team t " +
+            "where t.id=:teamId")
+    TeamDto findTeamById(@Param("teamId") Integer teamId);
 }

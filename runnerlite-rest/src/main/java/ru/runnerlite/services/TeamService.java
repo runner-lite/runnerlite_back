@@ -60,7 +60,10 @@ public class TeamService implements ITeamService {
 	}
 
 	@Override
-	public TeamDto getMyTeam(String currentUserName) {
-		return teamRepository.findMyTeam(currentUserName);
+	public TeamDto getMyTeam(String currentUserName, Integer teamId) {
+		if (null == teamId) {
+			return teamRepository.findMyTeam(currentUserName);
+		}
+		return teamRepository.findTeamById(teamId);
 	}
 }
