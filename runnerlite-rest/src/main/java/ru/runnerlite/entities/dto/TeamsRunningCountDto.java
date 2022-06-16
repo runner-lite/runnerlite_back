@@ -13,12 +13,14 @@ import java.time.Instant;
 @AllArgsConstructor
 public class TeamsRunningCountDto implements Serializable {
 	private Integer id;
+	private Integer teamId;
 	private Instant runningDate;
 	private Integer number;
 	private String status;
 
 	public TeamsRunningCountDto(TeamsRunningCount teamsRunningCount) {
 		id = teamsRunningCount.getId();
+		teamId = teamsRunningCount.getTeams().getId();
 		runningDate = teamsRunningCount.getRunningDate();
 		number = teamsRunningCount.getNumber();
 		status = teamsRunningCount.getStatus();

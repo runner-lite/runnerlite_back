@@ -3,6 +3,7 @@ package ru.runnerlite.services;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.runnerlite.entities.Team;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.TeamsVolunteer;
 import ru.runnerlite.entities.Volunteer;
@@ -74,5 +75,18 @@ public class RunningPrepareService {
 		}
 	
 		return result;
+	}
+	
+	public Integer getNewRunningNumber(Integer teamId) {
+		return teamsRunningCountRepository.getNewRunningNumber(teamId).orElse(-1) + 1;
+	}
+	
+	public TeamsRunningCountDto createNewRunning(TeamsRunningCountDto newRunningDto) {
+		TeamsRunningCount newRunning = new TeamsRunningCount(newRunningDto.getId(),
+			new Team(newRunningDto.getTeamId()),
+			newRunningDto.getRunningDate(),
+			newRunningDto.getNumber(),
+			newRunningDto.getStatus());
+		return new TeamsRunningCountDto(newRunning);
 	}
 }
