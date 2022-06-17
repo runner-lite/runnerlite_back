@@ -81,12 +81,29 @@ public class RunningPrepareService {
 		return teamsRunningCountRepository.getNewRunningNumber(teamId).orElse(-1) + 1;
 	}
 	
-	public TeamsRunningCountDto createNewRunning(TeamsRunningCountDto newRunningDto) {
-		TeamsRunningCount newRunning = new TeamsRunningCount(newRunningDto.getId(),
+	public TeamsRunningCountDto save(TeamsRunningCountDto newRunningDto) {
+		if (newRunningDto.getTeamId() == null || newRunningDto.getTeamId() <= 0) {
+			throw new IllegalArgumentException("Недопустимый id команды: teamId = " + newRunningDto.getTeamId());
+		}
+		if (newRunningDto.getRunningDate() == null) {
+			throw new IllegalArgumentException("Не указана дата начала забега");
+		} else if (newRunningDto.getRunningDate().isBefore(Instant.now().plusSeconds(60 * 60 * 24))) {
+			throw new IllegalArgumentException("Недопустимая дата забега! Забег можно запланировать на следующий или более поздний день " +
+				"[" + newRunningDto.getRunningDate() + "]");
+		}
+		if (newRunningDto.getNumber() == null) {
+			throw new IllegalArgumentException("Не указан номер забега.");
+		} else if (newRunningDto.getNumber() <= 0) {
+			throw new IllegalArgumentException("Недопустимый номер забега [" + newRunningDto.getNumber() + "]");
+		}
+		
+		TeamsRunningCount newRunning = new TeamsRunningCount(
+			newRunningDto.getId(),
 			new Team(newRunningDto.getTeamId()),
 			newRunningDto.getRunningDate(),
 			newRunningDto.getNumber(),
-			newRunningDto.getStatus());
+			newRunningDto.getStatus()
+		);
 		return new TeamsRunningCountDto(newRunning);
 	}
 }
