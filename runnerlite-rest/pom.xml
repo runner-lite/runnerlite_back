@@ -80,6 +80,12 @@
         </dependency>
 
         <dependency>
+            <groupId>ru.runnerlite</groupId>
+            <artifactId>runnerlite-mail</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
@@ -105,16 +111,6 @@
             <groupId>ru.runnerlite</groupId>
             <artifactId>runnerlite-picture-service</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.11</version>
         </dependency>
     </dependencies>
 </project>

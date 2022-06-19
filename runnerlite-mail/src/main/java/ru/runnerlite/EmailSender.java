@@ -1,8 +1,9 @@
-package ru.runnerlite.mail;
+package ru.runnerlite;
 
 import ch.qos.logback.classic.Logger;
 import org.slf4j.LoggerFactory;
-import ru.runnerlite.mail.model.Letter;
+import ru.runnerlite.model.Letter;
+
 
 import javax.mail.Message;
 import javax.mail.MessagingException;

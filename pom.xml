@@ -16,6 +16,7 @@
     </parent>
 
     <modules>
+        <module>runnerlite-mail</module>
         <module>runnerlite-rest</module>
         <module>runnerlite-picture-service</module>
     </modules>

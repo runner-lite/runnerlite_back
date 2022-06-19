@@ -1,4 +1,4 @@
-package ru.runnerlite.mail.model;
+package ru.runnerlite.model;
 
 public class Letter {
     private String to;

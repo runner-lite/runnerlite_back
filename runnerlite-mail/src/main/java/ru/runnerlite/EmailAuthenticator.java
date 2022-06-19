@@ -1,4 +1,4 @@
-package ru.runnerlite.mail;
+package ru.runnerlite;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;

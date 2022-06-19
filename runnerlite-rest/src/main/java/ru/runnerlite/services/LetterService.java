@@ -2,18 +2,20 @@ package ru.runnerlite.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.runnerlite.EmailSender;
 import ru.runnerlite.entities.SecUser;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.Volunteer;
 import ru.runnerlite.entities.dto.RunningResultForEmailSendDto;
-import ru.runnerlite.mail.EmailSender;
-import ru.runnerlite.mail.model.Letter;
+import ru.runnerlite.model.Letter;
 import ru.runnerlite.repositories.RunningResultRepository;
 import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.repositories.TeamsManagementRepository;
 import ru.runnerlite.repositories.VolunteerRepository;
 import ru.runnerlite.services.interfaces.ILetterService;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Optional;
 
