@@ -61,7 +61,7 @@ public interface RunningResultRepository extends JpaRepository<RunningResult, In
 
 	//список внесенных результатов забега
 	@Query(value = "select new ru.runnerlite.entities.dto.RunningResultForChangeTableDto(rr.id, rr.secUser.id, rr.secUser.fullName, rr.secUser.nickName, rr.result, rr.teamsRunningCount.id, rr.finishPlace, rr.secUser.useNick)" +
-			" from RunningResult rr where rr.teamsRunningCount.id =:teamsRunningCountId and rr.finishPlace = null")
+			" from RunningResult rr where rr.teamsRunningCount.id =:teamsRunningCountId and rr.finishPlace = null ORDER BY  rr.result ")
     List<RunningResultForChangeTableDto> findListRunningResult(@Param("teamsRunningCountId") Integer teamsRunningCountId);
 
 	@Query(value = "select r from RunningResult r where r.teamsRunningCount.id =:teamsRunningCountId")
