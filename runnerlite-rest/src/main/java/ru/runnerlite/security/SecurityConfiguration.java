@@ -68,8 +68,8 @@ public class SecurityConfiguration {
                         resp.getWriter().println("{\"error\":\""+exception.getMessage()+"\"}");
                     })
                     .and()
-                    .csrf() //.disable() выключаем стандартное поддержание авторизации в сессии
-                    .csrfTokenRepository(cookieCsrfTokenRepository());
+                    .csrf().disable(); //.disable() выключаем стандартное поддержание авторизации в сессии
+//                    .csrfTokenRepository(cookieCsrfTokenRepository());
 
             //.sessionManagement() //добавляем кастомный механизм поддержания сессии
             //.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // каждый вызов будет требовать авторизации
