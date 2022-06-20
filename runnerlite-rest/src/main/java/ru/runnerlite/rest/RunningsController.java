@@ -45,9 +45,11 @@ public class RunningsController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<RunningPlaningDto> putTeamRunningStatistic(@RequestParam("teamId") Integer teamId,
+    public List<RunningPlaningDto> putTeamRunningStatistic(Principal principal,
                                                            @RequestParam("runningId")Integer runningId,
                                                            @RequestParam("newStatus")String newStatus){
+        String userName = principal.getName();
+        Integer teamId = secUserRepository.findTeamByUsername(userName).orElse(-1);
         if(newStatus!=null&&newStatus.equals("Запланирован")|| newStatus.equals("Выполнен")|| newStatus.equals("Отменён")|| newStatus.equals("Перенесён")){
         runningResultsService.changeStatusTeamRunningStatistic(teamId,runningId,newStatus);
         return runningResultsService.getTeamRunningStatistic(teamId);
@@ -77,6 +79,7 @@ public class RunningsController {
         if (teamId <= 0) {
             return new TeamsRunningCountDto();
         }
+        running.setTeamId(teamId);
         if (running.getNumber() == null) {
             Integer number = runningPrepareService.getNewRunningNumber(teamId);
             running.setNumber(number);
