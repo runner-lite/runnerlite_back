@@ -43,8 +43,8 @@ public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningC
   
     @Query("select trc.runningDate " +
             "from TeamsRunningCount trc " +
-            "where trc.number=:teamRunning")
-    Instant getRunningDate(@Param("teamRunning") Integer teamRunning);
+            "where trc.id=:teamRunningId and trc.status like 'Выполнен'")
+    Instant getRunningDate(@Param("teamRunningId") Integer teamRunningId);
 
     //поиск забега для внесения изменений в таблицу результатов
     @Query(value = "select trc from TeamsRunningCount trc where trc.teams.id =:teamId and trc.runningDate =:date and trc.status like 'Запланирован'")

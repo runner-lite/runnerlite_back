@@ -26,11 +26,14 @@ public class TeamController {
 		return teamsService.findByCid(city);
 	}
 
-	@PreAuthorize("isAuthenticated()")
+//	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/my")
 	public TeamDto getMyTeam(Principal principal, @RequestParam(name="teamId", required=false) Integer teamId) {
-		String currentUserName = principal.getName();
-		return teamsService.getMyTeam(currentUserName, teamId);
+		if (principal != null) {
+			String currentUserName = principal.getName();
+			return teamsService.getMyTeam(currentUserName, teamId);
+		}
+		return teamsService.getMyTeam("", teamId);
 	}
 	/*
 	public List<TeamDto> getTeamsByCityId(@PathParam("city") Integer city) {

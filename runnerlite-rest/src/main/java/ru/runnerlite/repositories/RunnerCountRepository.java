@@ -37,8 +37,8 @@ public interface RunnerCountRepository extends JpaRepository<RunnerCount, Intege
 
     @Query("select count (r.secUser) from RunnerCount r " +
             "left join TeamsRunningCount t on t.id = r.teamsRunningCount.id " +
-            "where r.teamsRunningCount.number=:teamRunning")
-    Integer countRunnersByTeamsRunningCountNumber(Integer teamRunning); //количество бегунов участвующих в забеге
+            "where r.teamsRunningCount.id=:teamRunningId and t.status like 'Выполнен'")
+    Integer countRunnersByTeamsRunningCountNumber(Integer teamRunningId); //количество бегунов участвующих в забеге
 
     @Query(value = "select (rc.secUser.id) " +
             "from RunnerCount rc " +

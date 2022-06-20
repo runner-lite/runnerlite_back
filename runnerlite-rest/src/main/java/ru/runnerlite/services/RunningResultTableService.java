@@ -28,12 +28,13 @@ public class RunningResultTableService implements IRunningResultTableService {
     }
 
     @Override
-    public RunningResultTableDto findAllResultByTeamRunning(Integer teamRunning) {
-        Instant runningDate = teamsRunningCountRepository.getRunningDate(teamRunning);
-        Integer countRunners = runnerCountRepository.countRunnersByTeamsRunningCountNumber(teamRunning);
-        List<TourneyTableDto> outList = runningResultRepository.findAllResultByTeamRunning(teamRunning);
+    public RunningResultTableDto findAllResultByTeamRunning(Integer teamRunningId) {
+        Instant runningDate = teamsRunningCountRepository.getRunningDate(teamRunningId);
+        Integer countRunners = runnerCountRepository.countRunnersByTeamsRunningCountNumber(teamRunningId);
+        List<TourneyTableDto> outList = runningResultRepository.findAllResultByTeamRunning(teamRunningId);
         if(outList.isEmpty()){
-            throw new IllegalArgumentException("По забегу = " + teamRunning + " отсутствуют данные с результатами.");
+            System.out.println("По забегу c id " + teamRunningId + " отсутствуют данные с результатами.");
+            return null;
         }
         for (int i = 0; i < outList.size(); i++) {
                 outList.get(i).setResultString(calculateInMinute(outList.get(i).getResult()));

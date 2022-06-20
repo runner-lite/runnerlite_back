@@ -1,7 +1,6 @@
 package ru.runnerlite.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +19,9 @@ public class RunningResultTableController {
         this.runningResultsTableService = runningResultsTableService;
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/{teamRunning}")
-    public RunningResultTableDto getAllResults(@PathVariable("teamRunning") Integer teamRunning) {
-        return runningResultsTableService.findAllResultByTeamRunning(teamRunning);
+//    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{teamRunningId}")
+    public RunningResultTableDto getAllResults(@PathVariable("teamRunningId") Integer teamRunningId) {
+        return runningResultsTableService.findAllResultByTeamRunning(teamRunningId);
     }
 }

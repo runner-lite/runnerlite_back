@@ -39,7 +39,8 @@ public class ChangeDataRunningResultTableService implements IChangeDataRunningRe
         Integer teamId = teamRepository.findMyTeam(currentUserName).getId();
         Optional<TeamsRunningCountDto> teamsRunningCountDto = teamsRunningCountRepository.findTeamsRunningCountByRunningDate(getCurrentDate(), teamId);
         if (!teamsRunningCountDto.isPresent()) {
-            throw new IllegalArgumentException("Забегов для внесения результатов, на текущую дату не найдено.");
+            System.out.println("Данные отсутствуют");
+            return null;
         }
         return teamsRunningCountDto.get();
     }
@@ -47,10 +48,11 @@ public class ChangeDataRunningResultTableService implements IChangeDataRunningRe
     //получение списка внесенных результатов забега
     @Override
     public List<ChangeTableDto> findListRunningResult(String currentUserName) {
-        Integer teamsRunningCountId = findTeamsRunningCountByRunningDate(currentUserName).getId();
-        List<RunningResultForChangeTableDto> listRunningResult = runningResultRepository.findListRunningResult(teamsRunningCountId);
         List<ChangeTableDto> listRunners = new ArrayList<>();
-        for (int i = 0; i < listRunningResult.size(); i++) {
+        try {
+            Integer teamsRunningCountId = findTeamsRunningCountByRunningDate(currentUserName).getId();
+            List<RunningResultForChangeTableDto> listRunningResult = runningResultRepository.findListRunningResult(teamsRunningCountId);
+            for (int i = 0; i < listRunningResult.size(); i++) {
                 ChangeTableDto changeTableDto = new ChangeTableDto();
                 changeTableDto.setFinishPlace(listRunningResult.get(i).getFinishPlace());
                 changeTableDto.setUserId(listRunningResult.get(i).getSecUserId());
@@ -58,29 +60,38 @@ public class ChangeDataRunningResultTableService implements IChangeDataRunningRe
                 changeTableDto.setResultString(calculateInMinute(listRunningResult.get(i).getResult()));
                 listRunners.add(i, changeTableDto);
             }
+        }
+        catch (Exception n) {
+            System.out.println("Данные отсутствуют");
+            return null;
+        }
         return listRunners;
     }
 
     //получение списка пользователей записавшихся на забег, но по которым еще не внесен результат
     @Override
     public List<UserNameDto> findAllRunnerId(String currentUserName) {
-        Integer teamsRunningCountId = findTeamsRunningCountByRunningDate(currentUserName).getId();
-        List<Integer> allRunnerId = runnerCountRepository.findAllRunnerId(teamsRunningCountId);
-        List<ChangeTableDto> changeTableDtoList = findListRunningResult(currentUserName);
         List<UserNameDto> listRunners = new ArrayList<>();
-        for (int i = 0; i < changeTableDtoList.size(); i++) {
-            if (allRunnerId.contains(changeTableDtoList.get(i).getUserId())) {
-                allRunnerId.remove(changeTableDtoList.get(i).getUserId());
+        try {
+            Integer teamsRunningCountId = findTeamsRunningCountByRunningDate(currentUserName).getId();
+            List<Integer> allRunnerId = runnerCountRepository.findAllRunnerId(teamsRunningCountId);
+            List<ChangeTableDto> changeTableDtoList = findListRunningResult(currentUserName);
+            for (int i = 0; i < changeTableDtoList.size(); i++) {
+                if (allRunnerId.contains(changeTableDtoList.get(i).getUserId())) {
+                    allRunnerId.remove(changeTableDtoList.get(i).getUserId());
+                }
+            }
+            for (int i = 0; i < allRunnerId.size(); i++) {
+                RunningResultForChangeTableDto runningResultForChangeTableDto = runnerCountRepository.findRunnerById(allRunnerId.get(i), teamsRunningCountId);
+                UserNameDto userNameDto = new UserNameDto();
+                userNameDto.setUserId(runningResultForChangeTableDto.getSecUserId());
+                userNameDto.setName(runningResultForChangeTableDto.getUseNick() ? runningResultForChangeTableDto.getNick() : runningResultForChangeTableDto.getFullNameUser());
+                listRunners.add(userNameDto);
             }
         }
-        for (int i = 0; i < allRunnerId.size(); i++) {
-            System.out.println(allRunnerId.get(i));
-            RunningResultForChangeTableDto runningResultForChangeTableDto = runnerCountRepository.findRunnerById(allRunnerId.get(i), teamsRunningCountId);
-            System.out.println(runningResultForChangeTableDto);
-            UserNameDto userNameDto = new UserNameDto();
-            userNameDto.setUserId(runningResultForChangeTableDto.getSecUserId());
-            userNameDto.setName(runningResultForChangeTableDto.getUseNick() ? runningResultForChangeTableDto.getNick() : runningResultForChangeTableDto.getFullNameUser());
-            listRunners.add(userNameDto);
+        catch (Exception n){
+            System.out.println("Данные отсутствуют");
+            return null;
         }
         return listRunners;
     }
