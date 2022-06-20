@@ -5,5 +5,5 @@ import ru.runnerlite.entities.dto.RunningResultTableDto;
 
 public interface IRunningResultTableService {
 
-    RunningResultTableDto findAllResultByTeamRunning(Integer teamRunning);
+    RunningResultTableDto findAllResultByTeamRunning(Integer teamRunningId);
 }

@@ -35,8 +35,8 @@ public interface RunningResultRepository extends JpaRepository<RunningResult, In
 	@Query(value = "select new ru.runnerlite.entities.dto.TourneyTableDto(r.finishPlace, r.secUser.id, " +
 			"r.secUser.fullName, r.secUser.nickName, r.result)" +
 			"from RunningResult r " +
-			"where r.teamsRunningCount.number=:teamRunning ORDER BY r.finishPlace asc")
-    List<TourneyTableDto> findAllResultByTeamRunning(@Param("teamRunning") Integer teamRunning); // таблица результатов забега
+			"where r.teamsRunningCount.id=:teamRunningId and r.teamsRunningCount.status like 'Выполнен' ORDER BY r.finishPlace asc")
+    List<TourneyTableDto> findAllResultByTeamRunning(@Param("teamRunningId") Integer teamRunningId); // таблица результатов забега
 
 	@Query(value="select new ru.runnerlite.entities.dto.RunningResultForEmailSendDto(r.secUser.email, " +
 			"r.secUser.fullName, " +
