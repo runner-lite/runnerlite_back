@@ -33,7 +33,7 @@ public interface RunningResultRepository extends JpaRepository<RunningResult, In
 	List<RunningResultDto> findLastResult(String currentUserName, Pageable pageable);
 
 	@Query(value = "select new ru.runnerlite.entities.dto.TourneyTableDto(r.finishPlace, r.secUser.id, " +
-			"r.secUser.fullName, r.secUser.nickName, r.result)" +
+			"r.secUser.fullName, r.secUser.nickName, r.result, r.secUser.useNick)" +
 			"from RunningResult r " +
 			"where r.teamsRunningCount.id=:teamRunningId and r.teamsRunningCount.status like 'Выполнен' ORDER BY r.finishPlace asc")
     List<TourneyTableDto> findAllResultByTeamRunning(@Param("teamRunningId") Integer teamRunningId); // таблица результатов забега
