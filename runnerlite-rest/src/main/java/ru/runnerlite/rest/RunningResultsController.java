@@ -52,7 +52,7 @@ public class RunningResultsController {
     }
 
     //Получение истории забегов по команде
-//    @PreAuthorize("@A.mayUserChangeThisTeam(principal,#teamId)") //проверка на то что пользователь из той же команды
+    //@PreAuthorize("@A.mayUserChangeThisTeam(principal,#teamId)") //проверка на то что пользователь из той же команды
     @GetMapping("/history")
     public List<TeamsRunningCountDto> getTeamRunningCountHistory(@RequestParam("teamId") Integer teamId){
         return runningResultsService.getTeamRunningResults(teamId);
