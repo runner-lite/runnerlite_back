@@ -73,7 +73,7 @@ public class RunningsController {
     
     @PostMapping
     @RequestMapping("/save")
-    public TeamsRunningCountDto save(@RequestBody TeamsRunningCountDto newRunning) {
-        return runningPrepareService.save(newRunning);
+    public TeamsRunningCountDto save(@RequestBody TeamsRunningCountDto running) {
+        return runningPrepareService.save(running);
     }
 }

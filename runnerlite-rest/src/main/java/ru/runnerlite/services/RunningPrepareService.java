@@ -14,6 +14,7 @@ import ru.runnerlite.entities.dto.VolunteerSimpleDto;
 import ru.runnerlite.repositories.TeamsRunningCountRepository;
 import ru.runnerlite.repositories.TeamsVolunteerRepository;
 import ru.runnerlite.repositories.VolunteerRepository;
+import ru.runnerlite.util.RunningStatus;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -78,7 +79,7 @@ public class RunningPrepareService {
 	}
 	
 	public Integer getNewRunningNumber(Integer teamId) {
-		return teamsRunningCountRepository.getNewRunningNumber(teamId).orElse(-1) + 1;
+		return teamsRunningCountRepository.getNewRunningNumber(teamId).orElse(0) + 1;
 	}
 	
 	public TeamsRunningCountDto save(TeamsRunningCountDto newRunningDto) {
@@ -102,8 +103,9 @@ public class RunningPrepareService {
 			new Team(newRunningDto.getTeamId()),
 			newRunningDto.getRunningDate(),
 			newRunningDto.getNumber(),
-			newRunningDto.getStatus()
+			newRunningDto.getStatus() == null ? RunningStatus.PLANED.toString() : newRunningDto.getStatus()
 		);
-		return new TeamsRunningCountDto(newRunning);
+		TeamsRunningCountDto result = new TeamsRunningCountDto(teamsRunningCountRepository.save(newRunning));
+		return result;
 	}
 }
