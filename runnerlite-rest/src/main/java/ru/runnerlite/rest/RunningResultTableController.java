@@ -23,5 +23,6 @@ public class RunningResultTableController {
     @GetMapping("/{teamRunningId}")
     public RunningResultTableDto getAllResults(@PathVariable("teamRunningId") Integer teamRunningId) {
         return runningResultsTableService.findAllResultByTeamRunning(teamRunningId);
+
     }
 }
