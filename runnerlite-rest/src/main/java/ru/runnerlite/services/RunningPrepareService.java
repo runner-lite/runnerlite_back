@@ -3,6 +3,7 @@ package ru.runnerlite.services;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.runnerlite.entities.Team;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.TeamsVolunteer;
 import ru.runnerlite.entities.Volunteer;
@@ -13,6 +14,7 @@ import ru.runnerlite.entities.dto.VolunteerSimpleDto;
 import ru.runnerlite.repositories.TeamsRunningCountRepository;
 import ru.runnerlite.repositories.TeamsVolunteerRepository;
 import ru.runnerlite.repositories.VolunteerRepository;
+import ru.runnerlite.util.RunningStatus;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -73,6 +75,37 @@ public class RunningPrepareService {
 			result.add(rps);
 		}
 	
+		return result;
+	}
+	
+	public Integer getNewRunningNumber(Integer teamId) {
+		return teamsRunningCountRepository.getNewRunningNumber(teamId).orElse(0) + 1;
+	}
+	
+	public TeamsRunningCountDto save(TeamsRunningCountDto newRunningDto) {
+		if (newRunningDto.getTeamId() == null || newRunningDto.getTeamId() <= 0) {
+			throw new IllegalArgumentException("Недопустимый id команды: teamId = " + newRunningDto.getTeamId());
+		}
+		if (newRunningDto.getRunningDate() == null) {
+			throw new IllegalArgumentException("Не указана дата начала забега");
+		} else if (newRunningDto.getRunningDate().isBefore(Instant.now().plusSeconds(60 * 60 * 24))) {
+			throw new IllegalArgumentException("Недопустимая дата забега! Забег можно запланировать на следующий или более поздний день " +
+				"[" + newRunningDto.getRunningDate() + "]");
+		}
+		if (newRunningDto.getNumber() == null) {
+			throw new IllegalArgumentException("Не указан номер забега.");
+		} else if (newRunningDto.getNumber() <= 0) {
+			throw new IllegalArgumentException("Недопустимый номер забега [" + newRunningDto.getNumber() + "]");
+		}
+		
+		TeamsRunningCount newRunning = new TeamsRunningCount(
+			newRunningDto.getId(),
+			new Team(newRunningDto.getTeamId()),
+			newRunningDto.getRunningDate(),
+			newRunningDto.getNumber(),
+			newRunningDto.getStatus() == null ? RunningStatus.PLANED.toString() : newRunningDto.getStatus()
+		);
+		TeamsRunningCountDto result = new TeamsRunningCountDto(teamsRunningCountRepository.save(newRunning));
 		return result;
 	}
 }

@@ -2,16 +2,13 @@ package ru.runnerlite.repositories;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.runnerlite.entities.TeamsRunningCount;
 import ru.runnerlite.entities.dto.PlanRunDto;
 import ru.runnerlite.entities.dto.TeamsRunningCountDto;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -64,4 +61,8 @@ public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningC
 //    @Query(value = "update TeamsRunningCount trc set trc.status = 'Выполнен'" +
 //            " where trc.number=:runningNumber and trc.teams.id =:teamId")
 //    void changeTeamsRunningCountStatus(@Param("teamId") Integer teamId, @Param("runningNumber") Integer runningNumber);
+    
+    @Query("select max(trc.number) from TeamsRunningCount trc where trc.teams.id = :teamId")
+    Optional<Integer> getNewRunningNumber(@Param("teamId") Integer teamId);
+    
 }
