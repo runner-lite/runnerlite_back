@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.runnerlite.entities.dto.RunningResultTableDto;
 import ru.runnerlite.entities.dto.TourneyTableDto;
+import ru.runnerlite.entities.dto.TourneyTableShortDto;
 import ru.runnerlite.repositories.RunnerCountRepository;
 import ru.runnerlite.repositories.RunningResultRepository;
 import ru.runnerlite.repositories.TeamsRunningCountRepository;
@@ -11,6 +12,7 @@ import ru.runnerlite.services.interfaces.IRunningResultTableService;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -37,14 +39,20 @@ public class RunningResultTableService implements IRunningResultTableService {
             System.out.println("По забегу c id " + teamRunningId + " отсутствуют данные с результатами.");
             return null;
         }
+        List<TourneyTableShortDto> newOutList = new ArrayList<>();
         for (int i = 0; i < outList.size(); i++) {
-                outList.get(i).setResultString(calculateInMinute(outList.get(i).getResult()));
+            TourneyTableShortDto tourneyTableDto = new TourneyTableShortDto();
+            tourneyTableDto.setFinishPlace(outList.get(i).getFinishPlace());
+            tourneyTableDto.setUserId(outList.get(i).getUserId());
+            tourneyTableDto.setResultString(calculateInMinute(outList.get(i).getResult()));
+            tourneyTableDto.setName(outList.get(i).getUseNick() ? outList.get(i).getNick() : outList.get(i).getFullName());
+            newOutList.add(tourneyTableDto);
         }
         RunningResultTableDto runningResultTableDto = new RunningResultTableDto();
         runningResultTableDto.setRunningDate(runningDate);
         runningResultTableDto.setRunningNumber(runningNumber);
         runningResultTableDto.setRunnersCount(countRunners);
-        runningResultTableDto.setTourneyTableDto(outList);
+        runningResultTableDto.setTourneyTableDto(newOutList);
         return runningResultTableDto;
     }
 
