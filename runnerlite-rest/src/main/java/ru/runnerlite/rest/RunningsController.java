@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.runnerlite.entities.dto.RunningPlaningDto;
 import ru.runnerlite.entities.dto.RunningPrepareStatus;
 import ru.runnerlite.entities.dto.TeamsRunningCountDto;
+import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.services.RunningPrepareService;
 import ru.runnerlite.services.interfaces.IRunningResultsService;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -26,11 +28,13 @@ public class RunningsController {
 
     private final IRunningResultsService runningResultsService;
     private final RunningPrepareService runningPrepareService;
-
+    private final SecUserRepository secUserRepository;
+    
     @Autowired
-    public RunningsController(IRunningResultsService runningResultsService, RunningPrepareService runningPrepareService) {
+    public RunningsController(IRunningResultsService runningResultsService, RunningPrepareService runningPrepareService, SecUserRepository secUserRepository) {
         this.runningResultsService = runningResultsService;
         this.runningPrepareService = runningPrepareService;
+        this.secUserRepository = secUserRepository;
     }
 
     @GetMapping
@@ -65,15 +69,18 @@ public class RunningsController {
         return runningPrepareService.getStatus(teamId, count, dateFrom);
     }
     
-    @GetMapping
-    @RequestMapping("/prepare/getNewRunningNumber")
-    public Integer getNewRunningNumber(@RequestParam("teamId") Integer teamId) {
-        return runningPrepareService.getNewRunningNumber(teamId);
-    }
-    
     @PostMapping
     @RequestMapping("/save")
-    public TeamsRunningCountDto save(@RequestBody TeamsRunningCountDto running) {
+    public TeamsRunningCountDto save(Principal principal, @RequestBody TeamsRunningCountDto running) {
+        String userName = principal.getName();
+        Integer teamId = secUserRepository.findTeamByUsername(userName).orElse(-1);
+        if (teamId <= 0) {
+            return new TeamsRunningCountDto();
+        }
+        if (running.getNumber() == null) {
+            Integer number = runningPrepareService.getNewRunningNumber(teamId);
+            running.setNumber(number);
+        }
         return runningPrepareService.save(running);
     }
 }
