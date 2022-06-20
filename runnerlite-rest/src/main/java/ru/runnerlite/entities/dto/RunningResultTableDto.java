@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RunningResultTableDto {
     private Instant runningDate; //дата забега
+    private Integer runningNumber; //номер забега
     private Integer runnersCount; //количество бегунов участвующих в забеге
     private List<TourneyTableDto> tourneyTableDto; //турнирная таблица
 }
