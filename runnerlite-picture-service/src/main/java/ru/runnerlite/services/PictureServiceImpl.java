@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 public class PictureServiceImpl implements PictureServiceInterface {
 
-    @Value("#{systemProperties['file_storage']}")
+    @Value("${file_storage}")
     private  String storagePath;
 
     private static final Logger logger = LoggerFactory.getLogger(PictureServiceImpl.class);
