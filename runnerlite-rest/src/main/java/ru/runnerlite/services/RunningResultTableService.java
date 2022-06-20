@@ -30,6 +30,7 @@ public class RunningResultTableService implements IRunningResultTableService {
     @Override
     public RunningResultTableDto findAllResultByTeamRunning(Integer teamRunningId) {
         Instant runningDate = teamsRunningCountRepository.getRunningDate(teamRunningId);
+        Integer runningNumber = teamsRunningCountRepository.getRunningNumber(teamRunningId);
         Integer countRunners = runnerCountRepository.countRunnersByTeamsRunningCountNumber(teamRunningId);
         List<TourneyTableDto> outList = runningResultRepository.findAllResultByTeamRunning(teamRunningId);
         if(outList.isEmpty()){
@@ -41,6 +42,7 @@ public class RunningResultTableService implements IRunningResultTableService {
         }
         RunningResultTableDto runningResultTableDto = new RunningResultTableDto();
         runningResultTableDto.setRunningDate(runningDate);
+        runningResultTableDto.setRunningNumber(runningNumber);
         runningResultTableDto.setRunnersCount(countRunners);
         runningResultTableDto.setTourneyTableDto(outList);
         return runningResultTableDto;
