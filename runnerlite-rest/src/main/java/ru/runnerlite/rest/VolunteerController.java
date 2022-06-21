@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.runnerlite.entities.dto.TeamRunVolunteerQtyDto;
 import ru.runnerlite.entities.dto.VolunteerDto;
+import ru.runnerlite.repositories.SecUserRepository;
 import ru.runnerlite.services.interfaces.IVolunteerService;
 
 import javax.validation.Valid;
@@ -22,10 +23,13 @@ public class VolunteerController {
 
 
     private IVolunteerService volunteerService;
+    private final SecUserRepository secUserRepository;
+
 
     @Autowired
-    public VolunteerController(IVolunteerService volunteerService) {
+    public VolunteerController(IVolunteerService volunteerService, SecUserRepository secUserRepository) {
         this.volunteerService = volunteerService;
+        this.secUserRepository = secUserRepository;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -36,9 +40,11 @@ public class VolunteerController {
     }
 
     //Получение шаблона команды для волонтерсва
-    @PreAuthorize("@A.mayUserChangeThisTeam(principal,#teamId)")
+    @PreAuthorize("hasAuthority('ROLE_Admin')")
     @GetMapping("/template")
-    public List<TeamRunVolunteerQtyDto> getNeedTeamRunVolunteerQty(@RequestParam("teamId") Integer teamId){
+    public List<TeamRunVolunteerQtyDto> getNeedTeamRunVolunteerQty(Principal principal){
+        String userName = principal.getName();
+        Integer teamId = secUserRepository.findTeamByUsername(userName).orElse(-1);
         return volunteerService.getNeedTeamRunVolunteerQty(teamId);
     }
 
