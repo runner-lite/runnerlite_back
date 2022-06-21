@@ -15,9 +15,9 @@ import ru.runnerlite.repositories.VolunteerRepository;
 import ru.runnerlite.services.interfaces.ILetterService;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoField;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class LetterService implements ILetterService {
@@ -83,9 +83,9 @@ public class LetterService implements ILetterService {
                 StringBuilder sb=new StringBuilder();
                 sb.append("Здравствуйте "+runningResultForEmailSendDto.getRunnerName()+" !\n");
                 sb.append("Вы участвовали в забеге "+ runningResultForEmailSendDto.getRunningNumber() +" команды "+runningResultForEmailSendDto.getTeamName()+" .\n");
-                sb.append("Дата проведения забега - "+ runningResultForEmailSendDto.getRunningDate().toString()+" .\n");
+                sb.append("Дата проведения забега - "+ formatData(runningResultForEmailSendDto.getRunningDate().toString())+" .\n");
                 sb.append("Количество участников забега - "+runnerCount+" .\n");
-                sb.append("Ваш результат - " + runningResultForEmailSendDto.getResultTime()+" сек. .\n");
+                sb.append("Ваш результат - " + calculateInMinute(runningResultForEmailSendDto.getResultTime())+".\n");
                 sb.append("Ваше место в турнирной таблице забега - "+ runningResultForEmailSendDto.getPosition()+" .\n");
                 sb.append("Отличный результат! Ждем Вас на новых зебегах!");
                 emailSender.sendEmail(new Letter(runningResultForEmailSendDto.getEmail(),topic,sb.toString()));
@@ -93,5 +93,21 @@ public class LetterService implements ILetterService {
         }
     }
 
+    //перевод секунд в минуты и часы
+    public String calculateInMinute(Integer seconds) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.SECOND, seconds);
+        return new SimpleDateFormat("HH:mm:ss").format(calendar.getTime());
+    }
 
+    //перевод даты в нужный формат
+    public static String formatData(String date1) {
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+        Date date = new Date();
+        String result = newDateFormat.format(date);
+        return result;
+    }
 }
