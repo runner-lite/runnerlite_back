@@ -67,7 +67,7 @@ public class LetterService implements ILetterService {
             SecUser user = volunteer.get().getSecUsers();
             String topic = "Результат рассмотрения заявки на волонтерство. Номер забега "+runNumber+".";
             sb.append(user.getFullName()+" Ваша заявка на позицию "+position+" по забегу № " +runNumber+ " рассмотрена. Результат рассмотрения - Заявка "+status+".\n");
-            sb.append("Дата забега - "+formatData(volunteer.get().getTeamsRunningCount().getRunningDate().toString()+".\n"));
+            sb.append("Дата забега - "+formatData(volunteer.get().getTeamsRunningCount().getRunningDate().toString())+".\n");
             sb.append("Спасибо что Вы с нами!");
             emailSender.sendEmail(new Letter(user.getEmail(), topic,sb.toString()));
         }
