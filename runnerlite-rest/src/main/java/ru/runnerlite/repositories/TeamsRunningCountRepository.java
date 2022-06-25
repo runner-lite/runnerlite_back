@@ -22,16 +22,17 @@ public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningC
             "left join SecUser su on su.team.id = t.teams.id " +
             "where su.email=:currentUserName and t.status not like 'Выполнен' Order by t.runningDate asc")
     List<PlanRunDto> findPlanRunByUserName(@Param("currentUserName") String currentUserName);
-    
+
     List<TeamsRunningCount> findByTeamsIdOrderByIdAsc(Integer teamId);
+
     List<TeamsRunningCount> findByTeamsIdAndRunningDateAfterOrderByIdAsc(Integer teamId, Instant dateFrom);
 
     @Query(value = "select new ru.runnerlite.entities.dto.TeamsRunningCountDto(t) " +
             "from TeamsRunningCount t " +
-            "where t.teams.id =:teamId " +
+            "where t.teams.id =:teamId and t.status like 'Выполнен'" +
             "ORDER BY  t.runningDate desc")
     List<TeamsRunningCountDto> getTeamRunningResults(@Param("teamId") Integer teamId);
-  
+
     @Query(value = "select new ru.runnerlite.entities.dto.TeamsRunningCountDto(t) " +
             "from TeamsRunningCount t " +
             "where t.teams.id =:teamId " +
@@ -39,8 +40,8 @@ public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningC
     List<TeamsRunningCountDto> getTeamRunningResults(@Param("teamId") Integer teamId, Pageable pageable);
 
     @Query(value = "select t from TeamsRunningCount t where t.teams.id =:teamId and t.number =:runningId")
-    TeamsRunningCount findTeamsRunningCountByIdAndTeamId(@Param("teamId") Integer teamId,@Param("runningId") Integer runningId);
-  
+    TeamsRunningCount findTeamsRunningCountByIdAndTeamId(@Param("teamId") Integer teamId, @Param("runningId") Integer runningId);
+
     @Query("select trc.runningDate " +
             "from TeamsRunningCount trc " +
             "where trc.id=:teamRunningId and trc.status like 'Выполнен'")
@@ -61,8 +62,8 @@ public interface TeamsRunningCountRepository extends JpaRepository<TeamsRunningC
 //    @Query(value = "update TeamsRunningCount trc set trc.status = 'Выполнен'" +
 //            " where trc.number=:runningNumber and trc.teams.id =:teamId")
 //    void changeTeamsRunningCountStatus(@Param("teamId") Integer teamId, @Param("runningNumber") Integer runningNumber);
-    
+
     @Query("select max(trc.number) from TeamsRunningCount trc where trc.teams.id = :teamId")
     Optional<Integer> getNewRunningNumber(@Param("teamId") Integer teamId);
-    
+
 }
