@@ -15,6 +15,7 @@ import ru.runnerlite.repositories.VolunteerRepository;
 import ru.runnerlite.services.interfaces.ILetterService;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoField;
 import java.util.*;
@@ -48,7 +49,7 @@ public class LetterService implements ILetterService {
         String topic = "Новая заявка на волонтерство. Номер забега "+teamsRunningCount.getNumber()+".";
         for (SecUser user : secUser) {
             StringBuilder sb = new StringBuilder();
-            sb.append(user.getFullName()+" Вам на рассмотрение поступила заявка на волонтерство.\n");
+            sb.append(user.getFullName()+" Вам на рассмотрение поступила заявка на волонтерство, по забегу № " + teamsRunningCount.getNumber() + " запланированому " + formatData(teamsRunningCount.getRunningDate().toString()) + ".\n");
             sb.append("Запрос пришел от "+volunteer.getSecUsers().getFullName()+" на позицию "+volunteer.getRefVolunteersPosition().getName()+" .\n");
             sb.append("Для подтверждения заявки зайдите в личный кабинет .");
             emailSender.sendEmail(new Letter(user.getEmail(), topic,sb.toString()));
@@ -65,8 +66,8 @@ public class LetterService implements ILetterService {
             Integer runNumber = volunteer.get().getTeamsRunningCount().getNumber();
             SecUser user = volunteer.get().getSecUsers();
             String topic = "Результат рассмотрения заявки на волонтерство. Номер забега "+runNumber+".";
-            sb.append(user.getFullName()+" Ваша заявка на позицию "+position+" рассмотрена. Результат рассмотрения - Заявка "+status+".\n");
-            sb.append("Дата забега "+volunteer.get().getTeamsRunningCount().getRunningDate().toString()+".\n");
+            sb.append(user.getFullName()+" Ваша заявка на позицию "+position+" по забегу № " +runNumber+ " рассмотрена. Результат рассмотрения - Заявка "+status+".\n");
+            sb.append("Дата забега - "+formatData(volunteer.get().getTeamsRunningCount().getRunningDate().toString()+".\n"));
             sb.append("Спасибо что Вы с нами!");
             emailSender.sendEmail(new Letter(user.getEmail(), topic,sb.toString()));
         }
@@ -104,10 +105,19 @@ public class LetterService implements ILetterService {
     }
 
     //перевод даты в нужный формат
-    public static String formatData(String date1) {
-        SimpleDateFormat newDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
-        Date date = new Date();
-        String result = newDateFormat.format(date);
+    public static String formatData(String date) {
+        date = date.replace("T", " ");
+        date = date.replace("Z", "");
+        System.out.println(date);
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date newDate = null;
+        try {
+            newDate = newDateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat newFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+        String result = newFormat.format(newDate);
         return result;
     }
 }
