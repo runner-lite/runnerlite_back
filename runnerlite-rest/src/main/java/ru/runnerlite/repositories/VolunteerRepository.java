@@ -104,4 +104,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Integer> {
    @Query(value = "select v from Volunteer v where v.id=:volunteersId")
    Optional<Volunteer> findVolunteerVolunteersId(@Param("volunteersId") Integer volunteersId);
 
+   @Query(value = "select v.secUsers.id from Volunteer v where v.id=:volunteersId")
+   Optional<Integer> findSecUserIdByVolunteersId(@Param("volunteersId") Integer volunteersId);
+
 }

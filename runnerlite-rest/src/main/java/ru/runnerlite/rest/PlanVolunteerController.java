@@ -38,6 +38,7 @@ public class PlanVolunteerController {
         return planVolunteerService.findPlanVolunteer(currentUserName, teamsRunningCountId);
     }
 
+    @PreAuthorize("@A.itsOwnVolunteerRequest(principal,#volunteersId)")
     @DeleteMapping("/{volunteersId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteVolunteerFromRun(@PathVariable("volunteersId") Integer volunteersId){
